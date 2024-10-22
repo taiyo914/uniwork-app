@@ -45,6 +45,42 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  if (user) {
+    if (request.nextUrl.pathname.startsWith('/login')) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/404';
+      return NextResponse.redirect(url);
+    }
+
+    const { data: profile, error } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error || !profile) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/404';
+      return NextResponse.redirect(url);
+    }
+
+    const isAdminPath = request.nextUrl.pathname.startsWith('/admin');
+    const isEmployeePath = request.nextUrl.pathname.startsWith('/employee');
+
+    if (isAdminPath && profile.role !== 'admin') {
+      const url = request.nextUrl.clone();
+      url.pathname = '/404';
+      return NextResponse.redirect(url);
+    }
+    
+    if (isEmployeePath && profile.role === 'admin') {
+      const url = request.nextUrl.clone();
+      url.pathname = '/404';
+      return NextResponse.redirect(url);
+    }
+
+  }
+
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:
