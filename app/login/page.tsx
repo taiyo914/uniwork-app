@@ -65,7 +65,7 @@ export default function RefinedLogin() {
       </div>
     </>)}
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md xs:px-4">
+      <div className="w-full max-w-md xs:px-4 mb-20 mt-5">
         <div className='text-5xl font-bold text-center mb-5 '><Earth className='inline mb-2 mr-1' size={40}/>Uniwork</div>
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="px-6 py-8">
@@ -108,13 +108,12 @@ export default function RefinedLogin() {
               {error && <p className="text-red-500 mb-4">{error}</p>}
               <Button
                 type="submit"
-                className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-md font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Login
               </Button>
             </form>
           </div>
-          
         </div>
       </div>
     </div>
