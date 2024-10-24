@@ -65,18 +65,18 @@ export default function RefinedLogin() {
       </div>
     </>)}
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md xs:px-4">
         <div className='text-5xl font-bold text-center mb-5 '><Earth className='inline mb-2 mr-1' size={40}/>Uniwork</div>
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="px-6 py-8">
-            <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Login</h2>
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-5">Login</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="email" className="text-md font-medium text-gray-700">
                   email
                 </Label>
                 <div className="relative">
-                  <Input
+                  <input
                     id="email"
                     type="email"
                     value={email}
@@ -89,11 +89,11 @@ export default function RefinedLogin() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="password" className="text-md font-medium text-gray-700">
                   password
                 </Label>
                 <div className="relative">
-                  <Input
+                  <input
                     id="password"
                     type="password"
                     value={password}
