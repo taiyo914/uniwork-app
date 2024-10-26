@@ -94,7 +94,7 @@ export default function EmployeeList() {
   };
 
   const handleRowClick = (employeeId: string) => {
-    router.push(`/employee/${employeeId}`);
+    router.push(`/admin/${employeeId}`);
   };
 
   const formatEmpId = (emp_id: number) => {
