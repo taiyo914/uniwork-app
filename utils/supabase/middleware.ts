@@ -67,6 +67,13 @@ export async function updateSession(request: NextRequest) {
     const isAdminPath = request.nextUrl.pathname.startsWith('/admin');
     const isEmployeePath = request.nextUrl.pathname.startsWith('/employee');
 
+
+    if (request.nextUrl.pathname === '/') {
+      const url = request.nextUrl.clone();
+      url.pathname = profile.role === 'admin' ? '/admin' : '/employee';
+      return NextResponse.redirect(url);
+    }
+
     if (isAdminPath && profile.role !== 'admin') {
       const url = request.nextUrl.clone();
       url.pathname = '/404';
