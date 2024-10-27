@@ -65,7 +65,7 @@ export async function updateSession(request: NextRequest) {
     const { data: profile, error } = await supabase
       .from('profiles')
       .select('role, locale')
-      .eq('id', user.id)
+      .eq('user_id', user.id)
       .single();
 
     if (error || !profile) {

@@ -19,7 +19,7 @@ import { residenceStatusTranslation } from "./residenceStatusTranslation";
 import { useLogout } from "@/hooks/useLogout";
 
 type Employee = {
-  id: string;
+  user_id: string;
   emp_id: number;
   english_name: string;
   japanese_name: string;
@@ -44,7 +44,7 @@ export default function EmployeeList() {
       const { data, error } = await supabase
         .from("profiles")
         .select(
-          "id, emp_id, english_name, japanese_name, nationality, residence_status, expiration_date, hourly_wage, image_url"
+          "user_id, emp_id, english_name, japanese_name, nationality, residence_status, expiration_date, hourly_wage, image_url"
         )
         .eq("role", "employee");
 
@@ -172,9 +172,9 @@ export default function EmployeeList() {
                 <TableBody>
                   {sortedEmployees.map((employee) => (
                     <TableRow
-                      key={employee.id}
+                      key={employee.user_id}
                       className="hover:bg-gray-50 cursor-pointer"
-                      onClick={() => handleRowClick(employee.id)}
+                      onClick={() => handleRowClick(employee.user_id)}
                     >
                       <TableCell className="pl-7">{formatEmpId(employee.emp_id)}</TableCell>
                       <TableCell>

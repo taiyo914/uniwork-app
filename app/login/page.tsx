@@ -38,7 +38,7 @@ export default function RefinedLogin() {
       const { data: profile, error: profileError } = await supabase
         .from("profiles")
         .select("role, locale")
-        .eq("id", user.id)
+        .eq("user_id", user.id)
         .single();
 
       if (profileError || !profile) {
