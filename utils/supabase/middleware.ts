@@ -54,7 +54,7 @@ export async function updateSession(request: NextRequest) {
 
     const { data: profile, error } = await supabase
       .from('profiles')
-      .select('role')
+      .select('role, locale')
       .eq('id', user.id)
       .single();
 
@@ -70,7 +70,7 @@ export async function updateSession(request: NextRequest) {
 
     if (request.nextUrl.pathname === '/') {
       const url = request.nextUrl.clone();
-      url.pathname = profile.role === 'admin' ? '/admin' : '/employee';
+      url.pathname = profile.role === 'admin' ? '/admin' : `/employee/${profile.locale}`;
       return NextResponse.redirect(url);
     }
 
