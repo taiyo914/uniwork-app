@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import {
   Home,
-  DollarSign,
+  Clock,
   MessageCircle,
   Users,
   User,
@@ -23,7 +23,7 @@ export default function VerticalNav() {
 
   const navItems = [
     { icon: <Home className="h-6 w-6" />, label: t("home"), href: `/employee/${locale}` },
-    { icon: <DollarSign className="h-6 w-6" />, label: t("payroll"), href: `/employee/${locale}/payroll` },
+    { icon: <Clock className="h-6 w-6" />, label: t("timelog"), href: `/employee/${locale}/timelog` },
     { icon: <MessageCircle className="h-6 w-6" />, label: t("chat"), href: `/employee/${locale}/chat` },
     { icon: <Users className="h-6 w-6" />, label: t("members"), href: `/employee/${locale}/members` },
     { icon: <User className="h-6 w-6" />, label: t("profile"), href: `/employee/${locale}/profile` },
