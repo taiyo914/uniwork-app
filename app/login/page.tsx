@@ -37,7 +37,7 @@ export default function RefinedLogin() {
     if (user) {
       const { data: profile, error: profileError } = await supabase
         .from("profiles")
-        .select("role")
+        .select("role, locale")
         .eq("id", user.id)
         .single();
 
@@ -50,7 +50,7 @@ export default function RefinedLogin() {
       if (profile.role === "admin") {
         router.push("/admin");
       } else {
-        router.push("/employee");
+        router.push(`/employee/${profile.locale}`);
       }
     }
 

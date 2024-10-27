@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "payroll": "Gaji",
+    "chat": "Obrolan",
+    "members": "Anggota",
+    "profile": "Profil",
+    "logout": "Keluar"
+  }
+}

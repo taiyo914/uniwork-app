@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "payroll": "Nómina",
+    "chat": "Chat",
+    "members": "Miembros",
+    "profile": "Perfil",
+    "logout": "Cerrar sesión"
+  }
+}

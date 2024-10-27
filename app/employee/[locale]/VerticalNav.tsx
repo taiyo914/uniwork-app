@@ -8,21 +8,25 @@ import {
   User,
   LogOut,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useLogout } from "@/hooks/useLogout";
+import { useTranslation } from 'react-i18next';
 
 export default function VerticalNav() {
+  const { t:translate } = useTranslation();
+  const t = (key: string) => translate(`nav.${key}`);
   const [isExpanded, setIsExpanded] = useState(false);
   const pathname = usePathname();
   const handleLogout = useLogout();
+  const {locale} =  useParams()
 
   const navItems = [
-    { icon: <Home className="h-6 w-6" />, label: "Home", href: "/employee" },
-    { icon: <DollarSign className="h-6 w-6" />, label: "Payroll", href: "/employee/payroll" },
-    { icon: <MessageCircle className="h-6 w-6" />, label: "Chat", href: "/employee/chat" },
-    { icon: <Users className="h-6 w-6" />, label: "Members", href: "/employee/members" },
-    { icon: <User className="h-6 w-6" />, label: "Profile", href: "/employee/profile" },
+    { icon: <Home className="h-6 w-6" />, label: t("home"), href: `/employee/${locale}` },
+    { icon: <DollarSign className="h-6 w-6" />, label: t("payroll"), href: `/employee/${locale}/payroll` },
+    { icon: <MessageCircle className="h-6 w-6" />, label: t("chat"), href: `/employee/${locale}/chat` },
+    { icon: <Users className="h-6 w-6" />, label: t("members"), href: `/employee/${locale}/members` },
+    { icon: <User className="h-6 w-6" />, label: t("profile"), href: `/employee/${locale}/profile` },
   ];
 
   useEffect(() => {
@@ -76,7 +80,7 @@ export default function VerticalNav() {
               isExpanded ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            Log out
+            {t("logout")}
           </span>
         </button>
       </div>

@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "Home",
+    "payroll": "Buste paga",
+    "chat": "Chat",
+    "members": "Membri",
+    "profile": "Profilo",
+    "logout": "Disconnettersi"
+  }
+}
