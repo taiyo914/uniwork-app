@@ -21,5 +21,4 @@ export const languageCodes = [
   "ms", // マレー語 (Malay) -マレーシア
   "vi", // ベトナム語 (Vietnamese)
   "de", // ドイツ語 (German)
-  "ru", // ロシア語 (Russian)
 ];

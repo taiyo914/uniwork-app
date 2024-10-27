@@ -1,9 +1,9 @@
 {
   "nav": {
     "home": "홈",
-    "payroll": "급여",
+    "timelog": "시간 기록",
     "chat": "채팅",
-    "members": "멤버",
+    "members": "회원",
     "profile": "프로필",
     "logout": "로그아웃"
   }

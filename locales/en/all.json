@@ -1,10 +1,10 @@
 {
-  "nav":{
+  "nav": {
     "home": "Home",
-    "payroll": "Payroll",
+    "timelog": "Time Log",
     "chat": "Chat",
-    "members":"Members",
-    "profile":"Profile",
-    "logout": "Log out"
+    "members": "Members",
+    "profile": "Profile",
+    "logout": "Logout"
   }
 }

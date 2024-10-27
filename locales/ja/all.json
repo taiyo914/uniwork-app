@@ -1,7 +1,7 @@
 {
   "nav":{
     "home": "ホーム",
-    "payroll": "給与",
+    "timelog": "打刻",
     "chat": "チャット",
     "members":"メンバー",
     "profile":"プロフィール",

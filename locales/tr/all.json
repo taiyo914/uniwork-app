@@ -1,10 +1,10 @@
 {
   "nav": {
-    "home": "Ana Sayfa",
-    "payroll": "Maaş",
+    "home": "Anasayfa",
+    "timelog": "Zaman Kaydı",
     "chat": "Sohbet",
     "members": "Üyeler",
     "profile": "Profil",
-    "logout": "Çıkış Yap"
+    "logout": "Çıkış"
   }
 }

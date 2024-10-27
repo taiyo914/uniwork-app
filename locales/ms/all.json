@@ -1,10 +1,10 @@
 {
   "nav": {
     "home": "Laman Utama",
-    "payroll": "Gaji",
+    "timelog": "Catatan Masa",
     "chat": "Sembang",
     "members": "Ahli",
     "profile": "Profil",
-    "logout": "Log keluar"
+    "logout": "Log Keluar"
   }
 }
