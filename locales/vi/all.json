@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "payroll": "Lương",
+    "chat": "Trò chuyện",
+    "members": "Thành viên",
+    "profile": "Hồ sơ",
+    "logout": "Đăng xuất"
+  }
+}

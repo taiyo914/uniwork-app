@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "Laman Utama",
+    "payroll": "Gaji",
+    "chat": "Sembang",
+    "members": "Ahli",
+    "profile": "Profil",
+    "logout": "Log keluar"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "홈",
+    "payroll": "급여",
+    "chat": "채팅",
+    "members": "멤버",
+    "profile": "프로필",
+    "logout": "로그아웃"
+  }
+}

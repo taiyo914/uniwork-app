@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "payroll": "Gehaltsabrechnung",
+    "chat": "Chat",
+    "members": "Mitglieder",
+    "profile": "Profil",
+    "logout": "Abmelden"
+  }
+}

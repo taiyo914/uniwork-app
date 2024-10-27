@@ -1,0 +1,10 @@
+{
+  "nav": {
+    "home": "首页",
+    "payroll": "工资",
+    "chat": "聊天",
+    "members": "成员",
+    "profile": "个人资料",
+    "logout": "退出登录"
+  }
+}
