@@ -1,5 +1,9 @@
+import { languageCodes } from '@/languageCodes';
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+
+const ALLOWED_LANGUAGES = languageCodes;
+const allowedLangRegex = new RegExp(`^\/employee\/(${ALLOWED_LANGUAGES.join('|')})(\/|$)`);
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -47,6 +51,12 @@ export async function updateSession(request: NextRequest) {
 
   if (user) {
     if (request.nextUrl.pathname.startsWith('/login')) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/404';
+      return NextResponse.redirect(url);
+    }
+
+    if (request.nextUrl.pathname.startsWith('/employee') && !allowedLangRegex.test(request.nextUrl.pathname)) {
       const url = request.nextUrl.clone();
       url.pathname = '/404';
       return NextResponse.redirect(url);
