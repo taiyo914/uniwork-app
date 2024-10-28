@@ -5,20 +5,63 @@ import { AlarmClock } from "lucide-react";
 import useAttendanceStore from "@/stores/useAttendanceStore";
 
 const ScheduledTimeDialog = () => {
-  const { addRecord } = useAttendanceStore();
+  const { addRecord, records } = useAttendanceStore();
   const [scheduledDate, setScheduledDate] = useState("");
   const [scheduledTime, setScheduledTime] = useState("");
   const [scheduledType, setScheduledType] = useState("勤務開始");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleScheduledClockIn = () => {
+    const now = new Date();
+    const formattedTime = now.toISOString();
     if (scheduledDate && scheduledTime && scheduledType) {
-      const newRecord = {
-        action: scheduledType,
-        time: scheduledTime,
-        date: scheduledDate,
-      };
-      addRecord(newRecord);
+      const timestamp = new Date(`${scheduledDate}T${scheduledTime}`).toISOString();
+
+      if (scheduledType === "勤務開始") {
+        const newRecord = {
+          id: records.length + 1, // 仮のID
+          user_id: 1, // 仮のユーザーID
+          work_start: timestamp,
+          work_end: "",
+          manual_entry: true,
+          memo: "",
+          approved: false,
+          created_at: timestamp,
+          updated_at: timestamp,
+          break_logs: [],
+        };
+        addRecord(newRecord);
+      } else if (scheduledType === "勤務終了") {
+        const updatedRecord = { ...records[0], work_end: timestamp, updated_at: timestamp };
+        addRecord(updatedRecord);
+      } else if (scheduledType === "休憩開始") {
+        const updatedRecord = {
+          ...records[0],
+          break_logs: [
+            ...records[0].break_logs,
+            {
+              id: records[0].break_logs.length + 1, // 仮のID
+              break_start: timestamp,
+              break_end: "",
+              manual_entry: true,
+              memo: "休憩開始",
+              created_at: formattedTime,
+              updated_at: formattedTime,
+            },
+          ],
+          updated_at: timestamp,
+        };
+        addRecord(updatedRecord);
+      } else if (scheduledType === "休憩終了") {
+        const updatedBreakLogs = [...records[0].break_logs];
+        const lastBreak = updatedBreakLogs[updatedBreakLogs.length - 1];
+        if (lastBreak && !lastBreak.break_end) {
+          lastBreak.break_end = timestamp;
+        }
+        const updatedRecord = { ...records[0], break_logs: updatedBreakLogs, updated_at: timestamp };
+        addRecord(updatedRecord);
+      }
+
       setScheduledDate("");
       setScheduledTime("");
       setScheduledType("勤務開始");

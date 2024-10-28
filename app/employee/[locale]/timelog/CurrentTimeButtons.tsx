@@ -3,33 +3,74 @@ import useAttendanceStore from "@/stores/useAttendanceStore";
 import { LogIn, LogOut, PlayCircle, StopCircle, Clock, Coffee } from "lucide-react";
 
 const CurrentTimeButtons = () => {
-  const { workStatus, setWorkStatus, addRecord } = useAttendanceStore();
+  const { workStatus, setWorkStatus, setRecords, addRecord, records } = useAttendanceStore();
 
   const handleTimeRecord = (action: string) => {
     const now = new Date();
-    const newRecord = {
-      action,
-      time: now.toLocaleTimeString(),
-      date: now.toLocaleDateString(),
-    };
-    addRecord(newRecord);
+    const formattedTime = now.toISOString();
 
-    switch (action) {
-      case "勤務開始":
-        setWorkStatus('working');
-        break;
-      case "勤務終了":
-        setWorkStatus('notStarted');
-        break;
-      case "休憩開始":
-        setWorkStatus('onBreak');
-        break;
-      case "休憩終了":
-        setWorkStatus('working');
-        break;
+    const currentRecord = records[0];
+  
+    if (action === "勤務開始") {
+      const newRecord = {
+        id: records.length + 1, // 仮のID
+        user_id: 1, // 仮のユーザーID
+        work_start: formattedTime,
+        work_end: "",
+        manual_entry: false,
+        memo: "",
+        approved: false,
+        created_at: formattedTime,
+        updated_at: formattedTime,
+        break_logs: [],
+      };
+      addRecord(newRecord); // 新しいレコードをリストの先頭に追加
+      setWorkStatus("working");
+    } else if (action === "勤務終了" && currentRecord) {
+      const updatedRecord = {
+        ...currentRecord,
+        work_end: formattedTime,
+        updated_at: formattedTime,
+      };
+      const updatedRecords = [updatedRecord, ...records.slice(1)];
+      setRecords(updatedRecords);
+      setWorkStatus("notStarted");
+    } else if (action === "休憩開始" && currentRecord) {
+      const newBreakLog = {
+        id: currentRecord.break_logs.length + 1, // 仮のID
+        break_start: formattedTime,
+        break_end: "",
+        manual_entry: false,
+        memo: "休憩開始",
+        created_at: formattedTime,
+        updated_at: formattedTime,
+      };
+      const updatedRecord = {
+        ...currentRecord,
+        break_logs: [...currentRecord.break_logs, newBreakLog],
+        updated_at: formattedTime,
+      };
+      const updatedRecords = [updatedRecord, ...records.slice(1)];
+      setRecords(updatedRecords); // records全体を更新
+      setWorkStatus("onBreak");
+    } else if (action === "休憩終了" && currentRecord) {
+      const updatedBreakLogs = [...currentRecord.break_logs];
+      const lastBreak = updatedBreakLogs[updatedBreakLogs.length - 1];
+      if (lastBreak && !lastBreak.break_end) {
+        lastBreak.break_end = formattedTime;
+        lastBreak.updated_at = formattedTime; // 休憩終了時の updated_at を設定
+      }
+      const updatedRecord = {
+        ...currentRecord,
+        break_logs: updatedBreakLogs,
+        updated_at: formattedTime,
+      };
+      const updatedRecords = [updatedRecord, ...records.slice(1)];
+      setRecords(updatedRecords);
+      setWorkStatus("working");
     }
   };
-
+  
 
   const getButtonStyle = (buttonType: string): string => {
     const baseStyle = "h-28 text-xl rounded-xl transition-all duration-300 ease-in-out flex items-center justify-center"
