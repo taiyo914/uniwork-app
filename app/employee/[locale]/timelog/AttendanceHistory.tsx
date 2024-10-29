@@ -15,8 +15,8 @@ const AttendanceHistory = () => {
         <ScrollArea className="h-[calc(100vh-650px)] min-h-[500px]">
           {records.map((record) => (
             <div key={record.id} className="mb-5 p-4 bg-gray-50 rounded-lg border border-blue-200">
-              <p className="font-semibold text-lg text-blue-700">勤務開始: {new Date(record.work_start).toLocaleString()}</p>
-              <p className="font-semibold text-lg text-blue-700">勤務終了: {new Date(record.work_end).toLocaleString()}</p>
+              <p className="font-semibold text-lg text-blue-700 font-sans ">勤務開始: {new Date(record.work_start).toLocaleString()}</p>
+              <p className="font-semibold text-lg text-blue-700 font-sans ">勤務終了: {new Date(record.work_end).toLocaleString()}</p>
               <p className="text-sm text-gray-600">メモ: {record.memo}</p>
               <p className="text-sm text-gray-600">承認ステータス: {record.approved ? "承認済み" : "未承認"}</p>
               {/* <p className="text-sm text-gray-600">作成日時: {new Date(record.created_at).toLocaleString()}</p> */}
@@ -27,8 +27,8 @@ const AttendanceHistory = () => {
                   <p className="font-semibold text-blue-700">休憩履歴:</p>
                   {record.break_logs.map((breakLog) => (
                     <div key={breakLog.id} className="ml-4 mt-2 p-2 bg-white rounded-lg border border-gray-300">
-                      <p className="text-sm text-gray-700">休憩開始: {new Date(breakLog.break_start).toLocaleString()}</p>
-                      <p className="text-sm text-gray-700">休憩終了: {new Date(breakLog.break_end).toLocaleString()}</p>
+                      <p className="text-sm text-gray-700 font-sans tracking-wide">休憩開始: {new Date(breakLog.break_start).toLocaleString()}</p>
+                      <p className="text-sm text-gray-700 font-sans tracking-wide">休憩終了: {new Date(breakLog.break_end).toLocaleString()}</p>
                       {/* <p className="text-sm text-gray-600">メモ: {breakLog.memo}</p> */}
                       {/* <p className="text-sm text-gray-600">手動入力: {breakLog.manual_entry ? "はい" : "いいえ"}</p> */}
                     </div>
