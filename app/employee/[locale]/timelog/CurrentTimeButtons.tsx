@@ -102,20 +102,26 @@ const CurrentTimeButtons = () => {
   const getBorderColor = () => {
     if (workStatus === "working") return "border-green-400";
     if (workStatus === "onBreak") return "border-yellow-500";
-    if (workStatus === "notStarted")return "border-gray-200";
+    if (workStatus === "notStarted")return "border-blue-400";
   };
 
-  const getBadge = () => {
-    if (workStatus === "working") return <Badge className="bg-green-500 text-white px-3 py-1 text-sm">勤務中</Badge>
-    if (workStatus === "onBreak") return <Badge className="bg-yellow-500 text-white px-3 py-1 text-sm">休憩中</Badge>
-    if (workStatus === "notStarted") return <Badge className="bg-gray-500 text-white px-3 py-1 text-sm">勤務外</Badge>
+  const getBadgeStyle = () => {
+    if (workStatus === "working") return "bg-green-500 text-white px-3 py-1 text-sm"
+    if (workStatus === "onBreak") return "bg-yellow-500 text-white px-3 py-1 text-sm"
+    if (workStatus === "notStarted") return "bg-blue-500 text-white px-3 py-1 text-sm"
+  }
+
+  const getBadgeLabel = () =>{
+    if (workStatus === "working") return "勤務中"
+    if (workStatus === "onBreak") return "休憩中"
+    if (workStatus === "notStarted") return "勤務外"
   }
 
   const getMainButtonStyle = () => {
     const baseStyle = "w-full h-20 text-xl font-semibold transition-all duration-300";
-    if (workStatus === "working") return `${baseStyle} bg-green-100 hover:bg-green-200 text-green-800 border border-green-300 shadow-sm`;
+    if (workStatus === "working") return `${baseStyle} bg-green-200 hover:bg-green-300 text-green-800 border border-green-300 shadow-sm`;
     if (workStatus === "onBreak") return `${baseStyle} bg-gray-200 text-gray-500 border border-gray-300 cursor-not-allowed`;
-    if (workStatus === "notStarted") return `${baseStyle} bg-blue-200 hover:bg-blue-300 text-blue-700 shadow-sm`;
+    if (workStatus === "notStarted") return `${baseStyle} bg-blue-200 hover:bg-blue-300 border border-blue-300 text-blue-700 shadow-sm`;
   };
 
   return (
@@ -129,12 +135,12 @@ const CurrentTimeButtons = () => {
           <div className="text-center">
             <p className="text-sm font-medium text-gray-500">現在の勤務時間</p>
             <p className={`text-6xl font-bold  font-sans tracking-wide transition-colors 
-              ${workStatus === "onBreak" ? "text-gray-300" : "text-black"}
+              ${workStatus === "onBreak" ? "text-gray-300 duration-200" : "text-black"}
             `} >
               {formatTime(workTime)}
             </p>
             <div className="mt-2">
-              {getBadge()}
+              <Badge className={`${getBadgeStyle()} transition-all`}>{getBadgeLabel()}</Badge>
             </div>
           </div>
 
