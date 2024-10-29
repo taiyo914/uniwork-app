@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,24 +9,33 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AlarmClock, Plus, X } from "lucide-react";
 import useAttendanceStore from "@/stores/useAttendanceStore";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
+type DateTimeInput = {
+  date: string;
+  time: string;
+};
+
+type Break = {
+  start: DateTimeInput;
+  end: DateTimeInput;
+  memo: string;
+};
+
 const ScheduledTimeDialog = () => {
   const { addRecord, records, workStatus } = useAttendanceStore();
-  const [scheduledDate, setScheduledDate] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [workStart, setWorkStart] = useState("");
-  const [workEnd, setWorkEnd] = useState("");
+  const [workStart, setWorkStart] = useState<DateTimeInput>({ date: "", time: "" });
+  const [workEnd, setWorkEnd] = useState<DateTimeInput>({ date: "", time: "" });
   const [workMemo, setWorkMemo] = useState("");
-  const [breaks, setBreaks] = useState([{ start: "", end: "", memo: "" }]);
+  const [breaks, setBreaks] = useState<Break[]>([]);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   const handleAddBreak = () => {
-    setBreaks([...breaks, { start: "", end: "", memo: "" }]);
+    setBreaks([...breaks, { start: { date: "", time: "" }, end: { date: "", time: "" }, memo: "" }]);
   };
 
   const handleRemoveBreak = (index: number) => {
@@ -34,47 +43,89 @@ const ScheduledTimeDialog = () => {
     setBreaks(updatedBreaks);
   };
 
+  const handleWorkDateTimeChange = (
+    field: 'start' | 'end',
+    type: 'date' | 'time',
+    value: string
+  ) => {
+    const setter = field === 'start' ? setWorkStart : setWorkEnd;
+    const otherField = field === 'start' ? workEnd : workStart;
+
+    setter(prev => ({ ...prev, [type]: value }));
+
+    if (otherField.date === "" && type === 'date') {
+      const otherSetter = field === 'start' ? setWorkEnd : setWorkStart;
+      otherSetter(prev => ({ ...prev, date: value }));
+    }
+
+    if (otherField.time === "" && type === 'time') {
+      const otherSetter = field === 'start' ? setWorkEnd : setWorkStart;
+      otherSetter(prev => ({ ...prev, time: value }));
+    }
+  };
+
+  const handleBreakDateTimeChange = (
+    breakIndex: number,
+    field: 'start' | 'end',
+    type: 'date' | 'time',
+    value: string
+  ) => {
+    const updatedBreaks = [...breaks];
+    updatedBreaks[breakIndex][field][type] = value;
+
+    const otherField = field === 'start' ? 'end' : 'start';
+    if (updatedBreaks[breakIndex][otherField][type] === "") {
+      updatedBreaks[breakIndex][otherField][type] = value;
+    }
+
+    setBreaks(updatedBreaks);
+  };
+
   const validateInputs = () => {
     const errors: string[] = [];
 
-    if (!scheduledDate) errors.push("日付を入力してください。");
-    if (!workStart) errors.push("勤務開始時間を入力してください。");
-    if (!workEnd) errors.push("勤務終了時間を入力してください。");
+    if (!workStart.date || !workStart.time) errors.push("勤務開始日時を入力してください。");
+    if (!workEnd.date || !workEnd.time) errors.push("勤務終了日時を入力してください。");
 
-    if (scheduledDate && workStart && workEnd) {
-      const start = new Date(`${scheduledDate}T${workStart}`).getTime();
-      const end = new Date(`${scheduledDate}T${workEnd}`).getTime();
-      if (start >= end) errors.push("勤務終了時間は勤務開始時間より後である必要があります。");
+    if (workStart.date && workStart.time && workEnd.date && workEnd.time) {
+      const start = new Date(`${workStart.date}T${workStart.time}`).getTime();
+      const end = new Date(`${workEnd.date}T${workEnd.time}`).getTime();
+      if (start >= end) errors.push("勤務終了日時は勤務開始日時より後である必要があります。");
 
       breaks.forEach((breakItem, index) => {
-        if (breakItem.start && breakItem.end) {
-          const breakStart = new Date(`${scheduledDate}T${breakItem.start}`).getTime();
-          const breakEnd = new Date(`${scheduledDate}T${breakItem.end}`).getTime();
+        if (breakItem.start.date && breakItem.start.time && breakItem.end.date && breakItem.end.time) {
+          const breakStart = new Date(`${breakItem.start.date}T${breakItem.start.time}`).getTime();
+          const breakEnd = new Date(`${breakItem.end.date}T${breakItem.end.time}`).getTime();
 
           if (breakStart >= breakEnd) {
-            errors.push(`休憩${index + 1}の終了時間は開始時間より後である必要があります。`);
+            errors.push(`休憩${index + 1}の終了日時は開始日時より後である必要があります。`);
           }
           if (breakStart < start || breakEnd > end) {
             errors.push(`休憩${index + 1}は勤務時間内である必要があります。`);
           }
-        } else if (breakItem.start || breakItem.end) {
-          errors.push(`休憩${index + 1}の開始時間と終了時間の両方を入力してください。`);
+        } else if (
+          breakItem.start.date ||
+          breakItem.start.time ||
+          breakItem.end.date ||
+          breakItem.end.time
+        ) {
+          errors.push(`休憩${index + 1}の開始日時と終了日時の両方を入力してください。`);
         }
       });
     }
 
     const now = new Date();
-    const workEndDate = new Date(`${scheduledDate}T${workEnd}`);
+    const workEndDate = new Date(`${workEnd.date}T${workEnd.time}`);
     if (workEndDate > now) {
-      errors.push("勤務終了時間は現在時刻より後にすることはできません。");
+      errors.push("勤務終了日時は現在日時より後にすることはできません。");
     }
 
     for (let i = 0; i < breaks.length; i++) {
       for (let j = i + 1; j < breaks.length; j++) {
-        const break1Start = new Date(`${scheduledDate}T${breaks[i].start}`).getTime();
-        const break1End = new Date(`${scheduledDate}T${breaks[i].end}`).getTime();
-        const break2Start = new Date(`${scheduledDate}T${breaks[j].start}`).getTime();
-        const break2End = new Date(`${scheduledDate}T${breaks[j].end}`).getTime();
+        const break1Start = new Date(`${breaks[i].start.date}T${breaks[i].start.time}`).getTime();
+        const break1End = new Date(`${breaks[i].end.date}T${breaks[i].end.time}`).getTime();
+        const break2Start = new Date(`${breaks[j].start.date}T${breaks[j].start.time}`).getTime();
+        const break2End = new Date(`${breaks[j].end.date}T${breaks[j].end.time}`).getTime();
 
         if (
           (break1Start < break2End && break1End > break2Start) ||
@@ -95,8 +146,8 @@ const ScheduledTimeDialog = () => {
     }
 
     const timestamp = new Date().toISOString();
-    const workStartTimestamp = new Date(`${scheduledDate}T${workStart}`).toISOString();
-    const workEndTimestamp = new Date(`${scheduledDate}T${workEnd}`).toISOString();
+    const workStartTimestamp = new Date(`${workStart.date}T${workStart.time}`).toISOString();
+    const workEndTimestamp = new Date(`${workEnd.date}T${workEnd.time}`).toISOString();
 
     const newRecord = {
       id: records.length + 1,
@@ -109,11 +160,11 @@ const ScheduledTimeDialog = () => {
       created_at: timestamp,
       updated_at: timestamp,
       break_logs: breaks
-        .filter((b) => b.start && b.end)
+        .filter((b) => b.start.date && b.start.time && b.end.date && b.end.time)
         .map((b, idx) => ({
           id: idx + 1,
-          break_start: new Date(`${scheduledDate}T${b.start}`).toISOString(),
-          break_end: new Date(`${scheduledDate}T${b.end}`).toISOString(),
+          break_start: new Date(`${b.start.date}T${b.start.time}`).toISOString(),
+          break_end: new Date(`${b.end.date}T${b.end.time}`).toISOString(),
           manual_entry: true,
           memo: b.memo,
           created_at: timestamp,
@@ -122,19 +173,61 @@ const ScheduledTimeDialog = () => {
     };
 
     addRecord(newRecord);
-    setScheduledDate("");
-    setWorkStart("");
-    setWorkEnd("");
-    setWorkMemo("");
-    setBreaks([{ start: "", end: "", memo: "" }]);
+    resetForm();
     setIsDialogOpen(false);
   };
+
+  const resetForm = () => {
+    setWorkStart({ date: "", time: "" });
+    setWorkEnd({ date: "", time: "" });
+    setWorkMemo("");
+    setBreaks([]);
+    setValidationErrors([]);
+  };
+
+  useEffect(() => {
+    if (!isDialogOpen) {
+      resetForm();
+    }
+  }, [isDialogOpen]);
+
+  const DateTimeInputGroup = ({ label, dateValue, timeValue, onDateChange, onTimeChange }: {
+    label: string;
+    dateValue: string;
+    timeValue: string;
+    onDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onTimeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  }) => (
+    <div className="space-y-1">
+      <label className="text-sm font-medium ml-0.5">{label}</label>
+      <div className="grid grid-cols-2 gap-[1.6px] border rounded-md bg-background">
+        <div className="w-full">
+          <input
+            type="date"
+            value={dateValue}
+            onChange={onDateChange}
+            required
+            className="flex w-full px-3 py-2 h-10 rounded-md focus:outline outline-[1.5px] outline-gray-900 "
+          />
+        </div>
+        <div className="w-full">
+          <input
+            type="time"
+            value={timeValue}
+            onChange={onTimeChange}
+            required
+            className="flex w-full px-3 py-1 h-10 rounded-md focus:outline outline-[1.5px] outline-gray-900"
+          />
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button 
-          className={`w-full h-20 border text-lg rounded-xl shadow flex items-center justify-center bg-gray-200 text-gray-700 transition-all duration-300
+          className={`w-full h-20 border border-gray-300 text-lg rounded-xl shadow flex items-center justify-center bg-gray-200 text-gray-700 transition-all duration-300
             ${workStatus !== "notStarted" ? "cursor-not-allowed" : "hover:bg-gray-300 "}
           `}
           disabled={workStatus !== "notStarted"}
@@ -143,100 +236,87 @@ const ScheduledTimeDialog = () => {
           過去の勤務時間を記録
         </Button>
       </DialogTrigger>
-      <DialogContent className="rounded-lg p-8 xs:p-4 xs:py-6 max-w-2xl w-11/12">
+      <DialogContent className="rounded-lg p-8 xs:p-4 xs:py-6 max-w-2xl w-11/12 focus:outline-none">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl mb-4 xs:mb-0">勤務時間を記録</DialogTitle>
         </DialogHeader>
-        <div className="space-y-5 max-h-[70vh] overflow-y-auto px-2 ">
-          <div className="space-y-1">
-            <label className="text-sm font-medium ml-0.5">日付</label>
-            <Input
-              type="date"
-              value={scheduledDate}
-              onChange={(e) => setScheduledDate(e.target.value)}
-              required
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <label className="text-sm font-medium ml-0.5">勤務開始時間</label>
-              <Input
-                type="time"
-                value={workStart}
-                onChange={(e) => setWorkStart(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium ml-0.5">勤務終了時間</label>
-              <Input
-                type="time"
-                value={workEnd}
-                onChange={(e) => setWorkEnd(e.target.value)}
-                required
-              />
-            </div>
-          </div>
+        <div className="space-y-5 max-h-[70vh] overflow-y-auto px-2">
+          <DateTimeInputGroup
+            label="勤務開始"
+            dateValue={workStart.date}
+            timeValue={workStart.time}
+            onDateChange={(e) => handleWorkDateTimeChange('start', 'date', e.target.value)}
+            onTimeChange={(e) => handleWorkDateTimeChange('start', 'time', e.target.value)}
+          />
+          <DateTimeInputGroup
+            label="勤務終了"
+            dateValue={workEnd.date}
+            timeValue={workEnd.time}
+            onDateChange={(e) => handleWorkDateTimeChange('end', 'date', e.target.value)}
+            onTimeChange={(e) => handleWorkDateTimeChange('end', 'time', e.target.value)}
+          />
           <div className="space-y-1">
             <label className="text-sm font-medium ml-0.5">勤務メモ</label>
             <Textarea
               value={workMemo}
               onChange={(e) => setWorkMemo(e.target.value)}
               placeholder="勤務に関するメモを入力してください"
+              className="w-full focus-visible:ring-offset-0 focus-visible:ring-0 focus-visible:outline outline-[1.5px] outline-gray-900"
             />
           </div>
           <div className="space-y-1">
-            <label className="text-sm font-medium ml-0.5 ">休憩時間</label>
-            <div className="space-y-3">
-              {breaks.map((b, index) => (
-                <div key={index} className="p-4 pt-[0.65rem] pb-4 bg-gray-50 rounded-lg relative border">
-                  <X className="h-6 w-6 absolute top-2 right-2 rounded-full hover:bg-gray-200 hover:cursor-pointer p-1 text-gray-500 transition duration-300"  onClick={() => handleRemoveBreak(index)}/>
-                  <div className="space-y-2">
-                    <div className="grid grid-cols-2 gap-4">
+            <label className="text-sm font-medium">休憩時間</label>
+            {breaks.length === 0 ? (
+              <div className="text-sm text-gray-500 text-center">休憩時間は登録されていません</div>
+            ) : (
+              <div className="space-y-3">
+                {breaks.map((b, index) => (
+                  <div key={index} className="p-4 bg-gray-50 rounded-lg relative border">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-2 right-2 h-6 w-6"
+                      onClick={() => handleRemoveBreak(index)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                    <div className="space-y-3">
+                      <DateTimeInputGroup
+                        label={`休憩${index + 1}開始`}
+                        dateValue={b.start.date}
+                        timeValue={b.start.time}
+                        onDateChange={(e) => handleBreakDateTimeChange(index, 'start', 'date', e.target.value)}
+                        onTimeChange={(e) => handleBreakDateTimeChange(index, 'start', 'time', e.target.value)}
+                      />
+                      <DateTimeInputGroup
+                        label={`休憩${index + 1}終了`}
+                        dateValue={b.end.date}
+                        timeValue={b.end.time}
+                        onDateChange={(e) => handleBreakDateTimeChange(index, 'end', 'date', e.target.value)}
+                        onTimeChange={(e) => handleBreakDateTimeChange(index, 'end', 'time', e.target.value)}
+                      />
                       <div className="space-y-1">
-                        <label className="text-xs ml-0.5">{`休憩開始時間`}</label>
-                        <Input
-                          type="time"
-                          value={b.start}
+                      <label className="text-sm font-medium ml-0.5">{`休憩${index + 1}メモ`}</label>
+                        <Textarea
+                          value={b.memo}
                           onChange={(e) => {
                             const updatedBreaks = [...breaks];
-                            updatedBreaks[index].start = e.target.value;
+                            updatedBreaks[index].memo = e.target.value;
                             setBreaks(updatedBreaks);
                           }}
-                          required
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-xs ml-0.5">{`休憩終了時間`}</label>
-                        <Input
-                          type="time"
-                          value={b.end}
-                          onChange={(e) => {
-                            const updatedBreaks = [...breaks];
-                            updatedBreaks[index].end = e.target.value;
-                            setBreaks(updatedBreaks);
-                          }}
-                          required
+                          placeholder={`休憩${index + 1}に関するメモを入力してください`}
+                          rows={2}
+                          className="w-full focus-visible:ring-offset-0 focus-visible:ring-0 focus-visible:outline outline-[1.5px] outline-gray-900"
                         />
                       </div>
                     </div>
-                    <Textarea
-                      value={b.memo}
-                      onChange={(e) => {
-                        const updatedBreaks = [...breaks];
-                        updatedBreaks[index].memo = e.target.value;
-                        setBreaks(updatedBreaks);
-                      }}
-                      placeholder={`休憩${index + 1}に関するメモを入力してください`}
-                      rows={2}
-                    />
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
             <div className="text-center pt-2">
-              <Button variant="outline" className="text-xs" size="sm" onClick={handleAddBreak}>
-                <Plus className="mr-0.5 h-3 w-3" />
+              <Button variant="outline" className="text-sm" onClick={handleAddBreak}>
+                <Plus className="mr-2 h-4 w-4" />
                 休憩を追加
               </Button>
             </div>
@@ -256,9 +336,10 @@ const ScheduledTimeDialog = () => {
             className="w-full bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center py-2 rounded-lg shadow-md"
             onClick={handleScheduledClockIn}
           >
-            <AlarmClock className="h-5 w-5 mr-1" />
+            <AlarmClock className="h-5 w-5 mr-2" />
             記録を保存
           </Button>
+        
         </div>
       </DialogContent>
     </Dialog>
