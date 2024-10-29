@@ -119,27 +119,26 @@ const CurrentTimeButtons = () => {
 
   const getMainButtonStyle = () => {
     const baseStyle = "w-full h-20 text-xl font-semibold transition-all duration-300";
-    if (workStatus === "working") return `${baseStyle} bg-green-200 hover:bg-green-300 text-green-800 border border-green-300 shadow-sm`;
+    if (workStatus === "working") return `${baseStyle} bg-green-200 hover:bg-green-300 text-green-800 border border-green-300 shadow`;
     if (workStatus === "onBreak") return `${baseStyle} bg-gray-200 text-gray-500 border border-gray-300 cursor-not-allowed`;
-    if (workStatus === "notStarted") return `${baseStyle} bg-blue-200 hover:bg-blue-300 border border-blue-300 text-blue-700 shadow-sm`;
+    if (workStatus === "notStarted") return `${baseStyle} bg-blue-200 hover:bg-blue-300 border border-blue-300 text-blue-700 shadow`;
   };
 
   return (
     <div >
     <div className="max-w-4xl mx-auto">
-      <Card className={`border-0 border-t-4 ${getBorderColor()}`}>
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">勤務時間管理</CardTitle>
+      <Card className={`shadow border-0 border-t-4 ${getBorderColor()}`}>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-xl font-semibold text-center mt-3 text-gray-900">現在の勤務時間</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-500">現在の勤務時間</p>
             <p className={`text-6xl font-bold  font-sans tracking-wide transition-colors 
               ${workStatus === "onBreak" ? "text-gray-300 duration-200" : "text-black"}
             `} >
               {formatTime(workTime)}
             </p>
-            <div className="mt-2">
+            <div className="mt-[1.15rem]">
               <Badge className={`${getBadgeStyle()} transition-all`}>{getBadgeLabel()}</Badge>
             </div>
           </div>
@@ -154,21 +153,21 @@ const CurrentTimeButtons = () => {
           </Button>
 
           {(workStatus === "working" || workStatus === "onBreak") && (
-            <div className={` border rounded-lg p-4 space-y-2 w-full text-center
+            <div className={` border rounded-lg p-4 w-full text-center
               ${workStatus === "onBreak" ? "bg-yellow-50 border-yellow-300" : "bg-gray-50 border-gray-300"}
             `}>
-              <p className="text-lg font-semibold text-gray-700">休憩時間</p>
-              <p className={`text-2xl font-bold  font-sans tracking-wide transition-colors
+              <p className="text-lg font-semibold text-gray-700 mb-1">休憩時間</p>
+              <p className={`text-3xl font-bold  font-sans tracking-wide transition-colors mb-3
                 ${workStatus === "onBreak" ? "text-gray-800" : "text-gray-500"}
               `} >
                 {formatTime(breakTime)}
               </p>
               <Button
                 onClick={() => handleTimeRecord(workStatus === "onBreak" ? "休憩終了" : "休憩開始")}
-                className={`w-1/3 h-12 text-base font-semibold mx-auto shadow-sm
+                className={`w-1/3 h-12 text-base font-semibold mx-auto shadow
                   ${workStatus === "onBreak" 
                     ? "bg-orange-200 text-orange-800 border border-orange-300 hover:bg-orange-300" 
-                    : "bg-yellow-100 text-yellow-800 border border-yellow-400 hover:bg-yellow-200"
+                    : "bg-yellow-100 text-yellow-800 border border-yellow-300 hover:bg-yellow-200"
                   }
                 `}
               >
