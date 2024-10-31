@@ -4,7 +4,7 @@ export const languageCodes = [
   "hi", // ヒンディー語 (Hindi) 
   "es", // スペイン語 (Spanish)
   "fr", // フランス語 (French)
-  "ar", // アラビア語 (Arabic)
+  "ar", // アラビア語 (Arabic) 右から書く言語（RTL）
   "pt", // ポルトガル語 (Portuguese)
   "ru", // ロシア語 (Russian)
   "ja", // 日本語 (Japanese)
@@ -13,7 +13,7 @@ export const languageCodes = [
   "ko", // 韓国語 (Korean)
   "it", // イタリア語 (Italian)
   "th", // タイ語 (Thai)
-  "fa", // ペルシャ語 (Persian) -アラブの国々
+  "fa", // ペルシャ語 (Persian) -アラブの国々 右から書く言語（RTL）
   "uk", // ウクライナ語 (Ukrainian)
   "my", // ビルマ語 (Burmese) -ミャンマー
   "ne", // ネパール語 (Nepali)
