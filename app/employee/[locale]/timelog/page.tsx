@@ -5,7 +5,7 @@ import AttendanceHistory from "./AttendanceHistory"
 export default function Timelog() {
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-1">
       <div className="max-w-3xl mx-auto w-full ">
         <h1 className="text-4xl font-bold mb-8 mt-4 text-center text-blue-700">
           勤務登録画面
