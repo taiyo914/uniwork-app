@@ -94,7 +94,6 @@ export default function Component() {
                     <div className="">
                       <p className="text-2xl font-semibold">
                         <Clock className="inline mb-1 h-5 w-5 mr-1"/>
-                        {/* {formatWorkTime(record.work_start, record.work_end)} */}
                         {formatTimeWithReferenceDate(record.work_start, record.work_end, record.work_start)}
                       </p>
                     </div>
@@ -121,7 +120,6 @@ export default function Component() {
                               <div className="flex items-center justify-between">
                                 <p className="text-lg font-semibold">
                                   <Clock className="inline mb-[0.17rem] h-4 w-4 mr-1"/>
-                                  {/* {formatWorkTime(breakLog.break_start, breakLog.break_end)} */}
                                   {formatTimeWithReferenceDate(breakLog.break_start, breakLog.break_end, record.work_start)}
                                 </p>
                                 <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-sm font-medium text-slate-600">
