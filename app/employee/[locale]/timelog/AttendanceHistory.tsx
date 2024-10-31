@@ -22,40 +22,35 @@ export default function Component() {
     return format(date, "HH:mm");
   };
 
-  const formatWorkTime = (start: string, end: string) => {
+  const formatTimeWithReferenceDate = (start: string, end: string, referenceDate: string) => {
     const startDate = parseISO(start);
     const startTime = formatTime(start);
-    
+    const startSupplementary = !isSameDay(parseISO(referenceDate), startDate) && (
+      <span className="text-[80%] text-muted-foreground/60 ml-[0.2rem] inline-block">{`(${format(startDate, "MM/dd")})`}</span>
+    );
+  
     if (!end) {
       return (
         <>
-          {startTime} - 
-          <span className="text-[80%] text-muted-foreground/50  ml-2">{"(現在時刻)"}</span>
+          {startTime}{startSupplementary} - 
+          <span className="text-[80%] text-muted-foreground/60 ml-[0.2rem] inline-block">{"(現在時刻)"}</span>
         </>
       );
     }
-    
+  
     const endDate = parseISO(end);
     const endTime = formatTime(end);
-
-    if (isSameDay(startDate, endDate)) {
-      return `${startTime} - ${endTime}`;
-    } else if (differenceInMinutes(endDate, startDate) < 1440) {
-      return (
-        <>
-          {startTime} - {endTime}
-          <span className="text-[70%] text-muted-foreground ml-2">{"(翌日)"}</span>
-        </>
-      );
-    } else {
-      return (
-        <>
-          {startTime} - {endTime}
-          <span className="text-[70%] text-muted-foreground ml-2">{`(${format(endDate, "MM/dd")})`}</span>
-        </>
-      );
-    }
+    const endSupplementary = !isSameDay(parseISO(referenceDate), endDate) && (
+      <span className="text-[80%] text-muted-foreground/60 ml-[0.2rem] inline-block">{`(${format(endDate, "MM/dd")})`}</span>
+    );
+  
+    return (
+      <>
+        {startTime}{startSupplementary} - {endTime}{endSupplementary}
+      </>
+    );
   };
+  
 
   const calculateDuration = (start:string, end: string) => {
     const startDate = parseISO(start);
@@ -67,13 +62,13 @@ export default function Component() {
   };
 
   return (
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans">
+    <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans ">
       <CardHeader className="bg-blue-100">
         <CardTitle className="text-2xl text-blue-800">打刻履歴</CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="min-h-[500px] h-[calc(100vh-660px)] w-full rounded-md py-4 px-2">
-          <div className="space-y-4 py-4">
+        <ScrollArea className="min-h-[500px] h-[calc(100vh-700px)] w-full rounded-md pt-5  px-2">
+          <div className="space-y-4 py-3">
             {records.map((record) => (
               <Card key={record.id} className="w-full">
                 <CardHeader className="flex-row items-center justify-between border-b bg-slate-50/50 py-3 pl-[1.15rem] pr-4">
@@ -90,16 +85,17 @@ export default function Component() {
                           : "bg-yellow-100 text-yellow-800 border-yellow-300"
                         : " bg-green-100 text-green-800 border-green-300"
                     }`}>
-                      {record.work_end ? (record.approved ? "承認済み" : "未承認") : "進行中"}
+                      {record.work_end ? (record.approved ? "承認済み" : "未承認") : "勤務中"}
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="grid gap-3 p-4">
+                <CardContent className="grid gap-4 p-4 py-5">
                   <div className="flex justify-between items-center">
                     <div className="">
                       <p className="text-2xl font-semibold">
                         <Clock className="inline mb-1 h-5 w-5 mr-1"/>
-                        {formatWorkTime(record.work_start, record.work_end)}
+                        {/* {formatWorkTime(record.work_start, record.work_end)} */}
+                        {formatTimeWithReferenceDate(record.work_start, record.work_end, record.work_start)}
                       </p>
                     </div>
 
@@ -108,39 +104,42 @@ export default function Component() {
                     </div>
                   </div>
 
-                  <div className="">
+                  <div className="-mt-1">
                     <p className="text-muted-foreground ">メモ
                       <PenSquare className="h-4 w-4 inline mb-0.5 mx-1 text-blue-500 hover:text-blue-600 hover:cursor-pointer" />
                       : <span className="text-foreground">{record.memo}</span>
                     </p>
                   </div>
 
-                  <div className="space-y-2 mt-0.5">
-                    <h3 className="text-muted-foreground">休憩履歴 : </h3>
-                    <div className="space-y-3 pl-1">
-                      {record.break_logs.map((breakLog) => (
-                        <div key={breakLog.id} className="rounded-lg border px-4 py-3">
-                          <div className="grid gap-2">
-                            <div className="flex items-center justify-between">
-                              <p className="text-lg font-semibold">
-                                <Clock className="inline mb-[0.17rem] h-4 w-4 mr-1"/>
-                                 {formatWorkTime(breakLog.break_start, breakLog.break_end)}
-                              </p>
-                              <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-sm font-medium text-slate-600">
-                                {calculateDuration(breakLog.break_start, breakLog.break_end)}
-                              </span>
-                            </div>
-                            <div className="">
-                              <p className="text-muted-foreground ">メモ
-                                <PenSquare className="h-4 w-4 inline mb-0.5 mx-1 text-blue-500 hover:text-blue-600 hover:cursor-pointer" />
-                                : <span className="text-foreground">{breakLog.memo}</span>
-                              </p>
+                  {record.break_logs.length > 0 && (
+                    <div className="space-y-2 mt-0.5">
+                      <h3 className="text-muted-foreground">休憩履歴 : </h3>
+                      <div className="space-y-3 pl-1">
+                        {record.break_logs.map((breakLog) => (
+                          <div key={breakLog.id} className="rounded-lg border px-4 py-3">
+                            <div className="grid gap-2">
+                              <div className="flex items-center justify-between">
+                                <p className="text-lg font-semibold">
+                                  <Clock className="inline mb-[0.17rem] h-4 w-4 mr-1"/>
+                                  {/* {formatWorkTime(breakLog.break_start, breakLog.break_end)} */}
+                                  {formatTimeWithReferenceDate(breakLog.break_start, breakLog.break_end, record.work_start)}
+                                </p>
+                                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-sm font-medium text-slate-600">
+                                  {calculateDuration(breakLog.break_start, breakLog.break_end)}
+                                </span>
+                              </div>
+                              <div className="">
+                                <p className="text-muted-foreground ">メモ
+                                  <PenSquare className="h-4 w-4 inline mb-0.5 mx-1 text-blue-500 hover:text-blue-600 hover:cursor-pointer" />
+                                  : <span className="text-foreground">{breakLog.memo}</span>
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
