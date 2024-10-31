@@ -60,7 +60,7 @@ const CurrentTimeButtons = () => {
         break_start: formattedTime,
         break_end: "",
         manual_entry: false,
-        memo: "休憩開始",
+        memo: "",
         created_at: formattedTime,
         updated_at: formattedTime,
       };
