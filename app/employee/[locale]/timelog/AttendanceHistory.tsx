@@ -1,7 +1,7 @@
 "use client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Clock, PenSquare } from "lucide-react"
+import { Clock, Timer, StickyNote, PenSquare, History, Coffee } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import useAttendanceStore from "@/stores/useAttendanceStore"
 import { format, parseISO, differenceInMinutes, isSameDay, addDays } from "date-fns"
@@ -59,7 +59,6 @@ export default function Component() {
   
     setIsDialogOpen(false);
   };
-  
 
   const handleBreakMemoSave = async () => {
     if (!selectedBreakLog || !selectedRecord) return;
@@ -130,33 +129,78 @@ export default function Component() {
     );
   };
 
-  const calculateDuration = (start:string| null, end: string| null) => {
+  // 秒まで加味するか
+  // const calculateDuration = (start:string| null, end: string| null) => {
+  //   if (!start) return '0分';
+  //   const startDate = parseISO(start);
+  //   const endDate = end ? parseISO(end) : new Date();
+  //   const durationInMinutes = differenceInMinutes(endDate, startDate);
+  //   const hours = Math.floor(durationInMinutes / 60);
+  //   const minutes = durationInMinutes % 60;
+  //   return hours ? `${hours}時間${minutes.toString().padStart(1, '0')}分` : `${minutes}分`;
+  // };
+
+  // 秒は切り捨てて分だけで考えるか
+  const calculateDuration = (start: string | null, end: string | null) => {
     if (!start) return '0分';
     const startDate = parseISO(start);
     const endDate = end ? parseISO(end) : new Date();
-    const durationInMinutes = differenceInMinutes(endDate, startDate);
+    const startMinutes = Math.floor(startDate.getTime() / 60000);
+    const endMinutes = Math.floor(endDate.getTime() / 60000);
+    const durationInMinutes = endMinutes - startMinutes;
     const hours = Math.floor(durationInMinutes / 60);
     const minutes = durationInMinutes % 60;
     return hours ? `${hours}時間${minutes.toString().padStart(1, '0')}分` : `${minutes}分`;
   };
 
+  const calculateActualWorkDuration = (record: AttendanceRecord) => {
+    const { work_start, work_end, break_logs } = record;
+  
+    if (!work_start) return '0分';
+    if (!work_end) return <span>{'計算中'}</span>;
+  
+    const startDate = parseISO(work_start);
+    const endDate = work_end ? parseISO(work_end) : new Date();
+  
+    // 勤務時間全体の分数
+    const totalWorkMinutes = Math.floor(endDate.getTime() / 60000) - Math.floor(startDate.getTime() / 60000);
+  
+    // 休憩時間の分数合計
+    const totalBreakMinutes = break_logs.reduce((total, breakLog) => {
+      if (breakLog.break_start && breakLog.break_end) {
+        const breakStart = Math.floor(parseISO(breakLog.break_start).getTime() / 60000);
+        const breakEnd = Math.floor(parseISO(breakLog.break_end).getTime() / 60000);
+        return total + (breakEnd - breakStart);
+      }
+      return total;
+    }, 0);
+  
+    // 実働時間の分数
+    const actualWorkMinutes = totalWorkMinutes - totalBreakMinutes;
+    const hours = Math.floor(actualWorkMinutes / 60);
+    const minutes = actualWorkMinutes % 60;
+  
+    return hours ? `${hours}時間${minutes.toString().padStart(1, '0')}分` : `${minutes}分`;
+  };
+  
+
   return (<>
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans ">
+    <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans max-w-3xl mx-auto w-full">
       <CardHeader className="bg-blue-100">
-        <CardTitle className="text-2xl text-blue-800">打刻履歴</CardTitle>
+        <CardTitle className="text-2xl text-blue-800 flex items-center gap-2">打刻履歴<History className="h-6 w-6"/></CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="min-h-[500px] h-[calc(100vh-700px)] w-full rounded-md pt-5  px-2">
+        <ScrollArea className="min-h-[500px] h-[calc(100vh-700px)] xl:h-[calc(100vh-250px)] w-full rounded-md pt-5  px-2">
           <div className="space-y-4 py-3">
             {sortedRecords.map((record) => (
               <Card key={record.id} className="w-full">
                 <CardHeader className="flex-row items-center justify-between border-b bg-slate-50/50 py-3 pl-[1.15rem] pr-4">
-                  <div className="flex items-baseline gap-2">
+                  <div className="flex items-baseline ">
                     <div className="text-2xl font-bold">{formatDate(record.work_start)}</div>
-                    <div className="text-muted-foreground">
+                    <div className="text-muted-foreground mx-2">
                       {record.work_start ? `(${format(parseISO(record.work_start), 'EEE', { locale: ja })})` : ''}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-muted-foreground -ml-0.5">
                       {record.work_start ? format(parseISO(record.work_start), 'yyyy') : ''}
                     </div>
                   </div>
@@ -172,34 +216,49 @@ export default function Component() {
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="grid gap-4 p-4 py-5">
-                  <div className="flex justify-between items-center">
-                    <div className="">
-                      <p className="text-2xl font-semibold">
-                        <Clock className="inline mb-1 h-5 w-5 mr-1"/>
-                        {formatTimeWithReferenceDate(record.work_start, record.work_end, record.work_start)}
-                      </p>
+                <CardContent className="p-4 py-5">
+                  
+                  {/* 勤務時間 */}
+                  <div className="flex items-center gap-1 mb-3">
+                    <Clock className="h-4 w-4 text-muted-foreground "/>
+                    <div className="text-muted-foreground ">
+                      勤務時間 : 
                     </div>
-
-                    <div className="font-semibold border px-3 py-1 bg-slate-100 rounded-full">
-                      {calculateDuration(record.work_start, record.work_end)}
+                    <div className="text-xl font-semibold">
+                      {formatTimeWithReferenceDate(record.work_start, record.work_end, record.work_start)}
                     </div>
                   </div>
 
-                  <div className="-mt-1">
-                    <p className="text-muted-foreground ">メモ
-                      <PenSquare className="h-4 w-4 inline mb-0.5 mx-1 text-blue-500 hover:text-blue-600 hover:cursor-pointer" onClick={() => openMemoDialog(record)}/>
-                      : <span className="text-foreground">{record.memo}</span>
-                    </p>
+                  {/* 実働時間 */}
+                  <div className="flex items-center gap-1 mb-3">
+                    <Timer className=" h-5 w-5 -mx-[2px] mb-0.5 text-muted-foreground "/>
+                    <div className="text-muted-foreground ">
+                      実働時間 : 
+                    </div>
+                    <div className="text-xl font-semibold ">
+                      {calculateActualWorkDuration(record)}
+                    </div>
+                  </div>
+
+                  {/* メモ */}
+                  <div className="flex items-center gap-1 mb-3">
+                    <StickyNote className=" h-4 w-4 text-muted-foreground "/>
+                    <div className="text-muted-foreground ">
+                      メモ : 
+                    </div>
+                    <div className="">
+                      {record.memo}
+                      <PenSquare className="h-[1.15rem] w-[1.15rem] inline mb-0.5 ml-1 text-blue-500 hover:text-blue-700 hover:cursor-pointer" onClick={() => openMemoDialog(record)}/>
+                    </div>
                   </div>
 
                   {record.break_logs && record.break_logs.length > 0 && (
                     <div className="space-y-2 mt-0.5">
-                      <h3 className="text-muted-foreground">休憩履歴 : </h3>
+                      <h3 className="text-muted-foreground flex items-center gap-1"><Coffee className="h-4 w-4 "/>休憩履歴 : </h3>
                       <div className="space-y-3 pl-1">
                         {record.break_logs.map((breakLog) => (
                           <div key={breakLog.id} className="rounded-lg border px-4 py-3">
-                            <div className="grid gap-2">
+                            <div className="grid gap-1.5">
                               <div className="flex items-center justify-between">
                                 <p className="text-lg font-semibold">
                                   <Clock className="inline mb-[0.17rem] h-4 w-4 mr-1"/>
@@ -209,11 +268,16 @@ export default function Component() {
                                   {calculateDuration(breakLog.break_start, breakLog.break_end)}
                                 </span>
                               </div>
-                              <div className="">
-                                <p className="text-muted-foreground ">メモ
-                                  <PenSquare className="h-4 w-4 inline mb-0.5 mx-1 text-blue-500 hover:text-blue-600 hover:cursor-pointer" onClick={() => openBreakMemoDialog(record, breakLog)}/>
-                                  : <span className="text-foreground">{breakLog.memo}</span>
-                                </p>
+                              
+                              <div className="flex items-center gap-1 ">
+                                <StickyNote className=" h-4 w-4 text-muted-foreground "/>
+                                <div className="text-muted-foreground ">
+                                  メモ : 
+                                </div>
+                                <div className="">
+                                  {breakLog.memo}
+                                  <PenSquare className="h-[1.15rem] w-[1.15rem] inline mb-0.5 mx-1 text-blue-500 hover:text-blue-700 hover:cursor-pointer"  onClick={() => openBreakMemoDialog(record, breakLog)}/>
+                                </div>
                               </div>
                             </div>
                           </div>
