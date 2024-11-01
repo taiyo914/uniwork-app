@@ -10,19 +10,20 @@ import { ja, enUS, it, ru } from "date-fns/locale";
 export default function Component() {
   const { records } = useAttendanceStore()
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | null) => {
     if (!dateString) return '';
     const date = parseISO(dateString);
     return format(date, "MM/dd");
   };
 
-  const formatTime = (dateString: string) => {
+  const formatTime = (dateString: string | null) => {
     if (!dateString) return '';
     const date = parseISO(dateString);
     return format(date, "HH:mm");
   };
 
-  const formatTimeWithReferenceDate = (start: string, end: string, referenceDate: string) => {
+  const formatTimeWithReferenceDate = (start: string | null, end: string | null, referenceDate: string | null) => {
+    if (!start || !referenceDate) return '';
     const startDate = parseISO(start);
     const startTime = formatTime(start);
     const startSupplementary = !isSameDay(parseISO(referenceDate), startDate) && (
@@ -52,7 +53,8 @@ export default function Component() {
   };
   
 
-  const calculateDuration = (start:string, end: string) => {
+  const calculateDuration = (start:string| null, end: string| null) => {
+    if (!start) return '0分';
     const startDate = parseISO(start);
     const endDate = end ? parseISO(end) : new Date();
     const durationInMinutes = differenceInMinutes(endDate, startDate);
@@ -74,8 +76,12 @@ export default function Component() {
                 <CardHeader className="flex-row items-center justify-between border-b bg-slate-50/50 py-3 pl-[1.15rem] pr-4">
                   <div className="flex items-baseline gap-2">
                     <div className="text-2xl font-bold">{formatDate(record.work_start)}</div>
-                    <div className="text-muted-foreground">({format(parseISO(record.work_start), "EEE", { locale: ja })})</div>
-                    <div className="text-sm text-muted-foreground">{format(parseISO(record.work_start), "yyyy")}</div>
+                    <div className="text-muted-foreground">
+                      {record.work_start ? `(${format(parseISO(record.work_start), 'EEE', { locale: ja })})` : ''}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {record.work_start ? format(parseISO(record.work_start), 'yyyy') : ''}
+                    </div>
                   </div>
                   <div>
                     <Badge className={`border py-1 mb-1 ${
@@ -110,7 +116,7 @@ export default function Component() {
                     </p>
                   </div>
 
-                  {record.break_logs.length > 0 && (
+                  {record.break_logs && record.break_logs.length > 0 && (
                     <div className="space-y-2 mt-0.5">
                       <h3 className="text-muted-foreground">休憩履歴 : </h3>
                       <div className="space-y-3 pl-1">
