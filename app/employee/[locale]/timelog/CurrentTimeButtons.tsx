@@ -215,7 +215,7 @@ const CurrentTimeButtons = () => {
 
   return (
     <div >
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-3xl mx-auto">
       <Card className={`shadow border-0 border-t-4 ${getBorderColor()}`}>
         <CardHeader className="pb-2">
           <CardTitle className="text-xl font-semibold text-center mt-3 text-gray-900">現在の勤務時間</CardTitle>
