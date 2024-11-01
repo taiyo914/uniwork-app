@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { AlarmClock, Plus, X } from "lucide-react";
 import useAttendanceStore from "@/stores/useAttendanceStore";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { supabase } from "@/utils/supabase/client";
 
 type DateTimeInput = {
   date: string;
@@ -140,8 +141,14 @@ const ScheduledTimeDialog = () => {
     return errors.length === 0;
   };
 
-  const handleScheduledClockIn = () => {
+  const handleScheduledClockIn = async () => {
     if (!validateInputs()) {
+      return;
+    }
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      console.error("Failed to get user (ScheduledTimeDialog/handleScheduledClockIn)");
       return;
     }
 
@@ -149,32 +156,56 @@ const ScheduledTimeDialog = () => {
     const workStartTimestamp = new Date(`${workStart.date}T${workStart.time}`).toISOString();
     const workEndTimestamp = new Date(`${workEnd.date}T${workEnd.time}`).toISOString();
 
-    const newRecord = {
-      id: records.length + 1,
-      user_id: 1,
-      work_start: workStartTimestamp,
-      work_end: workEndTimestamp,
-      manual_entry: true,
-      memo: workMemo,
-      approved: false,
-      created_at: timestamp,
-      updated_at: timestamp,
-      break_logs: breaks
+    try{
+      const { data: newRecord, error: attendanceError } = await supabase
+        .from("attendance_logs")
+        .insert({
+          user_id: user.id,
+          work_start: workStartTimestamp,
+          work_end: workEndTimestamp,
+          manual_entry: true,
+          memo: workMemo,
+          approved: false,
+        })
+        .select('*, break_logs(*)')
+        .single();
+
+      if (attendanceError) {
+        console.error("Failed to insert attendance log:", attendanceError.message);
+        return;
+      }
+
+      // 2. 挿入された勤務記録のIDを使用して休憩記録をSupabaseに挿入
+      const breakLogsData = breaks
         .filter((b) => b.start.date && b.start.time && b.end.date && b.end.time)
-        .map((b, idx) => ({
-          id: idx + 1,
+        .map((b) => ({
+          attendance_log_id: newRecord.id,
           break_start: new Date(`${b.start.date}T${b.start.time}`).toISOString(),
           break_end: new Date(`${b.end.date}T${b.end.time}`).toISOString(),
-          manual_entry: true,
           memo: b.memo,
-          created_at: timestamp,
-          updated_at: timestamp,
-        })),
-    };
+        }));
 
-    addRecord(newRecord);
-    resetForm();
-    setIsDialogOpen(false);
+      if (breakLogsData.length > 0) {
+        const { error: breakError } = await supabase.from("break_logs").insert(breakLogsData);
+        if (breakError) {
+          console.error("Failed to insert break logs:", breakError.message);
+          return;
+        }
+      }
+
+      // 3. Zustandストアに新しい勤務記録を追加
+      const updatedRecord = {
+        ...newRecord,
+        break_logs: breakLogsData, 
+      };
+      addRecord(updatedRecord);
+      
+      resetForm();
+      setIsDialogOpen(false);
+
+    }catch (error){
+      console.error("An error occurred while saving the scheduled record:", error);
+    }
   };
 
   const resetForm = () => {
@@ -224,7 +255,7 @@ const ScheduledTimeDialog = () => {
   );
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} >
       <DialogTrigger asChild>
         <Button 
           className={`w-full h-20 border border-gray-300 text-lg rounded-xl shadow flex items-center justify-center bg-gray-200 text-gray-700 transition-all duration-300
@@ -236,10 +267,13 @@ const ScheduledTimeDialog = () => {
           過去の勤務時間を記録
         </Button>
       </DialogTrigger>
-      <DialogContent className="rounded-lg p-8 xs:p-4 xs:py-6 max-w-2xl w-11/12 focus:outline-none">
+      <DialogContent className="rounded-lg p-8 xs:p-4 xs:py-6 max-w-2xl w-11/12 focus:outline-none" aria-describedby="scheduled-time-dialog-description">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl mb-4 xs:mb-0">勤務時間を記録</DialogTitle>
         </DialogHeader>
+          <p id="scheduled-time-dialog-description" className="sr-only">
+            This dialog allows you to record your work and break times.
+          </p>
         <div className="space-y-5 max-h-[70vh] overflow-y-auto px-2">
           <DateTimeInputGroup
             label="勤務開始"
