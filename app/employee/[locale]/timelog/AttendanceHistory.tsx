@@ -6,14 +6,87 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import useAttendanceStore from "@/stores/useAttendanceStore"
 import { format, parseISO, differenceInMinutes, isSameDay, addDays } from "date-fns"
 import { ja, enUS, it, ru } from "date-fns/locale";
+import { useState } from "react"
+import { AttendanceRecord, BreakLog } from "@/stores/useAttendanceStore"
+import { supabase } from "@/utils/supabase/client"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
 
 export default function Component() {
-  const { records } = useAttendanceStore()
+  const { records, setRecords } = useAttendanceStore()
   const sortedRecords = [...records].sort((a, b) => {
     const dateA = a.work_start ? new Date(a.work_start).getTime() : 0;
     const dateB = b.work_start ? new Date(b.work_start).getTime() : 0;
     return dateB - dateA; 
   });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isBreakDialogOpen, setIsBreakDialogOpen] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<AttendanceRecord | null >(null);
+  const [selectedBreakLog, setSelectedBreakLog] = useState<BreakLog | null>(null);
+  const [newMemo, setNewMemo] = useState("");
+
+  const openMemoDialog = (record: AttendanceRecord) => {
+    setSelectedRecord(record);
+    setNewMemo(record.memo);
+    setIsDialogOpen(true);
+  };
+
+  const openBreakMemoDialog = (record: AttendanceRecord, breakLog: BreakLog) => {
+    setSelectedRecord(record);
+    setSelectedBreakLog(breakLog);
+    setNewMemo(breakLog.memo);
+    setIsBreakDialogOpen(true);
+  };
+
+  const handleMemoSave = async () => {
+    if (!selectedRecord) return;
+
+    const { error } = await supabase
+      .from("attendance_logs")
+      .update({ memo: newMemo })
+      .eq("id", selectedRecord.id);
+  
+    if (error) {
+      console.error("Failed to update memo (AttendanceHistory/handleMemoSave):", error.message);
+      return;
+    }
+  
+    const updatedRecords = records.map((record) =>
+      record.id === selectedRecord.id ? { ...record, memo: newMemo } : record
+    );
+    setRecords(updatedRecords);
+  
+    setIsDialogOpen(false);
+  };
+  
+
+  const handleBreakMemoSave = async () => {
+    if (!selectedBreakLog || !selectedRecord) return;
+
+    const { error } = await supabase
+      .from("break_logs")
+      .update({ memo: newMemo })
+      .eq("id", selectedBreakLog.id);
+
+    if (error) {
+      console.error("Failed to update break log memo:(AttendanceHistory/handleBreakMemoSave)", error.message);
+      return;
+    }
+
+    const updatedRecords = records.map((record) => {
+      if (record.id === selectedRecord.id) {
+        const updatedBreakLogs = record.break_logs.map((log) =>
+          log.id === selectedBreakLog.id ? { ...log, memo: newMemo } : log
+        );
+        return { ...record, break_logs: updatedBreakLogs };
+      }
+      return record;
+    });
+
+    setRecords(updatedRecords);
+    setIsBreakDialogOpen(false);
+  };
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '';
@@ -56,7 +129,6 @@ export default function Component() {
       </>
     );
   };
-  
 
   const calculateDuration = (start:string| null, end: string| null) => {
     if (!start) return '0分';
@@ -68,7 +140,7 @@ export default function Component() {
     return hours ? `${hours}時間${minutes.toString().padStart(1, '0')}分` : `${minutes}分`;
   };
 
-  return (
+  return (<>
     <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans ">
       <CardHeader className="bg-blue-100">
         <CardTitle className="text-2xl text-blue-800">打刻履歴</CardTitle>
@@ -116,7 +188,7 @@ export default function Component() {
 
                   <div className="-mt-1">
                     <p className="text-muted-foreground ">メモ
-                      <PenSquare className="h-4 w-4 inline mb-0.5 mx-1 text-blue-500 hover:text-blue-600 hover:cursor-pointer" />
+                      <PenSquare className="h-4 w-4 inline mb-0.5 mx-1 text-blue-500 hover:text-blue-600 hover:cursor-pointer" onClick={() => openMemoDialog(record)}/>
                       : <span className="text-foreground">{record.memo}</span>
                     </p>
                   </div>
@@ -139,7 +211,7 @@ export default function Component() {
                               </div>
                               <div className="">
                                 <p className="text-muted-foreground ">メモ
-                                  <PenSquare className="h-4 w-4 inline mb-0.5 mx-1 text-blue-500 hover:text-blue-600 hover:cursor-pointer" />
+                                  <PenSquare className="h-4 w-4 inline mb-0.5 mx-1 text-blue-500 hover:text-blue-600 hover:cursor-pointer" onClick={() => openBreakMemoDialog(record, breakLog)}/>
                                   : <span className="text-foreground">{breakLog.memo}</span>
                                 </p>
                               </div>
@@ -156,5 +228,43 @@ export default function Component() {
         </ScrollArea>
       </CardContent>
     </Card>
-  );
+
+    {selectedRecord && (
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-md mx-auto p-4">
+          <DialogHeader>
+            <DialogTitle>勤務メモを編集</DialogTitle>
+          </DialogHeader>
+          <Textarea
+            value={newMemo}
+            onChange={(e) => setNewMemo(e.target.value)}
+            placeholder="勤務メモを入力してください"
+            className="w-full mt-4 mb-2 border-gray-300 rounded-md"
+          />
+          <Button className="w-full mt-2 bg-blue-500 text-white" onClick={handleMemoSave}>
+            保存する
+          </Button>
+        </DialogContent>
+      </Dialog>
+    )}
+
+    {selectedBreakLog && (
+      <Dialog open={isBreakDialogOpen} onOpenChange={setIsBreakDialogOpen}>
+        <DialogContent className="max-w-md mx-auto p-4">
+          <DialogHeader>
+            <DialogTitle>休憩メモを編集</DialogTitle>
+          </DialogHeader>
+          <Textarea
+            value={newMemo}
+            onChange={(e) => setNewMemo(e.target.value)}
+            placeholder="休憩メモを入力してください"
+            className="w-full mt-4 mb-2 border-gray-300 rounded-md"
+          />
+          <Button className="w-full mt-2 bg-blue-500 text-white" onClick={handleBreakMemoSave}>
+            保存する
+          </Button>
+        </DialogContent>
+      </Dialog>
+    )}
+   </>);
 }
