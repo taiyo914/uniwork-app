@@ -9,6 +9,11 @@ import { ja, enUS, it, ru } from "date-fns/locale";
 
 export default function Component() {
   const { records } = useAttendanceStore()
+  const sortedRecords = [...records].sort((a, b) => {
+    const dateA = a.work_start ? new Date(a.work_start).getTime() : 0;
+    const dateB = b.work_start ? new Date(b.work_start).getTime() : 0;
+    return dateB - dateA; 
+  });
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '';
@@ -71,7 +76,7 @@ export default function Component() {
       <CardContent>
         <ScrollArea className="min-h-[500px] h-[calc(100vh-700px)] w-full rounded-md pt-5  px-2">
           <div className="space-y-4 py-3">
-            {records.map((record) => (
+            {sortedRecords.map((record) => (
               <Card key={record.id} className="w-full">
                 <CardHeader className="flex-row items-center justify-between border-b bg-slate-50/50 py-3 pl-[1.15rem] pr-4">
                   <div className="flex items-baseline gap-2">
