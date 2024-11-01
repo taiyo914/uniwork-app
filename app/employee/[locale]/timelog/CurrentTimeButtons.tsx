@@ -5,12 +5,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LogIn, LogOut, PlayCircle, StopCircle, Clock, Coffee } from "lucide-react";
+import { supabase } from "@/utils/supabase/client";
+import { BreakLog } from "@/stores/useAttendanceStore";
+
 
 const CurrentTimeButtons = () => {
   const { workStatus, setWorkStatus, setRecords, addRecord, records } = useAttendanceStore();
 
   const [workTime, setWorkTime] = useState(0);
   const [breakTime, setBreakTime] = useState(0);
+  const [totalBreakTime, setTotalBreakTime] = useState(0);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -24,69 +28,154 @@ const CurrentTimeButtons = () => {
     };
   }, [workStatus]);
 
-  const handleTimeRecord = (action: string) => {
-    const now = new Date();
-    const formattedTime = now.toISOString();
+  useEffect(() => {
+    if (records.length > 0) {
+      const currentRecord = records[0];
+      if (workStatus === "working" && currentRecord.work_start) {
+        const start = new Date(currentRecord.work_start).getTime();
+        const elapsedWorkTime = Math.floor((Date.now() - start) / 1000);
+        setWorkTime(elapsedWorkTime - totalBreakTime);
+      }
+      if (workStatus === "onBreak" && currentRecord.break_logs.length > 0) {
+        const lastBreak = currentRecord.break_logs[currentRecord.break_logs.length - 1];
+        if (lastBreak.break_start) {
+          const breakStart = new Date(lastBreak.break_start).getTime();
+          setBreakTime(Math.floor((Date.now() - breakStart) / 1000));
+        }
+      }
+    }
+  }, [records, workStatus]);
+
+  const updateWorkStatus = async (userId: string, status: "working" | "notStarted" | "onBreak") => {
+    const { error } = await supabase
+      .from("profiles")
+      .update({ work_status: status })
+      .eq("user_id", userId);
+  
+    if (error) {
+      console.error(`Failed to update work_status to ${status} (CurrentButton/updateWorkStatus):`, error.message);
+      return false;  
+    }
+
+    return true; 
+  };
+
+  const handleTimeRecord = async (action: string) => {
+    const now = new Date().toISOString();
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+      console.error("Failed to get user (CurrentTimeButtons/handleTimeRecord)");
+      return;
+    }
 
     const currentRecord = records[0];
-  
-    if (action === "勤務開始") {
-      const newRecord = {
-        id: records.length + 1, // 仮のID
-        user_id: 1, // 仮のユーザーID
-        work_start: formattedTime,
-        work_end: "",
-        manual_entry: false,
-        memo: "",
-        approved: false,
-        created_at: formattedTime,
-        updated_at: formattedTime,
-        break_logs: [],
-      };
-      addRecord(newRecord); // 新しいレコードをリストの先頭に追加
+
+    if (action === "startWork") {
+      const { data: newRecord, error } = await supabase
+        .from("attendance_logs")
+        .insert(
+          {
+            user_id: user.id,
+            work_start: now,
+          },
+        )
+        .select('*, break_logs(*)')
+        .single()
+
+      if (error) {
+        console.error("Failed to insert new record (CurrentTimeButtons/handleTimeRecord/startWork):", error.message);
+        return;
+      }
+
+      addRecord(newRecord); 
       setWorkStatus("working");
-    } else if (action === "勤務終了" && currentRecord) {
-      const updatedRecord = {
-        ...currentRecord,
-        work_end: formattedTime,
-        updated_at: formattedTime,
-      };
+      setWorkTime(0); 
+      setTotalBreakTime(0); 
+
+      if (!(await updateWorkStatus(user.id, "working"))) return;
+
+    } else if (action === "endWork" && currentRecord) {
+
+      const { data: updatedRecord, error } = await supabase
+        .from("attendance_logs")
+        .update({ work_end: now })
+        .eq("id", currentRecord.id)
+        .select('*, break_logs(*)')
+        .single();
+
+      if (error) {
+        console.error("Failed to update record (CurrentTimeButtons/handleTimeRecord/endWork):", error.message);
+        return;
+      }
+
       const updatedRecords = [updatedRecord, ...records.slice(1)];
       setRecords(updatedRecords);
       setWorkStatus("notStarted");
-    } else if (action === "休憩開始" && currentRecord) {
-      const newBreakLog = {
-        id: currentRecord.break_logs.length + 1, // 仮のID
-        break_start: formattedTime,
-        break_end: "",
-        manual_entry: false,
-        memo: "",
-        created_at: formattedTime,
-        updated_at: formattedTime,
-      };
+      setWorkTime(0); 
+      setBreakTime(0);
+      setTotalBreakTime(0);
+
+      if (!(await updateWorkStatus(user.id, "notStarted"))) return;
+
+    } else if (action === "startBreak" && currentRecord) {
+
+      const { data: newBreak, error } = await supabase
+        .from("break_logs")
+        .insert([
+          {
+            attendance_log_id: currentRecord.id,
+            break_start: now,
+          },
+        ])
+        .select()
+        .single();
+
+        if (error) {
+          console.error("Failed to insert record (CurrentTimeButtons/handleTimeRecord/startBreak):", error.message);
+          return;
+        }
+
       const updatedRecord = {
         ...currentRecord,
-        break_logs: [...currentRecord.break_logs, newBreakLog],
-        updated_at: formattedTime,
+        break_logs: [...(currentRecord.break_logs || []), newBreak],
       };
       const updatedRecords = [updatedRecord, ...records.slice(1)];
       setRecords(updatedRecords); // records全体を更新
       setWorkStatus("onBreak");
-    } else if (action === "休憩終了" && currentRecord) {
-      const updatedBreakLogs = [...currentRecord.break_logs];
-      const lastBreak = updatedBreakLogs[updatedBreakLogs.length - 1];
-      if (lastBreak && !lastBreak.break_end) {
-        lastBreak.break_end = formattedTime;
-        lastBreak.updated_at = formattedTime; // 休憩終了時の updated_at を設定
+      setBreakTime(0);
+
+      if (!(await updateWorkStatus(user.id, "onBreak"))) return;
+      
+    } else if (action === "endBreak" && currentRecord) {
+      const lastBreak = currentRecord.break_logs[currentRecord.break_logs.length - 1];
+      if (!lastBreak || lastBreak.break_end) return;
+
+      const { data: updatedBreak, error } = await supabase
+        .from("break_logs")
+        .update({ break_end: now })
+        .eq("id", lastBreak.id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Failed to update record (CurrentTimeButtons/handleTimeRecord/endBreak):", error.message);
+        return;
       }
-      const updatedRecord = {
-        ...currentRecord,
-        break_logs: updatedBreakLogs,
-        updated_at: formattedTime,
-      };
-      const updatedRecords = [updatedRecord, ...records.slice(1)];
-      setRecords(updatedRecords);
+
+      const updatedBreakLogs = currentRecord.break_logs.map((b) =>
+        b.id === (updatedBreak as BreakLog)?.id ? updatedBreak : b
+      );
+
+      const breakDuration = breakTime; 
+      setTotalBreakTime((prev) => prev + breakDuration);
+      setBreakTime(0);
+
+      const updatedRecord = { ...currentRecord, break_logs: updatedBreakLogs };
+      setRecords([updatedRecord, ...records.slice(1)]);
       setWorkStatus("working");
+
+      if (!(await updateWorkStatus(user.id, "working"))) return;
     }
   };
   
@@ -144,7 +233,7 @@ const CurrentTimeButtons = () => {
           </div>
 
           <Button
-            onClick={() => handleTimeRecord(workStatus === "notStarted" ? "勤務開始" : "勤務終了")}
+            onClick={() => handleTimeRecord(workStatus === "notStarted" ? "startWork" : "endWork")}
             className={getMainButtonStyle()}
             disabled={workStatus === "onBreak"}
           >
@@ -163,7 +252,7 @@ const CurrentTimeButtons = () => {
                 {formatTime(breakTime)}
               </p>
               <Button
-                onClick={() => handleTimeRecord(workStatus === "onBreak" ? "休憩終了" : "休憩開始")}
+                onClick={() => handleTimeRecord(workStatus === "onBreak" ? "endBreak" : "startBreak")}
                 className={`w-1/3 h-12 text-base font-semibold mx-auto shadow
                   ${workStatus === "onBreak" 
                     ? "bg-orange-200 text-orange-800 border border-orange-300 hover:bg-orange-300" 
