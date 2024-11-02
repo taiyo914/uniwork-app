@@ -4,12 +4,14 @@ import useAttendanceStore from "@/stores/useAttendanceStore";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { LogIn, LogOut, PlayCircle, StopCircle, Clock, Coffee } from "lucide-react";
+import { LogIn, LogOut, PlayCircle, StopCircle } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
-import { BreakLog } from "@/stores/useAttendanceStore";
+import { useTranslation } from 'react-i18next';
 
 
 const CurrentTimeButtons = () => {
+  const { t:translate } = useTranslation();
+  const t = (key: string) => translate(`timelog.currentTimeButtons.${key}`);
   const { workStatus, setWorkStatus, setRecords, addRecord, records , totalBreakTime, setTotalBreakTime} = useAttendanceStore();
 
   const [workTime, setWorkTime] = useState(0);
@@ -181,7 +183,7 @@ const CurrentTimeButtons = () => {
         return acc;
       }, 0);
 
-      setTotalBreakTime(calculatedTotalBreakTime); //あんまりよくない書き方
+      setTotalBreakTime(calculatedTotalBreakTime); 
       setBreakTime(0);
 
       const updatedRecord = { ...currentRecord, break_logs: updatedBreakLogs };
@@ -214,9 +216,9 @@ const CurrentTimeButtons = () => {
   }
 
   const getBadgeLabel = () =>{
-    if (workStatus === "working") return "勤務中"
-    if (workStatus === "onBreak") return "休憩中"
-    if (workStatus === "notStarted") return "勤務外"
+    if (workStatus === "working") return t("working") 
+    if (workStatus === "onBreak") return t("onBreak")
+    if (workStatus === "notStarted") return t("notStarted")
   }
 
   const getMainButtonStyle = () => {
@@ -231,7 +233,7 @@ const CurrentTimeButtons = () => {
     <div className="max-w-2xl mx-auto">
       <Card className={`shadow border-0 border-t-4 ${getBorderColor()}`}>
         <CardHeader className="pb-2">
-          <CardTitle className="text-xl font-semibold text-center mt-3 lg:mt-4 text-gray-900">現在の勤務時間</CardTitle>
+          <CardTitle className="text-xl font-semibold text-center mt-3 lg:mt-4 text-gray-900">{t("currentWorkTime")}</CardTitle> 
         </CardHeader>
         <CardContent className="space-y-6 lg:space-y-7  px-5 pb-5 sm:pb-7 sm:px-7">
           <div className="text-center">
@@ -251,14 +253,14 @@ const CurrentTimeButtons = () => {
             disabled={workStatus === "onBreak"}
           >
             {workStatus === "notStarted" ? <LogIn /> : <LogOut />} 
-            {workStatus === "notStarted" ? "勤務開始" : "勤務終了"}
+            {workStatus === "notStarted" ? t("startWork") : t("endWork")}
           </Button>
 
           {(workStatus === "working" || workStatus === "onBreak") && (
             <div className={` border rounded-lg p-4 w-full text-center
               ${workStatus === "onBreak" ? "bg-yellow-50 border-yellow-300" : "bg-gray-50 border-gray-300"}
             `}>
-              <p className="text-lg font-semibold text-gray-700 mb-1">休憩時間</p>
+              <p className="text-lg font-semibold text-gray-700 mb-1">{t("breakTime")}</p>
               <p className={`text-3xl font-bold  font-sans tracking-wide transition-colors mb-3
                 ${workStatus === "onBreak" ? "text-gray-800" : "text-gray-500"}
               `} >
@@ -274,7 +276,7 @@ const CurrentTimeButtons = () => {
                 `}
               >
                 {workStatus === "onBreak" ? <StopCircle className="w-5 h-5 mr-0"/> : <PlayCircle className="w-5 h-5 mr-0"/>} 
-                {workStatus === "onBreak" ? "休憩終了" : "休憩開始"}
+                {workStatus === "onBreak" ? t("endBreak") : t("startBreak")}
               </Button>
             </div>
           )}
