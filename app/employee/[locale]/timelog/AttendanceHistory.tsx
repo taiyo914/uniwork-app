@@ -157,7 +157,7 @@ export default function Component() {
     const { work_start, work_end, break_logs } = record;
   
     if (!work_start) return '0分';
-    if (!work_end) return <span>{'計算中'}</span>;
+    if (!work_end) return "-";
   
     const startDate = parseISO(work_start);
     const endDate = work_end ? parseISO(work_end) : new Date();
