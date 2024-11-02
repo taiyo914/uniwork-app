@@ -31,15 +31,19 @@ type AttendanceStore = {
   addRecord: (record: AttendanceRecord) => void;
   setWorkStatus: (status: "notStarted" | "working" | "onBreak") => void;
   loadInitialData: (userId:string) => void;
+  totalBreakTime: number; // 新しいプロパティとして追加
+  setTotalBreakTime: (time: number) => void; // 追加
 };
 
 const useAttendanceStore = create<AttendanceStore>((set) => ({
   records: [],
   workStatus: "notStarted",
+  totalBreakTime: 0,
   setRecords: (records) => set({ records }),
   addRecord: (record) =>
     set((state) => ({ records: [record, ...state.records] })),
   setWorkStatus: (status) => set({ workStatus: status }),
+  setTotalBreakTime: (time) => set({ totalBreakTime: time }), // 追加
 
   loadInitialData: async (userId: string) => {
     const now = new Date();
@@ -69,9 +73,34 @@ const useAttendanceStore = create<AttendanceStore>((set) => ({
       return;
     }
 
+    const sortedAttendanceLogs = attendanceLogs?.map((record) => {
+      if (record.break_logs) {
+        record.break_logs = record.break_logs.sort((a:any, b:any) => 
+          new Date(a.break_start).getTime() - new Date(b.break_start).getTime()
+        );
+      }
+      return record;
+    });
+
+    let calculatedTotalBreakTime = 0;
+    if (attendanceLogs && attendanceLogs.length > 0) {
+      const latestRecord = attendanceLogs[0];
+      if (latestRecord.break_logs) {
+        calculatedTotalBreakTime = latestRecord.break_logs.reduce((acc:number, log:BreakLog) => {
+          if (log.break_start ) {
+            const breakStart = new Date(log.break_start).getTime();
+            const breakEnd = log.break_end ? new Date(log.break_end).getTime() : Date.now();
+            return acc + Math.floor((breakEnd - breakStart) / 1000); // 秒単位で加算
+          }
+          return acc;
+        }, 0);
+      }
+    }
+
     set({
-      records: attendanceLogs || [],
+      records: sortedAttendanceLogs || [],
       workStatus: profileData?.work_status || 'notStarted',
+      totalBreakTime: calculatedTotalBreakTime,
     });
   },
 }));
