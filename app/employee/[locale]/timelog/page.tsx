@@ -14,27 +14,29 @@ export default function Timelog() {
   useEffect(() => {
     const loadUserData = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (user) await loadInitialData(user.id); //await効果あります
-      setLoading(false)
+      if (user) {
+        await loadInitialData(user.id)
+        setLoading(false)
+      }
     };
     loadUserData();
-  }, [setLoading, loadInitialData]);
+  }, [loadInitialData]);
 
   return (
-    <div className="min-h-screen pb-1 xl:px-3">
-      <div className="mx-auto w-full max-w-[1400px]">
-        <h1 className="text-4xl font-bold mb-8 mt-4 text-center text-blue-700">
+    <div className="min-h-screen pb-1 lg:px-3">
+      <div className="max-w-[1700px]">
+        <h1 className="text-4xl font-bold mb-8 mt-4 text-blue-700 text-center lg:text-left">
           勤務登録画面
         </h1>
-        <div className="space-y-5">
+        <div className="space-y-5 mx-auto w-full">
           {loading
             ? (
               <div className="flex justify-center">
                 <Loader2 className="animate-spin text-blue-200" size={50}/>
               </div>
             ) : (
-                <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-7 gap-y-5">
-                  <div className="space-y-5 xl:space-y-7">
+                <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-7 gap-y-5">
+                  <div className="space-y-5 lg:space-y-7">
                     <CurrentTimeButtons />
                     {workStatus === "notStarted" && <ScheduledTimeDialog />}
                   </div>
