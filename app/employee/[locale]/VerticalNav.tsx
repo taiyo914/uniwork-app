@@ -1,13 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  Home,
-  Clock,
-  MessageCircle,
-  Users,
-  User,
-  LogOut,
-} from "lucide-react";
+import { Home, Clock, MessageCircle, Users, User, LogOut, Earth} from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useLogout } from "@/hooks/useLogout";
@@ -36,12 +29,26 @@ export default function VerticalNav() {
   return (
     <nav
       className={`px-2 fixed top-0 left-0 h-full border-r-[2px] bg-gray-50 transition-all duration-200 ease-in-out z-20 flex flex-col justify-between ${
-        isExpanded ? "w-64" : "w-16"
+         isExpanded ? "w-64" : "w-16"
       }`}
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
     >
       <ul className="py-2 space-y-1">
+        <li className="relative">
+          <div
+            className={`flex items-center p-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600`}
+          >
+            <div className="mr-3 -ml-0.5">
+              <Earth className="h-7 w-7 text-blue-600" />
+            </div>
+            <div
+              className={`whitespace-nowrap overflow-hidden text-2xl font-semibold `}
+            >
+              Uniwork
+            </div>
+          </div>
+        </li>
         {navItems.map((item, index) => (
           <li key={index} className="relative">
             <Link
