@@ -23,3 +23,5 @@ export const languageCodes = [
   "zh", // 中国語 (Chinese)
 ];
 
+//横並び
+[ "ar", "de", "en", "es", "fa", "fr", "hi", "id", "it", "ja", "ko", "ms", "my", "ne", "pt", "ru", "sw", "th", "tr", "uk", "vi", "zh",];
