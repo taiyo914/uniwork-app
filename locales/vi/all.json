@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "Trang chủ",
-    "timelog": "Nhật ký thời gian",
+    "timelog": "Nhật ký công việc",
     "chat": "Trò chuyện",
     "members": "Thành viên",
     "profile": "Hồ sơ",
     "logout": "Đăng xuất"
+  },
+  "timelog": {
+    "headerTitle": "Đăng ký công việc",
+    "attendanceHistory": {
+      "workHistory": "Lịch sử chấm công",
+      "approved": "Đã duyệt",
+      "notApproved": "Chưa duyệt",
+      "working": "Đang làm việc",
+      "workTime": "Thời gian làm việc",
+      "actualWorkTime": "Thời gian làm việc thực tế",
+      "memo": "Ghi chú",
+      "editWorkMemo": "Chỉnh sửa ghi chú công việc",
+      "editBreakMemo": "Chỉnh sửa ghi chú nghỉ",
+      "save": "Lưu",
+      "breakHistory": "Lịch sử nghỉ",
+      "enterWorkMemo": "Vui lòng nhập ghi chú công việc",
+      "enterBreakMemo": "Vui lòng nhập ghi chú nghỉ",
+      "startTime": "Giờ bắt đầu",
+      "endTime": "Giờ kết thúc",
+      "current": "Giờ hiện tại",
+      "hourAndMinute": "{{hour}} giờ {{minute}} phút",
+      "minuteOnly": "{{minute}} phút"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Thời gian làm việc hiện tại",
+      "working": "Đang làm việc",
+      "onBreak": "Đang nghỉ",
+      "notStarted": "Ngoài giờ làm việc",
+      "startWork": "Bắt đầu làm việc",
+      "endWork": "Kết thúc công việc",
+      "breakTime": "Thời gian nghỉ",
+      "startBreak": "Bắt đầu nghỉ",
+      "endBreak": "Kết thúc nghỉ"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Ghi lại thời gian làm việc trước",
+      "recordWorkTime": "Ghi lại thời gian làm việc",
+      "workStart": "Giờ bắt đầu làm việc",
+      "workEnd": "Giờ kết thúc công việc",
+      "workMemo": "Ghi chú công việc",
+      "enterWorkMemo": "Nhập ghi chú về công việc của bạn",
+      "breakTime": "Thời gian nghỉ",
+      "noBreakRegistered": "Chưa đăng ký thời gian nghỉ",
+      "breakStart": "Bắt đầu nghỉ {{index}}",
+      "breakEnd": "Kết thúc nghỉ {{index}}",
+      "breakMemo": "Ghi chú nghỉ {{index}}",
+      "enterBreakMemo": "Nhập ghi chú cho nghỉ {{index}}",
+      "addBreak": "Thêm nghỉ",
+      "saveRecord": "Lưu ghi chép",
+      "validation": {
+        "enterWorkStart": "Vui lòng nhập ngày và giờ bắt đầu.",
+        "enterWorkEnd": "Vui lòng nhập ngày và giờ kết thúc.",
+        "endAfterStart": "Giờ kết thúc phải sau giờ bắt đầu.",
+        "enterBreakStart": "Vui lòng nhập ngày và giờ bắt đầu cho nghỉ {{index}}.",
+        "enterBreakEnd": "Vui lòng nhập ngày và giờ kết thúc cho nghỉ {{index}}.",
+        "breakEndAfterStart": "Giờ kết thúc của nghỉ {{index}} phải sau giờ bắt đầu.",
+        "breakWithinWork": "Nghỉ {{index}} phải nằm trong giờ làm việc.",
+        "endNotFuture": "Giờ kết thúc không thể ở tương lai.",
+        "overlappingBreaks": "Nghỉ {{index1}} và nghỉ {{index2}} bị trùng giờ."
+      }
+    }
   }
 }

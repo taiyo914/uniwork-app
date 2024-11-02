@@ -1,10 +1,71 @@
 {
   "nav": {
-    "home": "หน้าหลัก",
-    "timelog": "บันทึกเวลา",
+    "home": "หน้าแรก",
+    "timelog": "บันทึกการทำงาน",
     "chat": "แชท",
     "members": "สมาชิก",
     "profile": "โปรไฟล์",
     "logout": "ออกจากระบบ"
+  },
+  "timelog": {
+    "headerTitle": "การลงทะเบียนงาน",
+    "attendanceHistory": {
+      "workHistory": "ประวัติการเข้าร่วม",
+      "approved": "อนุมัติ",
+      "notApproved": "ไม่ได้รับอนุมัติ",
+      "working": "ทำงานอยู่",
+      "workTime": "เวลาทำงาน",
+      "actualWorkTime": "เวลาทำงานจริง",
+      "memo": "บันทึก",
+      "editWorkMemo": "แก้ไขบันทึกการทำงาน",
+      "editBreakMemo": "แก้ไขบันทึกการพัก",
+      "save": "บันทึก",
+      "breakHistory": "ประวัติการพัก",
+      "enterWorkMemo": "กรุณาใส่บันทึกการทำงาน",
+      "enterBreakMemo": "กรุณาใส่บันทึกการพัก",
+      "startTime": "เวลาเริ่มต้น",
+      "endTime": "เวลาสิ้นสุด",
+      "current": "เวลาปัจจุบัน",
+      "hourAndMinute": "{{hour}}ชั่วโมง {{minute}}นาที",
+      "minuteOnly": "{{minute}}นาที"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "เวลาทำงานปัจจุบัน",
+      "working": "ทำงานอยู่",
+      "onBreak": "พักอยู่",
+      "notStarted": "นอกหน้าที่",
+      "startWork": "เริ่มงาน",
+      "endWork": "สิ้นสุดงาน",
+      "breakTime": "เวลาพัก",
+      "startBreak": "เริ่มพัก",
+      "endBreak": "สิ้นสุดพัก"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "บันทึกเวลาทำงานที่ผ่านไป",
+      "recordWorkTime": "บันทึกเวลาทำงาน",
+      "workStart": "เวลาเริ่มทำงาน",
+      "workEnd": "เวลาสิ้นสุดการทำงาน",
+      "workMemo": "บันทึกการทำงาน",
+      "enterWorkMemo": "ใส่บันทึกเกี่ยวกับงานของคุณ",
+      "breakTime": "เวลาพัก",
+      "noBreakRegistered": "ไม่มีเวลาพักที่ลงทะเบียน",
+      "breakStart": "เริ่มพัก {{index}}",
+      "breakEnd": "สิ้นสุดพัก {{index}}",
+      "breakMemo": "บันทึกพัก {{index}}",
+      "enterBreakMemo": "ใส่บันทึกสำหรับพัก {{index}}",
+      "addBreak": "เพิ่มการพัก",
+      "saveRecord": "บันทึกข้อมูล",
+      "validation": {
+        "enterWorkStart": "กรุณาใส่วันที่และเวลาเริ่มต้น",
+        "enterWorkEnd": "กรุณาใส่วันที่และเวลาสิ้นสุด",
+        "endAfterStart": "เวลาสิ้นสุดต้องอยู่หลังเวลาเริ่มต้น",
+        "enterBreakStart": "กรุณาใส่วันที่และเวลาเริ่มต้นสำหรับพัก {{index}}",
+        "enterBreakEnd": "กรุณาใส่วันที่และเวลาสิ้นสุดสำหรับพัก {{index}}",
+        "breakEndAfterStart": "เวลาสิ้นสุดของพัก {{index}} ต้องอยู่หลังเวลาเริ่มต้น",
+        "breakWithinWork": "พัก {{index}} ต้องอยู่ภายในเวลาทำงาน",
+        "endNotFuture": "เวลาสิ้นสุดไม่สามารถอยู่ในอนาคต",
+        "overlappingBreaks": "พัก {{index1}} และพัก {{index2}} มีช่วงเวลาทับซ้อนกัน"
+      }
+    }
   }
 }

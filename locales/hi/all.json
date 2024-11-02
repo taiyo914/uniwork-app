@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "होम",
-    "timelog": "समय लॉग",
+    "timelog": "कार्य दर्ज करें",
     "chat": "चैट",
     "members": "सदस्य",
-    "profile": "प्रोफ़ाइल",
-    "logout": "लॉगआउट"
+    "profile": "प्रोफाइल",
+    "logout": "लॉग आउट"
+  },
+  "timelog": {
+    "headerTitle": "कार्य पंजीकरण",
+    "attendanceHistory": {
+      "workHistory": "उपस्थिति इतिहास",
+      "approved": "स्वीकृत",
+      "notApproved": "अस्वीकृत",
+      "working": "कार्यरत",
+      "workTime": "कार्य समय",
+      "actualWorkTime": "वास्तविक कार्य समय",
+      "memo": "मेमो",
+      "editWorkMemo": "कार्य मेमो संपादित करें",
+      "editBreakMemo": "ब्रेक मेमो संपादित करें",
+      "save": "सहेजें",
+      "breakHistory": "ब्रेक इतिहास",
+      "enterWorkMemo": "कृपया कार्य मेमो दर्ज करें",
+      "enterBreakMemo": "कृपया ब्रेक मेमो दर्ज करें",
+      "startTime": "प्रारंभ समय",
+      "endTime": "समाप्ति समय",
+      "current": "वर्तमान समय",
+      "hourAndMinute": "{{hour}}घं {{minute}}मि",
+      "minuteOnly": "{{minute}}मि"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "वर्तमान कार्य समय",
+      "working": "कार्यरत",
+      "onBreak": "ब्रेक पर",
+      "notStarted": "ड्यूटी पर नहीं",
+      "startWork": "कार्य प्रारंभ करें",
+      "endWork": "कार्य समाप्त करें",
+      "breakTime": "ब्रेक समय",
+      "startBreak": "ब्रेक प्रारंभ करें",
+      "endBreak": "ब्रेक समाप्त करें"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "पिछला कार्य समय दर्ज करें",
+      "recordWorkTime": "कार्य समय दर्ज करें",
+      "workStart": "कार्य प्रारंभ समय",
+      "workEnd": "कार्य समाप्ति समय",
+      "workMemo": "कार्य मेमो",
+      "enterWorkMemo": "अपने कार्य के बारे में मेमो दर्ज करें",
+      "breakTime": "ब्रेक समय",
+      "noBreakRegistered": "कोई ब्रेक समय पंजीकृत नहीं है",
+      "breakStart": "ब्रेक {{index}} प्रारंभ समय",
+      "breakEnd": "ब्रेक {{index}} समाप्ति समय",
+      "breakMemo": "ब्रेक {{index}} मेमो",
+      "enterBreakMemo": "ब्रेक {{index}} के लिए मेमो दर्ज करें",
+      "addBreak": "ब्रेक जोड़ें",
+      "saveRecord": "रिकॉर्ड सहेजें",
+      "validation": {
+        "enterWorkStart": "कृपया प्रारंभ तिथि और समय दर्ज करें।",
+        "enterWorkEnd": "कृपया समाप्ति तिथि और समय दर्ज करें।",
+        "endAfterStart": "कार्य समाप्ति समय प्रारंभ समय के बाद होना चाहिए।",
+        "enterBreakStart": "कृपया ब्रेक {{index}} का प्रारंभ तिथि और समय दर्ज करें।",
+        "enterBreakEnd": "कृपया ब्रेक {{index}} का समाप्ति तिथि और समय दर्ज करें।",
+        "breakEndAfterStart": "ब्रेक {{index}} का समाप्ति समय प्रारंभ समय के बाद होना चाहिए।",
+        "breakWithinWork": "ब्रेक {{index}} कार्य समय के भीतर होना चाहिए।",
+        "endNotFuture": "कार्य समाप्ति समय भविष्य में नहीं हो सकता।",
+        "overlappingBreaks": "ब्रेक {{index1}} और {{index2}} के समय ओवरलैप हो रहे हैं।"
+      }
+    }
   }
 }

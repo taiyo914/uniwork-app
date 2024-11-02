@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "Home",
-    "timelog": "Registro Orario",
+    "timelog": "Registrare Lavoro",
     "chat": "Chat",
     "members": "Membri",
     "profile": "Profilo",
-    "logout": "Esci"
+    "logout": "Logout"
+  },
+  "timelog": {
+    "headerTitle": "Registrazione del Lavoro",
+    "attendanceHistory": {
+      "workHistory": "Cronologia delle Presenze",
+      "approved": "Approvato",
+      "notApproved": "Non Approvato",
+      "working": "In Lavoro",
+      "workTime": "Orario di Lavoro",
+      "actualWorkTime": "Orario di Lavoro Effettivo",
+      "memo": "Promemoria",
+      "editWorkMemo": "Modifica Promemoria Lavoro",
+      "editBreakMemo": "Modifica Promemoria Pausa",
+      "save": "Salva",
+      "breakHistory": "Cronologia delle Pause",
+      "enterWorkMemo": "Si prega di inserire un promemoria di lavoro",
+      "enterBreakMemo": "Si prega di inserire un promemoria di pausa",
+      "startTime": "Ora di Inizio",
+      "endTime": "Ora di Fine",
+      "current": "Ora Attuale",
+      "hourAndMinute": "{{hour}}h {{minute}}m",
+      "minuteOnly": "{{minute}}m"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Orario di Lavoro Attuale",
+      "working": "In Lavoro",
+      "onBreak": "In Pausa",
+      "notStarted": "Fuori Servizio",
+      "startWork": "Inizia Lavoro",
+      "endWork": "Termina Lavoro",
+      "breakTime": "Orario di Pausa",
+      "startBreak": "Inizia Pausa",
+      "endBreak": "Termina Pausa"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Registra Orario di Lavoro Passato",
+      "recordWorkTime": "Registra Orario di Lavoro",
+      "workStart": "Ora di Inizio Lavoro",
+      "workEnd": "Ora di Fine Lavoro",
+      "workMemo": "Promemoria Lavoro",
+      "enterWorkMemo": "Inserisci un promemoria sul tuo lavoro",
+      "breakTime": "Orario di Pausa",
+      "noBreakRegistered": "Nessuna pausa registrata",
+      "breakStart": "Inizio Pausa {{index}}",
+      "breakEnd": "Fine Pausa {{index}}",
+      "breakMemo": "Promemoria Pausa {{index}}",
+      "enterBreakMemo": "Inserisci un promemoria per la pausa {{index}}",
+      "addBreak": "Aggiungi Pausa",
+      "saveRecord": "Salva Registro",
+      "validation": {
+        "enterWorkStart": "Si prega di inserire data e ora di inizio.",
+        "enterWorkEnd": "Si prega di inserire data e ora di fine.",
+        "endAfterStart": "L'ora di fine deve essere successiva a quella di inizio.",
+        "enterBreakStart": "Si prega di inserire data e ora di inizio della pausa {{index}}.",
+        "enterBreakEnd": "Si prega di inserire data e ora di fine della pausa {{index}}.",
+        "breakEndAfterStart": "L'ora di fine della pausa {{index}} deve essere successiva a quella di inizio.",
+        "breakWithinWork": "La pausa {{index}} deve essere all'interno dell'orario di lavoro.",
+        "endNotFuture": "L'ora di fine non può essere nel futuro.",
+        "overlappingBreaks": "Le pause {{index1}} e {{index2}} si sovrappongono."
+      }
+    }
   }
 }

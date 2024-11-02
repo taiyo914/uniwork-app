@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "Inicio",
-    "timelog": "Registro de tiempo",
+    "timelog": "Registrar Trabajo",
     "chat": "Chat",
     "members": "Miembros",
     "profile": "Perfil",
     "logout": "Cerrar sesión"
+  },
+  "timelog": {
+    "headerTitle": "Registro de Trabajo",
+    "attendanceHistory": {
+      "workHistory": "Historial de Asistencia",
+      "approved": "Aprobado",
+      "notApproved": "No Aprobado",
+      "working": "Trabajando",
+      "workTime": "Tiempo de Trabajo",
+      "actualWorkTime": "Tiempo Real de Trabajo",
+      "memo": "Memo",
+      "editWorkMemo": "Editar Memo de Trabajo",
+      "editBreakMemo": "Editar Memo de Descanso",
+      "save": "Guardar",
+      "breakHistory": "Historial de Descansos",
+      "enterWorkMemo": "Por favor ingrese un memo de trabajo",
+      "enterBreakMemo": "Por favor ingrese un memo de descanso",
+      "startTime": "Hora de Inicio",
+      "endTime": "Hora de Fin",
+      "current": "Hora Actual",
+      "hourAndMinute": "{{hour}}h {{minute}}m",
+      "minuteOnly": "{{minute}}m"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Tiempo de Trabajo Actual",
+      "working": "Trabajando",
+      "onBreak": "En Descanso",
+      "notStarted": "Fuera de Servicio",
+      "startWork": "Iniciar Trabajo",
+      "endWork": "Finalizar Trabajo",
+      "breakTime": "Tiempo de Descanso",
+      "startBreak": "Iniciar Descanso",
+      "endBreak": "Finalizar Descanso"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Registrar Tiempo de Trabajo Pasado",
+      "recordWorkTime": "Registrar Tiempo de Trabajo",
+      "workStart": "Hora de Inicio de Trabajo",
+      "workEnd": "Hora de Fin de Trabajo",
+      "workMemo": "Memo de Trabajo",
+      "enterWorkMemo": "Ingrese un memo sobre su trabajo",
+      "breakTime": "Tiempo de Descanso",
+      "noBreakRegistered": "No hay descansos registrados",
+      "breakStart": "Inicio de Descanso {{index}}",
+      "breakEnd": "Fin de Descanso {{index}}",
+      "breakMemo": "Memo del Descanso {{index}}",
+      "enterBreakMemo": "Ingrese un memo para el descanso {{index}}",
+      "addBreak": "Añadir Descanso",
+      "saveRecord": "Guardar Registro",
+      "validation": {
+        "enterWorkStart": "Por favor ingrese la fecha y hora de inicio.",
+        "enterWorkEnd": "Por favor ingrese la fecha y hora de fin.",
+        "endAfterStart": "La hora de fin debe ser después de la hora de inicio.",
+        "enterBreakStart": "Por favor ingrese la fecha y hora de inicio del descanso {{index}}.",
+        "enterBreakEnd": "Por favor ingrese la fecha y hora de fin del descanso {{index}}.",
+        "breakEndAfterStart": "La hora de fin del descanso {{index}} debe ser después de la hora de inicio.",
+        "breakWithinWork": "El descanso {{index}} debe estar dentro del horario de trabajo.",
+        "endNotFuture": "La hora de fin no puede estar en el futuro.",
+        "overlappingBreaks": "Los descansos {{index1}} y {{index2}} tienen tiempos superpuestos."
+      }
+    }
   }
 }

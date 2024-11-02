@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "首页",
-    "timelog": "时间记录",
+    "timelog": "工作记录",
     "chat": "聊天",
     "members": "成员",
     "profile": "个人资料",
-    "logout": "退出登录"
+    "logout": "登出"
+  },
+  "timelog": {
+    "headerTitle": "工作注册",
+    "attendanceHistory": {
+      "workHistory": "考勤记录",
+      "approved": "已批准",
+      "notApproved": "未批准",
+      "working": "工作中",
+      "workTime": "工作时间",
+      "actualWorkTime": "实际工作时间",
+      "memo": "备注",
+      "editWorkMemo": "编辑工作备注",
+      "editBreakMemo": "编辑休息备注",
+      "save": "保存",
+      "breakHistory": "休息记录",
+      "enterWorkMemo": "请输入工作备注",
+      "enterBreakMemo": "请输入休息备注",
+      "startTime": "开始时间",
+      "endTime": "结束时间",
+      "current": "当前时间",
+      "hourAndMinute": "{{hour}}小时{{minute}}分",
+      "minuteOnly": "{{minute}}分"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "当前工作时间",
+      "working": "工作中",
+      "onBreak": "休息中",
+      "notStarted": "未开始",
+      "startWork": "开始工作",
+      "endWork": "结束工作",
+      "breakTime": "休息时间",
+      "startBreak": "开始休息",
+      "endBreak": "结束休息"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "记录过去的工作时间",
+      "recordWorkTime": "记录工作时间",
+      "workStart": "工作开始时间",
+      "workEnd": "工作结束时间",
+      "workMemo": "工作备注",
+      "enterWorkMemo": "输入您的工作备注",
+      "breakTime": "休息时间",
+      "noBreakRegistered": "没有注册的休息时间",
+      "breakStart": "休息{{index}}开始时间",
+      "breakEnd": "休息{{index}}结束时间",
+      "breakMemo": "休息{{index}}备注",
+      "enterBreakMemo": "为休息{{index}}输入备注",
+      "addBreak": "添加休息",
+      "saveRecord": "保存记录",
+      "validation": {
+        "enterWorkStart": "请输入开始日期和时间。",
+        "enterWorkEnd": "请输入结束日期和时间。",
+        "endAfterStart": "工作结束时间必须在开始时间之后。",
+        "enterBreakStart": "请输入休息{{index}}的开始日期和时间。",
+        "enterBreakEnd": "请输入休息{{index}}的结束日期和时间。",
+        "breakEndAfterStart": "休息{{index}}结束时间必须在开始时间之后。",
+        "breakWithinWork": "休息{{index}}必须在工作时间内。",
+        "endNotFuture": "工作结束时间不能是未来。",
+        "overlappingBreaks": "休息{{index1}}和休息{{index2}}的时间重叠。"
+      }
+    }
   }
 }

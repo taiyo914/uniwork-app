@@ -1,10 +1,71 @@
 {
   "nav": {
-    "home": "होम",
-    "timelog": "समय लग",
+    "home": "गृहपृष्ठ",
+    "timelog": "कार्य रेकर्ड",
     "chat": "च्याट",
     "members": "सदस्यहरू",
     "profile": "प्रोफाइल",
     "logout": "लग आउट"
+  },
+  "timelog": {
+    "headerTitle": "कार्य दर्ता",
+    "attendanceHistory": {
+      "workHistory": "उपस्थितिको इतिहास",
+      "approved": "स्वीकृत",
+      "notApproved": "अस्वीकृत",
+      "working": "काम गरिरहेको",
+      "workTime": "कार्य समय",
+      "actualWorkTime": "वास्तविक कार्य समय",
+      "memo": "नोट",
+      "editWorkMemo": "कार्य नोट सम्पादन गर्नुहोस्",
+      "editBreakMemo": "बिराम नोट सम्पादन गर्नुहोस्",
+      "save": "सुरक्षित गर्नुहोस्",
+      "breakHistory": "बिराम इतिहास",
+      "enterWorkMemo": "कृपया कार्य नोट प्रविष्ट गर्नुहोस्",
+      "enterBreakMemo": "कृपया बिराम नोट प्रविष्ट गर्नुहोस्",
+      "startTime": "सुरुवात समय",
+      "endTime": "समाप्ति समय",
+      "current": "वर्तमान समय",
+      "hourAndMinute": "{{hour}}घण्टा {{minute}}मिनेट",
+      "minuteOnly": "{{minute}}मिनेट"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "वर्तमान कार्य समय",
+      "working": "काम गरिरहेको",
+      "onBreak": "बिराममा",
+      "notStarted": "कार्य बाहिर",
+      "startWork": "कार्य सुरु गर्नुहोस्",
+      "endWork": "कार्य समाप्त गर्नुहोस्",
+      "breakTime": "बिराम समय",
+      "startBreak": "बिराम सुरु गर्नुहोस्",
+      "endBreak": "बिराम समाप्त गर्नुहोस्"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "अघिल्लो कार्य समय दर्ता गर्नुहोस्",
+      "recordWorkTime": "कार्य समय दर्ता गर्नुहोस्",
+      "workStart": "कार्य सुरु समय",
+      "workEnd": "कार्य समाप्ति समय",
+      "workMemo": "कार्य नोट",
+      "enterWorkMemo": "तपाईंको कामको बारेमा नोट प्रविष्ट गर्नुहोस्",
+      "breakTime": "बिराम समय",
+      "noBreakRegistered": "कुनै बिराम समय दर्ता गरिएको छैन",
+      "breakStart": "बिराम सुरु समय {{index}}",
+      "breakEnd": "बिराम समाप्ति समय {{index}}",
+      "breakMemo": "बिराम {{index}} नोट",
+      "enterBreakMemo": "बिराम {{index}} का लागि नोट प्रविष्ट गर्नुहोस्",
+      "addBreak": "बिराम थप्नुहोस्",
+      "saveRecord": "रेकर्ड सुरक्षित गर्नुहोस्",
+      "validation": {
+        "enterWorkStart": "कृपया सुरु मिति र समय प्रविष्ट गर्नुहोस्।",
+        "enterWorkEnd": "कृपया समाप्ति मिति र समय प्रविष्ट गर्नुहोस्।",
+        "endAfterStart": "कार्य समाप्ति समय सुरु समयभन्दा पछि हुनुपर्छ।",
+        "enterBreakStart": "कृपया बिराम {{index}} को सुरु मिति र समय प्रविष्ट गर्नुहोस्।",
+        "enterBreakEnd": "कृपया बिराम {{index}} को समाप्ति मिति र समय प्रविष्ट गर्नुहोस्।",
+        "breakEndAfterStart": "बिराम {{index}} को समाप्ति समय सुरु समय भन्दा पछि हुनुपर्छ।",
+        "breakWithinWork": "बिराम {{index}} कार्य समय भित्र हुनुपर्छ।",
+        "endNotFuture": "कार्य समाप्ति समय भविष्यमा हुन सक्दैन।",
+        "overlappingBreaks": "बिराम {{index1}} र बिराम {{index2}} को समय ओभरल्याप भएको छ।"
+      }
+    }
   }
 }

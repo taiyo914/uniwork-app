@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "Laman Utama",
-    "timelog": "Catatan Masa",
+    "timelog": "Catatan Kerja",
     "chat": "Sembang",
     "members": "Ahli",
     "profile": "Profil",
     "logout": "Log Keluar"
+  },
+  "timelog": {
+    "headerTitle": "Pendaftaran Kerja",
+    "attendanceHistory": {
+      "workHistory": "Sejarah Kehadiran",
+      "approved": "Diluluskan",
+      "notApproved": "Tidak Diluluskan",
+      "working": "Sedang Bekerja",
+      "workTime": "Masa Kerja",
+      "actualWorkTime": "Masa Kerja Sebenar",
+      "memo": "Nota",
+      "editWorkMemo": "Edit Nota Kerja",
+      "editBreakMemo": "Edit Nota Rehat",
+      "save": "Simpan",
+      "breakHistory": "Sejarah Rehat",
+      "enterWorkMemo": "Sila masukkan nota kerja",
+      "enterBreakMemo": "Sila masukkan nota rehat",
+      "startTime": "Masa Mula",
+      "endTime": "Masa Tamat",
+      "current": "Masa Semasa",
+      "hourAndMinute": "{{hour}}j {{minute}}m",
+      "minuteOnly": "{{minute}}m"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Masa Kerja Semasa",
+      "working": "Sedang Bekerja",
+      "onBreak": "Sedang Berehat",
+      "notStarted": "Tidak Bertugas",
+      "startWork": "Mula Kerja",
+      "endWork": "Tamat Kerja",
+      "breakTime": "Masa Rehat",
+      "startBreak": "Mula Rehat",
+      "endBreak": "Tamat Rehat"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Daftar Masa Kerja Lepas",
+      "recordWorkTime": "Daftar Masa Kerja",
+      "workStart": "Masa Mula Kerja",
+      "workEnd": "Masa Tamat Kerja",
+      "workMemo": "Nota Kerja",
+      "enterWorkMemo": "Masukkan nota tentang kerja anda",
+      "breakTime": "Masa Rehat",
+      "noBreakRegistered": "Tiada masa rehat didaftarkan",
+      "breakStart": "Masa Mula Rehat {{index}}",
+      "breakEnd": "Masa Tamat Rehat {{index}}",
+      "breakMemo": "Nota Rehat {{index}}",
+      "enterBreakMemo": "Masukkan nota untuk Rehat {{index}}",
+      "addBreak": "Tambah Rehat",
+      "saveRecord": "Simpan Rekod",
+      "validation": {
+        "enterWorkStart": "Sila masukkan tarikh dan masa mula.",
+        "enterWorkEnd": "Sila masukkan tarikh dan masa tamat.",
+        "endAfterStart": "Masa tamat kerja mesti selepas masa mula.",
+        "enterBreakStart": "Sila masukkan tarikh dan masa mula untuk Rehat {{index}}.",
+        "enterBreakEnd": "Sila masukkan tarikh dan masa tamat untuk Rehat {{index}}.",
+        "breakEndAfterStart": "Masa tamat Rehat {{index}} mesti selepas masa mula.",
+        "breakWithinWork": "Rehat {{index}} mesti berada dalam waktu kerja.",
+        "endNotFuture": "Masa tamat kerja tidak boleh di masa depan.",
+        "overlappingBreaks": "Rehat {{index1}} dan Rehat {{index2}} bertindih."
+      }
+    }
   }
 }

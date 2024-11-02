@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "Startseite",
-    "timelog": "Zeiterfassung",
+    "timelog": "Arbeitszeit erfassen",
     "chat": "Chat",
     "members": "Mitglieder",
     "profile": "Profil",
     "logout": "Abmelden"
+  },
+  "timelog": {
+    "headerTitle": "Arbeitszeiterfassung",
+    "attendanceHistory": {
+      "workHistory": "Anwesenheitsverlauf",
+      "approved": "Genehmigt",
+      "notApproved": "Nicht genehmigt",
+      "working": "Arbeiten",
+      "workTime": "Arbeitszeit",
+      "actualWorkTime": "Tatsächliche Arbeitszeit",
+      "memo": "Memo",
+      "editWorkMemo": "Arbeitsmemo bearbeiten",
+      "editBreakMemo": "Pausenmemo bearbeiten",
+      "save": "Speichern",
+      "breakHistory": "Pausenverlauf",
+      "enterWorkMemo": "Bitte geben Sie ein Arbeitsmemo ein",
+      "enterBreakMemo": "Bitte geben Sie ein Pausenmemo ein",
+      "startTime": "Startzeit",
+      "endTime": "Endzeit",
+      "current": "Aktuelle Zeit",
+      "hourAndMinute": "{{hour}}h {{minute}}m",
+      "minuteOnly": "{{minute}}m"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Aktuelle Arbeitszeit",
+      "working": "Arbeiten",
+      "onBreak": "In Pause",
+      "notStarted": "Nicht im Dienst",
+      "startWork": "Arbeit beginnen",
+      "endWork": "Arbeit beenden",
+      "breakTime": "Pausenzeit",
+      "startBreak": "Pause beginnen",
+      "endBreak": "Pause beenden"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Vergangene Arbeitszeit erfassen",
+      "recordWorkTime": "Arbeitszeit erfassen",
+      "workStart": "Arbeitsbeginn",
+      "workEnd": "Arbeitsende",
+      "workMemo": "Arbeitsmemo",
+      "enterWorkMemo": "Geben Sie ein Memo zu Ihrer Arbeit ein",
+      "breakTime": "Pausenzeit",
+      "noBreakRegistered": "Keine Pausenzeiten registriert",
+      "breakStart": "Pause {{index}} Startzeit",
+      "breakEnd": "Pause {{index}} Endzeit",
+      "breakMemo": "Pause {{index}} Memo",
+      "enterBreakMemo": "Geben Sie ein Memo zur Pause {{index}} ein",
+      "addBreak": "Pause hinzufügen",
+      "saveRecord": "Datensatz speichern",
+      "validation": {
+        "enterWorkStart": "Bitte geben Sie das Startdatum und die Startzeit ein.",
+        "enterWorkEnd": "Bitte geben Sie das Enddatum und die Endzeit ein.",
+        "endAfterStart": "Die Arbeitsendzeit muss nach der Startzeit liegen.",
+        "enterBreakStart": "Bitte geben Sie das Startdatum und die Startzeit der Pause {{index}} ein.",
+        "enterBreakEnd": "Bitte geben Sie das Enddatum und die Endzeit der Pause {{index}} ein.",
+        "breakEndAfterStart": "Das Ende der Pause {{index}} muss nach dem Start liegen.",
+        "breakWithinWork": "Die Pause {{index}} muss innerhalb der Arbeitszeit liegen.",
+        "endNotFuture": "Die Arbeitsendzeit darf nicht in der Zukunft liegen.",
+        "overlappingBreaks": "Pausenzeiten von {{index1}} und {{index2}} überschneiden sich."
+      }
+    }
   }
 }

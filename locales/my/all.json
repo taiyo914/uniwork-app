@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "မူလစာမျက်နှာ",
-    "timelog": "အချိန်မှတ်တမ်း",
-    "chat": "စကားပြောရန်",
+    "timelog": "အလုပ်မှတ်တမ်း",
+    "chat": "ချက်",
     "members": "အဖွဲ့ဝင်များ",
     "profile": "ကိုယ်ရေးအချက်အလက်",
     "logout": "ထွက်မည်"
+  },
+  "timelog": {
+    "headerTitle": "အလုပ်မှတ်တမ်း",
+    "attendanceHistory": {
+      "workHistory": "တက်ရောက်မှု မှတ်တမ်း",
+      "approved": "အတည်ပြုပြီး",
+      "notApproved": "အတည်မပြုရသေးပါ",
+      "working": "အလုပ်လုပ်နေဆဲ",
+      "workTime": "အလုပ်ချိန်",
+      "actualWorkTime": "အမှန်တကယ် အလုပ်ချိန်",
+      "memo": "မှတ်စု",
+      "editWorkMemo": "အလုပ်မှတ်စု ပြင်ဆင်ပါ",
+      "editBreakMemo": "နားချိန်မှတ်စု ပြင်ဆင်ပါ",
+      "save": "သိမ်းဆည်းပါ",
+      "breakHistory": "နားချိန် မှတ်တမ်း",
+      "enterWorkMemo": "အလုပ်မှတ်စု ထည့်ပါ",
+      "enterBreakMemo": "နားချိန်မှတ်စု ထည့်ပါ",
+      "startTime": "စတင်ချိန်",
+      "endTime": "အဆုံးချိန်",
+      "current": "လက်ရှိအချိန်",
+      "hourAndMinute": "{{hour}}နာရီ {{minute}}မိနစ်",
+      "minuteOnly": "{{minute}}မိနစ်"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "လက်ရှိအလုပ်ချိန်",
+      "working": "အလုပ်လုပ်နေဆဲ",
+      "onBreak": "နားနေဆဲ",
+      "notStarted": "အလုပ်မလုပ်",
+      "startWork": "အလုပ်စတင်ပါ",
+      "endWork": "အလုပ်ပြီးဆုံးပါ",
+      "breakTime": "နားချိန်",
+      "startBreak": "နားချိန်စတင်ပါ",
+      "endBreak": "နားချိန်ပြီးဆုံးပါ"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "ပြီးခဲ့သော အလုပ်ချိန်မှတ်တမ်း",
+      "recordWorkTime": "အလုပ်ချိန်မှတ်တမ်း",
+      "workStart": "အလုပ်စတင်ချိန်",
+      "workEnd": "အလုပ်ပြီးဆုံးချိန်",
+      "workMemo": "အလုပ်မှတ်စု",
+      "enterWorkMemo": "သင်၏ အလုပ်ကို စီစဉ်ပါ",
+      "breakTime": "နားချိန်",
+      "noBreakRegistered": "မှတ်ပုံတင်ထားသော နားချိန် မရှိပါ",
+      "breakStart": "နားချိန်စ {{index}}",
+      "breakEnd": "နားချိန်အဆုံး {{index}}",
+      "breakMemo": "နားချိန်မှတ်စု {{index}}",
+      "enterBreakMemo": "နားချိန် {{index}} အတွက် မှတ်စု ထည့်ပါ",
+      "addBreak": "နားချိန် ထည့်ပါ",
+      "saveRecord": "မှတ်တမ်း သိမ်းဆည်းပါ",
+      "validation": {
+        "enterWorkStart": "သင်၏ အလုပ် စတင်ချိန်ကို ထည့်ပါ။",
+        "enterWorkEnd": "သင်၏ အလုပ် အဆုံးချိန်ကို ထည့်ပါ။",
+        "endAfterStart": "အလုပ်အဆုံးချိန်သည် အလုပ်စချိန် ထက် နောက်မှာ ဖြစ်ရမည်။",
+        "enterBreakStart": "နားချိန် {{index}} စတင်ချိန်ကို ထည့်ပါ။",
+        "enterBreakEnd": "နားချိန် {{index}} အဆုံးချိန်ကို ထည့်ပါ။",
+        "breakEndAfterStart": "နားချိန် {{index}} အဆုံးချိန်သည် စချိန်ထက် နောက်မှာ ဖြစ်ရမည်။",
+        "breakWithinWork": "နားချိန် {{index}} သည် အလုပ်အချိန်တွင် ဖြစ်ရမည်။",
+        "endNotFuture": "အလုပ် အဆုံးချိန်သည် အနာဂတ်တွင် မဖြစ်ရ။",
+        "overlappingBreaks": "နားချိန် {{index1}} နှင့် {{index2}} တွင် ပြန်ဆက်ခြင်းရှိပါသည်။"
+      }
+    }
   }
 }

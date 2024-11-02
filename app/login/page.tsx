@@ -2,9 +2,8 @@
 
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { LockIcon, MailIcon, Earth } from 'lucide-react'
+import { LockIcon, MailIcon, Earth, LogIn } from 'lucide-react'
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/Spinner";
 import { createClient } from '@/utils/supabase/client'
@@ -66,7 +65,7 @@ export default function RefinedLogin() {
     </>)}
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md xs:px-4 mb-20 mt-5">
-        <div className='text-5xl font-bold text-center mb-5 '><Earth className='inline mb-2 mr-1' size={40}/>Uniwork</div>
+        <div className='text-5xl font-bold text-center mb-5 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600'><Earth className='inline mb-2 mr-1 text-blue-500' size={40}/>Uniwork</div>
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="px-6 py-8">
             <h2 className="text-3xl font-bold text-center text-gray-900 mb-5">Login</h2>
@@ -110,7 +109,7 @@ export default function RefinedLogin() {
                 type="submit"
                 className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-md font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                Login
+                <LogIn size={18} className='mr-0.5'/>Login
               </Button>
             </form>
           </div>

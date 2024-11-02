@@ -60,6 +60,10 @@ const config: Config = {
         'xs': {'max': '450px'}, 
         'notxs': '450.1px',
       },
+			fontFamily: {
+        sans: ['var(--font-geist-sans)'],
+        mono: ['var(--font-geist-mono)'],
+      },
   	}
   },
   plugins: [require("tailwindcss-animate")],

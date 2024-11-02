@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "Beranda",
-    "timelog": "Catatan Waktu",
+    "timelog": "Catat Pekerjaan",
     "chat": "Obrolan",
     "members": "Anggota",
     "profile": "Profil",
     "logout": "Keluar"
+  },
+  "timelog": {
+    "headerTitle": "Pendaftaran Kerja",
+    "attendanceHistory": {
+      "workHistory": "Riwayat Kehadiran",
+      "approved": "Disetujui",
+      "notApproved": "Tidak Disetujui",
+      "working": "Bekerja",
+      "workTime": "Waktu Kerja",
+      "actualWorkTime": "Waktu Kerja Aktual",
+      "memo": "Catatan",
+      "editWorkMemo": "Edit Catatan Kerja",
+      "editBreakMemo": "Edit Catatan Istirahat",
+      "save": "Simpan",
+      "breakHistory": "Riwayat Istirahat",
+      "enterWorkMemo": "Harap masukkan catatan kerja",
+      "enterBreakMemo": "Harap masukkan catatan istirahat",
+      "startTime": "Waktu Mulai",
+      "endTime": "Waktu Selesai",
+      "current": "Waktu Saat Ini",
+      "hourAndMinute": "{{hour}}j {{minute}}m",
+      "minuteOnly": "{{minute}}m"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Waktu Kerja Saat Ini",
+      "working": "Bekerja",
+      "onBreak": "Istirahat",
+      "notStarted": "Tidak Bertugas",
+      "startWork": "Mulai Bekerja",
+      "endWork": "Akhiri Bekerja",
+      "breakTime": "Waktu Istirahat",
+      "startBreak": "Mulai Istirahat",
+      "endBreak": "Akhiri Istirahat"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Catat Waktu Kerja Lampau",
+      "recordWorkTime": "Catat Waktu Kerja",
+      "workStart": "Waktu Mulai Kerja",
+      "workEnd": "Waktu Selesai Kerja",
+      "workMemo": "Catatan Kerja",
+      "enterWorkMemo": "Masukkan catatan tentang pekerjaan Anda",
+      "breakTime": "Waktu Istirahat",
+      "noBreakRegistered": "Tidak ada waktu istirahat yang terdaftar",
+      "breakStart": "Waktu Mulai Istirahat {{index}}",
+      "breakEnd": "Waktu Selesai Istirahat {{index}}",
+      "breakMemo": "Catatan Istirahat {{index}}",
+      "enterBreakMemo": "Masukkan catatan untuk Istirahat {{index}}",
+      "addBreak": "Tambahkan Istirahat",
+      "saveRecord": "Simpan Catatan",
+      "validation": {
+        "enterWorkStart": "Harap masukkan tanggal dan waktu mulai.",
+        "enterWorkEnd": "Harap masukkan tanggal dan waktu selesai.",
+        "endAfterStart": "Waktu selesai harus setelah waktu mulai.",
+        "enterBreakStart": "Harap masukkan tanggal dan waktu mulai untuk Istirahat {{index}}.",
+        "enterBreakEnd": "Harap masukkan tanggal dan waktu selesai untuk Istirahat {{index}}.",
+        "breakEndAfterStart": "Waktu selesai Istirahat {{index}} harus setelah waktu mulai.",
+        "breakWithinWork": "Istirahat {{index}} harus berada dalam jam kerja.",
+        "endNotFuture": "Waktu selesai kerja tidak boleh di masa depan.",
+        "overlappingBreaks": "Waktu Istirahat {{index1}} dan {{index2}} bertindih."
+      }
+    }
   }
 }
