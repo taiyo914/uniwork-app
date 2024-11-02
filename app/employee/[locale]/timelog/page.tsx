@@ -26,7 +26,7 @@ export default function Timelog() {
 
   return (
     <div className="min-h-screen pb-1 lg:px-3">
-      <div className="max-w-[1700px]">
+      <div className="max-w-[1350px] mx-auto">
         <h1 className="text-4xl font-bold mb-8 mt-4 text-blue-700 text-center lg:text-left">
           {t("timelog.headerTitle")}
         </h1>
@@ -37,16 +37,21 @@ export default function Timelog() {
                 <Loader2 className="animate-spin text-blue-200" size={50}/>
               </div>
             ) : (
-                <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-7 gap-y-5">
-                  <div className="space-y-5 lg:space-y-7">
+              <>
+                <div className="flex flex-col lg:flex-row lg:justify-end items-center lg:items-start space-y-5 lg:space-y-0 lg:space-x-7">
+                  <div className="space-y-5 lg:space-y-7 w-full lg:flex-1 lg:max-w-[550px] max-w-[650px]">
                     <CurrentTimeButtons />
                     {workStatus === "notStarted" && <ScheduledTimeDialog />}
                   </div>
-                  <AttendanceHistory />
+                  <div className="w-full lg:flex-1 lg:max-w-full max-w-[650px]">
+                    <AttendanceHistory />
+                  </div>
                 </div>
+              </>
             )
           }
         </div>
+        
       </div>
     </div>
   )

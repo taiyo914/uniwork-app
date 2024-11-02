@@ -230,7 +230,7 @@ const CurrentTimeButtons = () => {
 
   return (
     <>
-    <div className="max-w-2xl mx-auto">
+    <div className="w-full">
       <Card className={`shadow border-0 border-t-4 ${getBorderColor()}`}>
         <CardHeader className="pb-2">
           <CardTitle className="text-xl font-semibold text-center mt-3 lg:mt-4 text-gray-900">{t("currentWorkTime")}</CardTitle> 

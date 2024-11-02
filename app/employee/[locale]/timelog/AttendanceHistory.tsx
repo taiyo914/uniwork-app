@@ -200,7 +200,7 @@ export default function Component() {
   
 
   return (<>
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans max-w-2xl lg:max-w-5xl mx-auto w-full">
+    <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans w-full">
       <CardHeader className="bg-blue-100 py-5">
         <CardTitle className="text-2xl text-blue-800 flex items-center gap-2 ">{t("workHistory")}<History className="h-6 w-6"/></CardTitle>
       </CardHeader>
