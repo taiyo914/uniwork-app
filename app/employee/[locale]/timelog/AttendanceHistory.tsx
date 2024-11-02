@@ -5,15 +5,22 @@ import { Clock, Timer, StickyNote, PenSquare, History, Coffee } from "lucide-rea
 import { ScrollArea } from "@/components/ui/scroll-area"
 import useAttendanceStore from "@/stores/useAttendanceStore"
 import { format, parseISO, differenceInMinutes, isSameDay, addDays } from "date-fns"
-import { ja, enUS, it, ru } from "date-fns/locale";
+import { ja, enUS as en, ar, de, es, faIR as fa, fr, hi, id, it, ko, ms, pt, ru, th, tr, uk, vi, zhCN as zh } from "date-fns/locale";
 import { useState } from "react"
 import { AttendanceRecord, BreakLog } from "@/stores/useAttendanceStore"
 import { supabase } from "@/utils/supabase/client"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
+import { useParams } from "next/navigation";
+import { useTranslation } from 'react-i18next';
+
+const supportedLocales = { ja, en, ar, de, es, fa, fr, hi, id, it, ko, ms, pt, ru, th, tr, uk, vi, zh};
 
 export default function Component() {
+  const { locale } =  useParams()
+  const { t:translate } = useTranslation();
+  const t = (key: string) => translate(`timelog.attendanceHistory.${key}`);
   const { records, setRecords } = useAttendanceStore()
   const sortedRecords = [...records].sort((a, b) => {
     const dateA = a.work_start ? new Date(a.work_start).getTime() : 0;
@@ -111,7 +118,7 @@ export default function Component() {
       return (
         <>
           {startTime}{startSupplementary} - 
-          <span className="text-[80%] text-muted-foreground/60 ml-[0.2rem] inline-block">{"(現在時刻)"}</span>
+          <span className="text-[80%] text-muted-foreground/60 ml-[0.2rem] inline-block">{`(${t("current")})`}</span>
         </>
       );
     }
@@ -150,13 +157,13 @@ export default function Component() {
     const durationInMinutes = endMinutes - startMinutes;
     const hours = Math.floor(durationInMinutes / 60);
     const minutes = durationInMinutes % 60;
-    return hours ? `${hours}時間${minutes.toString().padStart(1, '0')}分` : `${minutes}分`;
+    return hours ? `${hours}${t("hour")} ${minutes.toString().padStart(1, '0')}${t("minute")}` : `${minutes}${t("minute")}`;
   };
 
   const calculateActualWorkDuration = (record: AttendanceRecord) => {
     const { work_start, work_end, break_logs } = record;
   
-    if (!work_start) return '0分';
+    if (!work_start) return ;
     if (!work_end) return "-";
   
     const startDate = parseISO(work_start);
@@ -180,14 +187,14 @@ export default function Component() {
     const hours = Math.floor(actualWorkMinutes / 60);
     const minutes = actualWorkMinutes % 60;
   
-    return hours ? `${hours}時間${minutes.toString().padStart(1, '0')}分` : `${minutes}分`;
+    return hours ? `${hours}${t("hour")} ${minutes.toString().padStart(1, '0')}${t("minute")}` : `${minutes}${t("minute")}`;
   };
   
 
   return (<>
     <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans max-w-2xl lg:max-w-5xl mx-auto w-full">
       <CardHeader className="bg-blue-100 py-5">
-        <CardTitle className="text-2xl text-blue-800 flex items-center gap-2 ">打刻履歴<History className="h-6 w-6"/></CardTitle>
+        <CardTitle className="text-2xl text-blue-800 flex items-center gap-2 ">{t("workHistory")}<History className="h-6 w-6"/></CardTitle>
       </CardHeader>
       <CardContent className="px-3 md:px-6 py-0 bg-slate-50/30">
         <ScrollArea className="min-h-[500px] h-[calc(100vh-700px)] lg:h-[calc(100vh-250px)] w-full rounded-md  px-2">
@@ -198,7 +205,7 @@ export default function Component() {
                   <div className="flex items-baseline ">
                     <div className="text-2xl font-bold">{formatDate(record.work_start)}</div>
                     <div className="text-muted-foreground mx-2">
-                      {record.work_start ? `(${format(parseISO(record.work_start), 'EEE', { locale: ja })})` : ''}
+                      {record.work_start ? `(${format(parseISO(record.work_start), 'EEE', { locale: supportedLocales[locale as keyof typeof supportedLocales] || en })})` : ''}
                     </div>
                     <div className="text-muted-foreground -ml-0.5">
                       {record.work_start ? format(parseISO(record.work_start), 'yyyy') : ''}
@@ -212,7 +219,7 @@ export default function Component() {
                           : "bg-yellow-100 text-yellow-800 border-yellow-300"
                         : " bg-green-100 text-green-800 border-green-300"
                     }`}>
-                      {record.work_end ? (record.approved ? "承認済み" : "未承認") : "勤務中"}
+                      {record.work_end ? (record.approved ? t("approved") : t("notApproved")) : t("working")}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -222,7 +229,7 @@ export default function Component() {
                   <div className="flex items-center gap-1 mb-3">
                     <Clock className="h-4 w-4 text-muted-foreground "/>
                     <div className="text-muted-foreground ">
-                      勤務時間 : 
+                      {t("workTime")} : 
                     </div>
                     <div className="text-xl font-semibold">
                       {formatTimeWithReferenceDate(record.work_start, record.work_end, record.work_start)}
@@ -233,7 +240,7 @@ export default function Component() {
                   <div className="flex items-center gap-1 mb-3">
                     <Timer className=" h-5 w-5 -mx-[2px] mb-0.5 text-muted-foreground "/>
                     <div className="text-muted-foreground ">
-                      実働時間 : 
+                      {t("actualWorkTime")} : 
                     </div>
                     <div className="text-xl font-semibold ">
                       {calculateActualWorkDuration(record)}
@@ -242,9 +249,9 @@ export default function Component() {
 
                   {/* メモ */}
                   <div className="mb-3">
-                    <StickyNote className="inline h-4 w-4 text-muted-foreground mb-0.5"/>
+                    <StickyNote className="inline h-4 w-4 text-muted-foreground mb-0.5 mr-1"/>
                     <span className="text-muted-foreground ">
-                      メモ : 
+                      {t("memo")} : 
                     </span>
                     <span className="ml-1">
                       {record.memo}
@@ -254,7 +261,7 @@ export default function Component() {
 
                   {record.break_logs && record.break_logs.length > 0 && (
                     <div className="space-y-2 mt-0.5">
-                      <h3 className="text-muted-foreground flex items-center gap-1"><Coffee className="h-4 w-4 "/>休憩履歴 : </h3>
+                      <h3 className="text-muted-foreground flex items-center gap-1"><Coffee className="h-4 w-4 "/>{t("breakHistory")} : </h3>
                       <div className="space-y-3 pl-1">
                         {record.break_logs.map((breakLog) => (
                           <div key={breakLog.id} className="rounded-lg border px-4 py-3">
@@ -270,9 +277,9 @@ export default function Component() {
                               </div>
                               
                               <div className="">
-                                <StickyNote className="inline h-4 w-4 text-muted-foreground mb-0.5"/>
+                                <StickyNote className="inline h-4 w-4 text-muted-foreground mb-0.5 mr-1"/>
                                 <span className="text-muted-foreground ">
-                                  メモ : 
+                                  {t("memo")} : 
                                 </span>
                                 <span className="ml-1">
                                   {breakLog.memo}
@@ -297,16 +304,16 @@ export default function Component() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-md mx-auto p-4">
           <DialogHeader>
-            <DialogTitle>勤務メモを編集</DialogTitle>
+            <DialogTitle>{t("editWorkMemo")}</DialogTitle>
           </DialogHeader>
           <Textarea
             value={newMemo}
             onChange={(e) => setNewMemo(e.target.value)}
-            placeholder="勤務メモを入力してください"
+            placeholder={t("enterWorkMemo")}
             className="w-full mt-4 mb-2 border-gray-300 rounded-md"
           />
           <Button className="w-full mt-2 bg-blue-500 text-white" onClick={handleMemoSave}>
-            保存する
+            {t("save")}
           </Button>
         </DialogContent>
       </Dialog>
@@ -316,16 +323,16 @@ export default function Component() {
       <Dialog open={isBreakDialogOpen} onOpenChange={setIsBreakDialogOpen}>
         <DialogContent className="max-w-md mx-auto p-4">
           <DialogHeader>
-            <DialogTitle>休憩メモを編集</DialogTitle>
+            <DialogTitle>{t("editBreakMemo")}</DialogTitle>
           </DialogHeader>
           <Textarea
             value={newMemo}
             onChange={(e) => setNewMemo(e.target.value)}
-            placeholder="休憩メモを入力してください"
+            placeholder={t("enterBreakMemo")}
             className="w-full mt-4 mb-2 border-gray-300 rounded-md"
           />
           <Button className="w-full mt-2 bg-blue-500 text-white" onClick={handleBreakMemoSave}>
-            保存する
+            {t("save")}
           </Button>
         </DialogContent>
       </Dialog>
