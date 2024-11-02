@@ -36,7 +36,7 @@ export default function VerticalNav() {
   return (
     <nav
       className={`px-2 fixed top-0 left-0 h-full border-r-[2px] bg-gray-50 transition-all duration-200 ease-in-out z-20 flex flex-col justify-between ${
-        isExpanded ? "w-48" : "w-16"
+        isExpanded ? "w-64" : "w-16"
       }`}
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
