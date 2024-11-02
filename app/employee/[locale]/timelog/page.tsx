@@ -5,9 +5,11 @@ import AttendanceHistory from "./AttendanceHistory"
 import useAttendanceStore from "@/stores/useAttendanceStore";
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
-import { Loader, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 export default function Timelog() {
+  const { t } = useTranslation();
   const { loadInitialData, workStatus } = useAttendanceStore();
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +28,7 @@ export default function Timelog() {
     <div className="min-h-screen pb-1 lg:px-3">
       <div className="max-w-[1700px]">
         <h1 className="text-4xl font-bold mb-8 mt-4 text-blue-700 text-center lg:text-left">
-          勤務登録画面
+          {t("timelog.headerTitle")}
         </h1>
         <div className="space-y-5 mx-auto w-full">
           {loading
