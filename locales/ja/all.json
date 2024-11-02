@@ -6,5 +6,66 @@
     "members":"メンバー",
     "profile":"プロフィール",
     "logout": "ログアウト"
+  },
+  "timelog":{
+    "headerTitle": "勤務登録画面",
+    "attendanceHistory":{
+      "workHistory": "打刻履歴",
+      "approved": "承認済み",
+      "notApproved": "未承認",
+      "working": "勤務中",
+      "workTime": "勤務時間",
+      "actualWorkTime": "実働時間",
+      "memo": "メモ",
+      "editWorkMemo": "勤務メモを編集",
+      "editBreakMemo": "休憩メモを編集",
+      "save": "保存する",
+      "breakHistory": "休憩履歴",
+      "enterWorkMemo": "勤務メモを入力してください",
+      "enterBreakMemo": "休憩メモを入力してください",
+      "startTime": "開始時間",
+      "endTime": "終了時間",
+      "current": "現在時刻",
+      "hourAndMinute": "{{hour}}時間{{minute}}分",
+      "minuteOnly": "{{minute}}分"
+    },
+    "currentTimeButtons":{
+      "currentWorkTime": "現在の勤務時間", 
+      "working": "勤務中",
+      "onBreak": "休憩中",
+      "notStarted": "勤務外",
+      "startWork": "勤務開始",
+      "endWork": "勤務終了",
+      "breakTime": "休憩時間",
+      "startBreak": "休憩開始",
+      "endBreak": "休憩終了"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "過去の勤務時間を登録",  
+      "recordWorkTime": "勤務時間を登録",
+      "workStart": "勤務開始時間",
+      "workEnd": "勤務終了時間",
+      "workMemo": "勤務メモ",
+      "enterWorkMemo": "勤務に関するメモを入力してください",
+      "breakTime": "休憩時間",
+      "noBreakRegistered": "休憩時間は登録されていません",
+      "breakStart": "休憩{{index}}開始時間",
+      "breakEnd": "休憩{{index}}終了時間",
+      "breakMemo": "休憩{{index}}メモ",
+      "enterBreakMemo": "休憩{{index}}に関するメモを入力してください",
+      "addBreak": "休憩を追加",
+      "saveRecord": "勤務時間を登録",
+      "validation": {
+        "enterWorkStart": "勤務開始日時を入力してください。",
+        "enterWorkEnd": "勤務終了日時を入力してください。",
+        "endAfterStart": "勤務終了日時は勤務開始日時より後である必要があります。",
+        "enterBreakStart": "休憩{{index}}の開始日時を入力してください。",
+        "enterBreakEnd": "休憩{{index}}の終了日時を入力してください。",
+        "breakEndAfterStart": "休憩{{index}}の終了日時は開始日時より後である必要があります。",
+        "breakWithinWork": "休憩{{index}}は勤務時間内である必要があります。",
+        "endNotFuture": "勤務終了日時は現在日時より後にすることはできません。",
+        "overlappingBreaks": "休憩{{index1}}と休憩{{index2}}の時間が重複しています。"
+      }
+    }
   }
 }

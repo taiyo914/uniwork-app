@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "Home",
-    "timelog": "Time Log",
+    "timelog": "Log Work",
     "chat": "Chat",
     "members": "Members",
     "profile": "Profile",
     "logout": "Logout"
+  },
+  "timelog":{
+    "headerTitle": "Work Registration",
+    "attendanceHistory":{
+      "workHistory": "Attendance History",
+      "approved": "Approved",
+      "notApproved": "Not Approved",
+      "working": "Working",
+      "workTime": "Work Time",
+      "actualWorkTime": "Actual Work Time",
+      "memo": "Memo",
+      "editWorkMemo": "Edit Work Memo",
+      "editBreakMemo": "Edit Work Memo",
+      "save": "Save",
+      "breakHistory": "Break History",
+      "enterWorkMemo": "Please enter a work memo",
+      "enterBreakMemo": "Please enter a break memo",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "current": "Current Time",
+      "hourAndMinute": "{{hour}}h {{minute}}m",
+      "minuteOnly": "{{minute}}m"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Current Work Time",
+      "working": "Working",  
+      "onBreak": "On Break",  
+      "notStarted": "Off Duty",  
+      "startWork": "Start Work",  
+      "endWork": "End Work",  
+      "breakTime": "Break Time",  
+      "startBreak": "Start Break",  
+      "endBreak": "End Break"  
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Register Past Work Time",
+      "recordWorkTime": "Register Work Time",
+      "workStart": "Work Start Time",
+      "workEnd": "Work End Time",
+      "workMemo": "Work Memo",
+      "enterWorkMemo": "Enter a memo about your work",
+      "breakTime": "Break Time",
+      "noBreakRegistered": "No break times registered",
+      "breakStart": "Break {{index}} Start Time",
+      "breakEnd": "Break {{index}} End Time",
+      "breakMemo": "Break {{index}} Memo",
+      "enterBreakMemo": "Enter a memo for Break {{index}}",
+      "addBreak": "Add Break",
+      "saveRecord": "Save Record",
+      "validation": {
+        "enterWorkStart": "Please enter the start date and time.",
+        "enterWorkEnd": "Please enter the end date and time.",
+        "endAfterStart": "Work end time must be after the start time.",
+        "enterBreakStart": "Please enter the start date and time for Break {{index}}.",
+        "enterBreakEnd": "Please enter the end date and time for Break {{index}}.",
+        "breakEndAfterStart": "Break {{index}} end time must be after the start time.",
+        "breakWithinWork": "Break {{index}} must be within work hours.",
+        "endNotFuture": "Work end time cannot be in the future.",
+        "overlappingBreaks": "Break {{index1}} and Break {{index2}} have overlapping times."
+      }
+    }
   }
 }

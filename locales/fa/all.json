@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "خانه",
-    "timelog": "ثبت زمان",
-    "chat": "چت",
+    "timelog": "ثبت کار",
+    "chat": "گفتگو",
     "members": "اعضا",
     "profile": "پروفایل",
     "logout": "خروج"
+  },
+  "timelog": {
+    "headerTitle": "ثبت کار",
+    "attendanceHistory": {
+      "workHistory": "سابقه حضور",
+      "approved": "تایید شده",
+      "notApproved": "تایید نشده",
+      "working": "در حال کار",
+      "workTime": "زمان کار",
+      "actualWorkTime": "زمان واقعی کار",
+      "memo": "یادداشت",
+      "editWorkMemo": "ویرایش یادداشت کار",
+      "editBreakMemo": "ویرایش یادداشت استراحت",
+      "save": "ذخیره",
+      "breakHistory": "سابقه استراحت",
+      "enterWorkMemo": "لطفا یادداشت کار را وارد کنید",
+      "enterBreakMemo": "لطفا یادداشت استراحت را وارد کنید",
+      "startTime": "زمان شروع",
+      "endTime": "زمان پایان",
+      "current": "زمان فعلی",
+      "hourAndMinute": "{{hour}}ساعت {{minute}}دقیقه",
+      "minuteOnly": "{{minute}}دقیقه"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "زمان کار فعلی",
+      "working": "در حال کار",
+      "onBreak": "در حال استراحت",
+      "notStarted": "خارج از کار",
+      "startWork": "شروع کار",
+      "endWork": "پایان کار",
+      "breakTime": "زمان استراحت",
+      "startBreak": "شروع استراحت",
+      "endBreak": "پایان استراحت"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "ثبت زمان کار گذشته",
+      "recordWorkTime": "ثبت زمان کار",
+      "workStart": "زمان شروع کار",
+      "workEnd": "زمان پایان کار",
+      "workMemo": "یادداشت کار",
+      "enterWorkMemo": "یادداشت مربوط به کار خود را وارد کنید",
+      "breakTime": "زمان استراحت",
+      "noBreakRegistered": "هیچ زمان استراحتی ثبت نشده است",
+      "breakStart": "شروع استراحت {{index}}",
+      "breakEnd": "پایان استراحت {{index}}",
+      "breakMemo": "یادداشت استراحت {{index}}",
+      "enterBreakMemo": "یادداشت برای استراحت {{index}} را وارد کنید",
+      "addBreak": "اضافه کردن استراحت",
+      "saveRecord": "ذخیره ثبت",
+      "validation": {
+        "enterWorkStart": "لطفا تاریخ و زمان شروع را وارد کنید.",
+        "enterWorkEnd": "لطفا تاریخ و زمان پایان را وارد کنید.",
+        "endAfterStart": "زمان پایان کار باید بعد از زمان شروع باشد.",
+        "enterBreakStart": "لطفا تاریخ و زمان شروع استراحت {{index}} را وارد کنید.",
+        "enterBreakEnd": "لطفا تاریخ و زمان پایان استراحت {{index}} را وارد کنید.",
+        "breakEndAfterStart": "زمان پایان استراحت {{index}} باید بعد از زمان شروع باشد.",
+        "breakWithinWork": "استراحت {{index}} باید در ساعات کاری باشد.",
+        "endNotFuture": "زمان پایان کار نمی‌تواند در آینده باشد.",
+        "overlappingBreaks": "استراحت‌های {{index1}} و {{index2}} دارای زمان‌های هم‌پوشانی هستند."
+      }
+    }
   }
 }

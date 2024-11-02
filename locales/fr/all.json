@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "Accueil",
-    "timelog": "Suivi du temps",
+    "timelog": "Enregistrer le travail",
     "chat": "Chat",
     "members": "Membres",
     "profile": "Profil",
     "logout": "Déconnexion"
+  },
+  "timelog": {
+    "headerTitle": "Enregistrement du travail",
+    "attendanceHistory": {
+      "workHistory": "Historique de présence",
+      "approved": "Approuvé",
+      "notApproved": "Non approuvé",
+      "working": "En travail",
+      "workTime": "Temps de travail",
+      "actualWorkTime": "Temps de travail réel",
+      "memo": "Mémo",
+      "editWorkMemo": "Modifier le mémo de travail",
+      "editBreakMemo": "Modifier le mémo de pause",
+      "save": "Enregistrer",
+      "breakHistory": "Historique des pauses",
+      "enterWorkMemo": "Veuillez entrer un mémo de travail",
+      "enterBreakMemo": "Veuillez entrer un mémo de pause",
+      "startTime": "Heure de début",
+      "endTime": "Heure de fin",
+      "current": "Heure actuelle",
+      "hourAndMinute": "{{hour}}h {{minute}}m",
+      "minuteOnly": "{{minute}}m"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Temps de travail actuel",
+      "working": "En travail",
+      "onBreak": "En pause",
+      "notStarted": "Hors service",
+      "startWork": "Commencer le travail",
+      "endWork": "Terminer le travail",
+      "breakTime": "Temps de pause",
+      "startBreak": "Commencer la pause",
+      "endBreak": "Terminer la pause"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Enregistrer le temps de travail passé",
+      "recordWorkTime": "Enregistrer le temps de travail",
+      "workStart": "Heure de début du travail",
+      "workEnd": "Heure de fin du travail",
+      "workMemo": "Mémo de travail",
+      "enterWorkMemo": "Entrez un mémo sur votre travail",
+      "breakTime": "Temps de pause",
+      "noBreakRegistered": "Aucune pause enregistrée",
+      "breakStart": "Début de la pause {{index}}",
+      "breakEnd": "Fin de la pause {{index}}",
+      "breakMemo": "Mémo de la pause {{index}}",
+      "enterBreakMemo": "Entrez un mémo pour la pause {{index}}",
+      "addBreak": "Ajouter une pause",
+      "saveRecord": "Enregistrer le dossier",
+      "validation": {
+        "enterWorkStart": "Veuillez entrer la date et l'heure de début.",
+        "enterWorkEnd": "Veuillez entrer la date et l'heure de fin.",
+        "endAfterStart": "L'heure de fin doit être après l'heure de début.",
+        "enterBreakStart": "Veuillez entrer la date et l'heure de début pour la pause {{index}}.",
+        "enterBreakEnd": "Veuillez entrer la date et l'heure de fin pour la pause {{index}}.",
+        "breakEndAfterStart": "L'heure de fin de la pause {{index}} doit être après l'heure de début.",
+        "breakWithinWork": "La pause {{index}} doit être pendant les heures de travail.",
+        "endNotFuture": "L'heure de fin de travail ne peut pas être dans le futur.",
+        "overlappingBreaks": "Les pauses {{index1}} et {{index2}} se chevauchent."
+      }
+    }
   }
 }

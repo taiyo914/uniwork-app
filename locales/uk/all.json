@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "Головна",
-    "timelog": "Облік часу",
+    "timelog": "Журнал роботи",
     "chat": "Чат",
     "members": "Учасники",
     "profile": "Профіль",
     "logout": "Вийти"
+  },
+  "timelog": {
+    "headerTitle": "Реєстрація роботи",
+    "attendanceHistory": {
+      "workHistory": "Історія присутності",
+      "approved": "Затверджено",
+      "notApproved": "Не затверджено",
+      "working": "Працює",
+      "workTime": "Робочий час",
+      "actualWorkTime": "Фактичний робочий час",
+      "memo": "Примітка",
+      "editWorkMemo": "Редагувати примітку роботи",
+      "editBreakMemo": "Редагувати примітку перерви",
+      "save": "Зберегти",
+      "breakHistory": "Історія перерв",
+      "enterWorkMemo": "Будь ласка, введіть примітку до роботи",
+      "enterBreakMemo": "Будь ласка, введіть примітку до перерви",
+      "startTime": "Час початку",
+      "endTime": "Час закінчення",
+      "current": "Поточний час",
+      "hourAndMinute": "{{hour}}год {{minute}}хв",
+      "minuteOnly": "{{minute}}хв"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Поточний робочий час",
+      "working": "Працює",
+      "onBreak": "На перерві",
+      "notStarted": "Не на роботі",
+      "startWork": "Почати роботу",
+      "endWork": "Закінчити роботу",
+      "breakTime": "Час перерви",
+      "startBreak": "Почати перерву",
+      "endBreak": "Закінчити перерву"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Зареєструвати минулий робочий час",
+      "recordWorkTime": "Зареєструвати робочий час",
+      "workStart": "Час початку роботи",
+      "workEnd": "Час закінчення роботи",
+      "workMemo": "Примітка до роботи",
+      "enterWorkMemo": "Введіть примітку про вашу роботу",
+      "breakTime": "Час перерви",
+      "noBreakRegistered": "Перерви не зареєстровані",
+      "breakStart": "Початок перерви {{index}}",
+      "breakEnd": "Кінець перерви {{index}}",
+      "breakMemo": "Примітка до перерви {{index}}",
+      "enterBreakMemo": "Введіть примітку для перерви {{index}}",
+      "addBreak": "Додати перерву",
+      "saveRecord": "Зберегти запис",
+      "validation": {
+        "enterWorkStart": "Будь ласка, введіть дату і час початку.",
+        "enterWorkEnd": "Будь ласка, введіть дату і час закінчення.",
+        "endAfterStart": "Час закінчення роботи повинен бути після початку.",
+        "enterBreakStart": "Будь ласка, введіть дату і час початку для перерви {{index}}.",
+        "enterBreakEnd": "Будь ласка, введіть дату і час закінчення для перерви {{index}}.",
+        "breakEndAfterStart": "Час закінчення перерви {{index}} повинен бути після початку.",
+        "breakWithinWork": "Перерва {{index}} повинна бути в межах робочого часу.",
+        "endNotFuture": "Час закінчення роботи не може бути в майбутньому.",
+        "overlappingBreaks": "Перерви {{index1}} та {{index2}} мають перетини."
+      }
+    }
   }
 }

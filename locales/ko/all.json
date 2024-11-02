@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "홈",
-    "timelog": "시간 기록",
+    "timelog": "작업 기록",
     "chat": "채팅",
     "members": "회원",
     "profile": "프로필",
     "logout": "로그아웃"
+  },
+  "timelog": {
+    "headerTitle": "작업 등록",
+    "attendanceHistory": {
+      "workHistory": "출석 기록",
+      "approved": "승인됨",
+      "notApproved": "승인되지 않음",
+      "working": "작업 중",
+      "workTime": "작업 시간",
+      "actualWorkTime": "실제 작업 시간",
+      "memo": "메모",
+      "editWorkMemo": "작업 메모 편집",
+      "editBreakMemo": "휴식 메모 편집",
+      "save": "저장",
+      "breakHistory": "휴식 기록",
+      "enterWorkMemo": "작업 메모를 입력하세요",
+      "enterBreakMemo": "휴식 메모를 입력하세요",
+      "startTime": "시작 시간",
+      "endTime": "종료 시간",
+      "current": "현재 시간",
+      "hourAndMinute": "{{hour}}시간 {{minute}}분",
+      "minuteOnly": "{{minute}}분"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "현재 작업 시간",
+      "working": "작업 중",
+      "onBreak": "휴식 중",
+      "notStarted": "비근무",
+      "startWork": "작업 시작",
+      "endWork": "작업 종료",
+      "breakTime": "휴식 시간",
+      "startBreak": "휴식 시작",
+      "endBreak": "휴식 종료"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "지난 작업 시간 기록",
+      "recordWorkTime": "작업 시간 기록",
+      "workStart": "작업 시작 시간",
+      "workEnd": "작업 종료 시간",
+      "workMemo": "작업 메모",
+      "enterWorkMemo": "작업에 대한 메모를 입력하세요",
+      "breakTime": "휴식 시간",
+      "noBreakRegistered": "등록된 휴식 시간이 없습니다",
+      "breakStart": "휴식 {{index}} 시작 시간",
+      "breakEnd": "휴식 {{index}} 종료 시간",
+      "breakMemo": "휴식 {{index}} 메모",
+      "enterBreakMemo": "휴식 {{index}}에 대한 메모를 입력하세요",
+      "addBreak": "휴식 추가",
+      "saveRecord": "기록 저장",
+      "validation": {
+        "enterWorkStart": "시작 날짜와 시간을 입력하세요.",
+        "enterWorkEnd": "종료 날짜와 시간을 입력하세요.",
+        "endAfterStart": "작업 종료 시간은 시작 시간 이후여야 합니다.",
+        "enterBreakStart": "휴식 {{index}}의 시작 날짜와 시간을 입력하세요.",
+        "enterBreakEnd": "휴식 {{index}}의 종료 날짜와 시간을 입력하세요.",
+        "breakEndAfterStart": "휴식 {{index}}의 종료 시간은 시작 시간 이후여야 합니다.",
+        "breakWithinWork": "휴식 {{index}}은 작업 시간 내에 있어야 합니다.",
+        "endNotFuture": "작업 종료 시간은 미래일 수 없습니다.",
+        "overlappingBreaks": "휴식 {{index1}}와 휴식 {{index2}}의 시간이 겹칩니다."
+      }
+    }
   }
 }

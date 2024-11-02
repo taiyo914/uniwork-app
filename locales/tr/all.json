@@ -1,10 +1,71 @@
 {
   "nav": {
-    "home": "Anasayfa",
-    "timelog": "Zaman Kaydı",
+    "home": "Ana Sayfa",
+    "timelog": "Çalışma Kaydı",
     "chat": "Sohbet",
     "members": "Üyeler",
     "profile": "Profil",
-    "logout": "Çıkış"
+    "logout": "Çıkış Yap"
+  },
+  "timelog": {
+    "headerTitle": "Çalışma Kaydı",
+    "attendanceHistory": {
+      "workHistory": "Katılım Geçmişi",
+      "approved": "Onaylandı",
+      "notApproved": "Onaylanmadı",
+      "working": "Çalışıyor",
+      "workTime": "Çalışma Süresi",
+      "actualWorkTime": "Gerçek Çalışma Süresi",
+      "memo": "Not",
+      "editWorkMemo": "Çalışma Notunu Düzenle",
+      "editBreakMemo": "Mola Notunu Düzenle",
+      "save": "Kaydet",
+      "breakHistory": "Mola Geçmişi",
+      "enterWorkMemo": "Lütfen çalışma notunu girin",
+      "enterBreakMemo": "Lütfen mola notunu girin",
+      "startTime": "Başlangıç Saati",
+      "endTime": "Bitiş Saati",
+      "current": "Mevcut Zaman",
+      "hourAndMinute": "{{hour}}s {{minute}}d",
+      "minuteOnly": "{{minute}}d"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Mevcut Çalışma Süresi",
+      "working": "Çalışıyor",
+      "onBreak": "Molada",
+      "notStarted": "Görevde Değil",
+      "startWork": "Çalışmaya Başla",
+      "endWork": "Çalışmayı Bitir",
+      "breakTime": "Mola Süresi",
+      "startBreak": "Molaya Başla",
+      "endBreak": "Molayı Bitir"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Geçmiş Çalışma Süresini Kaydet",
+      "recordWorkTime": "Çalışma Süresini Kaydet",
+      "workStart": "Çalışma Başlangıcı",
+      "workEnd": "Çalışma Bitişi",
+      "workMemo": "Çalışma Notu",
+      "enterWorkMemo": "Çalışmanızla ilgili bir not girin",
+      "breakTime": "Mola Süresi",
+      "noBreakRegistered": "Kayıtlı mola süresi yok",
+      "breakStart": "Mola {{index}} Başlangıcı",
+      "breakEnd": "Mola {{index}} Bitişi",
+      "breakMemo": "Mola {{index}} Notu",
+      "enterBreakMemo": "Mola {{index}} için bir not girin",
+      "addBreak": "Mola Ekle",
+      "saveRecord": "Kaydı Kaydet",
+      "validation": {
+        "enterWorkStart": "Lütfen başlama tarihini ve saatini girin.",
+        "enterWorkEnd": "Lütfen bitiş tarihini ve saatini girin.",
+        "endAfterStart": "Çalışma bitiş saati başlangıç saatinden sonra olmalıdır.",
+        "enterBreakStart": "Lütfen mola {{index}} için başlama tarihini ve saatini girin.",
+        "enterBreakEnd": "Lütfen mola {{index}} için bitiş tarihini ve saatini girin.",
+        "breakEndAfterStart": "Mola {{index}} bitiş saati başlangıç saatinden sonra olmalıdır.",
+        "breakWithinWork": "Mola {{index}} çalışma saatleri içinde olmalıdır.",
+        "endNotFuture": "Çalışma bitiş saati gelecekte olamaz.",
+        "overlappingBreaks": "Mola {{index1}} ve mola {{index2}} çakışmaktadır."
+      }
+    }
   }
 }

@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "Nyumbani",
-    "timelog": "Rekodi ya Muda",
+    "timelog": "Kumbukumbu ya Kazi",
     "chat": "Mazungumzo",
     "members": "Wanachama",
     "profile": "Profaili",
     "logout": "Toka"
+  },
+  "timelog": {
+    "headerTitle": "Usajili wa Kazi",
+    "attendanceHistory": {
+      "workHistory": "Historia ya Mahudhurio",
+      "approved": "Imeidhinishwa",
+      "notApproved": "Haijaidhinishwa",
+      "working": "Anayefanya kazi",
+      "workTime": "Muda wa Kazi",
+      "actualWorkTime": "Muda Halisi wa Kazi",
+      "memo": "Memo",
+      "editWorkMemo": "Hariri Memo ya Kazi",
+      "editBreakMemo": "Hariri Memo ya Mapumziko",
+      "save": "Hifadhi",
+      "breakHistory": "Historia ya Mapumziko",
+      "enterWorkMemo": "Tafadhali ingiza memo ya kazi",
+      "enterBreakMemo": "Tafadhali ingiza memo ya mapumziko",
+      "startTime": "Muda wa Kuanza",
+      "endTime": "Muda wa Kumaliza",
+      "current": "Muda wa Sasa",
+      "hourAndMinute": "{{hour}}h {{minute}}m",
+      "minuteOnly": "{{minute}}m"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Muda wa Kazi wa Sasa",
+      "working": "Anayefanya kazi",
+      "onBreak": "Katika Mapumziko",
+      "notStarted": "Nje ya Kazi",
+      "startWork": "Anza Kazi",
+      "endWork": "Maliza Kazi",
+      "breakTime": "Muda wa Mapumziko",
+      "startBreak": "Anza Mapumziko",
+      "endBreak": "Maliza Mapumziko"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Sajili Muda wa Kazi Uliopita",
+      "recordWorkTime": "Sajili Muda wa Kazi",
+      "workStart": "Muda wa Kuanza Kazi",
+      "workEnd": "Muda wa Kumaliza Kazi",
+      "workMemo": "Memo ya Kazi",
+      "enterWorkMemo": "Ingiza memo kuhusu kazi yako",
+      "breakTime": "Muda wa Mapumziko",
+      "noBreakRegistered": "Hakuna mapumziko yaliyosajiliwa",
+      "breakStart": "Kuanza Mapumziko {{index}}",
+      "breakEnd": "Kumaliza Mapumziko {{index}}",
+      "breakMemo": "Memo ya Mapumziko {{index}}",
+      "enterBreakMemo": "Ingiza memo kwa Mapumziko {{index}}",
+      "addBreak": "Ongeza Mapumziko",
+      "saveRecord": "Hifadhi Kumbukumbu",
+      "validation": {
+        "enterWorkStart": "Tafadhali ingiza tarehe na muda wa kuanza.",
+        "enterWorkEnd": "Tafadhali ingiza tarehe na muda wa kumaliza.",
+        "endAfterStart": "Muda wa kumaliza kazi lazima uwe baada ya muda wa kuanza.",
+        "enterBreakStart": "Tafadhali ingiza tarehe na muda wa kuanza kwa Mapumziko {{index}}.",
+        "enterBreakEnd": "Tafadhali ingiza tarehe na muda wa kumaliza kwa Mapumziko {{index}}.",
+        "breakEndAfterStart": "Muda wa kumaliza Mapumziko {{index}} lazima uwe baada ya muda wa kuanza.",
+        "breakWithinWork": "Mapumziko {{index}} lazima iwe ndani ya masaa ya kazi.",
+        "endNotFuture": "Muda wa kumaliza kazi hauwezi kuwa katika siku zijazo.",
+        "overlappingBreaks": "Mapumziko {{index1}} na Mapumziko {{index2}} yanaingiliana."
+      }
+    }
   }
 }

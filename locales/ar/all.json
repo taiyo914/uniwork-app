@@ -1,10 +1,71 @@
 {
   "nav": {
-    "home": "الصفحة الرئيسية",
-    "timelog": "تسجيل الوقت",
+    "home": "الرئيسية",
+    "timelog": "تسجيل العمل",
     "chat": "الدردشة",
     "members": "الأعضاء",
     "profile": "الملف الشخصي",
     "logout": "تسجيل الخروج"
+  },
+  "timelog": {
+    "headerTitle": "تسجيل العمل",
+    "attendanceHistory": {
+      "workHistory": "سجل الحضور",
+      "approved": "موافق عليه",
+      "notApproved": "غير موافق عليه",
+      "working": "في العمل",
+      "workTime": "وقت العمل",
+      "actualWorkTime": "الوقت الفعلي للعمل",
+      "memo": "مذكرة",
+      "editWorkMemo": "تعديل مذكرة العمل",
+      "editBreakMemo": "تعديل مذكرة الاستراحة",
+      "save": "حفظ",
+      "breakHistory": "سجل الاستراحات",
+      "enterWorkMemo": "يرجى إدخال مذكرة العمل",
+      "enterBreakMemo": "يرجى إدخال مذكرة الاستراحة",
+      "startTime": "وقت البدء",
+      "endTime": "وقت الانتهاء",
+      "current": "الوقت الحالي",
+      "hourAndMinute": "{{hour}}س {{minute}}د",
+      "minuteOnly": "{{minute}}د"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "وقت العمل الحالي",
+      "working": "في العمل",
+      "onBreak": "في استراحة",
+      "notStarted": "خارج العمل",
+      "startWork": "بدء العمل",
+      "endWork": "إنهاء العمل",
+      "breakTime": "وقت الاستراحة",
+      "startBreak": "بدء الاستراحة",
+      "endBreak": "إنهاء الاستراحة"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "تسجيل وقت العمل السابق",
+      "recordWorkTime": "تسجيل وقت العمل",
+      "workStart": "وقت بدء العمل",
+      "workEnd": "وقت انتهاء العمل",
+      "workMemo": "مذكرة العمل",
+      "enterWorkMemo": "أدخل مذكرة حول عملك",
+      "breakTime": "وقت الاستراحة",
+      "noBreakRegistered": "لم يتم تسجيل أوقات الاستراحات",
+      "breakStart": "بداية الاستراحة {{index}}",
+      "breakEnd": "نهاية الاستراحة {{index}}",
+      "breakMemo": "مذكرة الاستراحة {{index}}",
+      "enterBreakMemo": "أدخل مذكرة للاستراحة {{index}}",
+      "addBreak": "إضافة استراحة",
+      "saveRecord": "حفظ السجل",
+      "validation": {
+        "enterWorkStart": "يرجى إدخال تاريخ ووقت البدء.",
+        "enterWorkEnd": "يرجى إدخال تاريخ ووقت الانتهاء.",
+        "endAfterStart": "يجب أن يكون وقت انتهاء العمل بعد وقت البدء.",
+        "enterBreakStart": "يرجى إدخال تاريخ ووقت بدء الاستراحة {{index}}.",
+        "enterBreakEnd": "يرجى إدخال تاريخ ووقت انتهاء الاستراحة {{index}}.",
+        "breakEndAfterStart": "يجب أن يكون وقت نهاية الاستراحة {{index}} بعد وقت البداية.",
+        "breakWithinWork": "يجب أن تكون الاستراحة {{index}} ضمن ساعات العمل.",
+        "endNotFuture": "لا يمكن أن يكون وقت انتهاء العمل في المستقبل.",
+        "overlappingBreaks": "تداخل أوقات الاستراحة {{index1}} و{{index2}}."
+      }
+    }
   }
 }

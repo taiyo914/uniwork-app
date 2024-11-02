@@ -1,10 +1,71 @@
 {
   "nav": {
     "home": "Главная",
-    "timelog": "Учет времени",
+    "timelog": "Регистрация работы",
     "chat": "Чат",
-    "members": "Члены",
+    "members": "Участники",
     "profile": "Профиль",
     "logout": "Выйти"
+  },
+  "timelog": {
+    "headerTitle": "Регистрация работы",
+    "attendanceHistory": {
+      "workHistory": "История посещений",
+      "approved": "Одобрено",
+      "notApproved": "Не одобрено",
+      "working": "Работает",
+      "workTime": "Рабочее время",
+      "actualWorkTime": "Фактическое рабочее время",
+      "memo": "Заметка",
+      "editWorkMemo": "Редактировать заметку работы",
+      "editBreakMemo": "Редактировать заметку перерыва",
+      "save": "Сохранить",
+      "breakHistory": "История перерывов",
+      "enterWorkMemo": "Введите заметку о работе",
+      "enterBreakMemo": "Введите заметку о перерыве",
+      "startTime": "Время начала",
+      "endTime": "Время окончания",
+      "current": "Текущее время",
+      "hourAndMinute": "{{hour}}ч {{minute}}м",
+      "minuteOnly": "{{minute}}м"
+    },
+    "currentTimeButtons": {
+      "currentWorkTime": "Текущее рабочее время",
+      "working": "Работает",
+      "onBreak": "На перерыве",
+      "notStarted": "Не работает",
+      "startWork": "Начать работу",
+      "endWork": "Закончить работу",
+      "breakTime": "Время перерыва",
+      "startBreak": "Начать перерыв",
+      "endBreak": "Закончить перерыв"
+    },
+    "scheduledTimeDialog": {
+      "recordPastWorkTime": "Записать прошедшее рабочее время",
+      "recordWorkTime": "Записать рабочее время",
+      "workStart": "Время начала работы",
+      "workEnd": "Время окончания работы",
+      "workMemo": "Заметка о работе",
+      "enterWorkMemo": "Введите заметку о вашей работе",
+      "breakTime": "Время перерыва",
+      "noBreakRegistered": "Перерывы не зарегистрированы",
+      "breakStart": "Начало перерыва {{index}}",
+      "breakEnd": "Конец перерыва {{index}}",
+      "breakMemo": "Заметка о перерыве {{index}}",
+      "enterBreakMemo": "Введите заметку для перерыва {{index}}",
+      "addBreak": "Добавить перерыв",
+      "saveRecord": "Сохранить запись",
+      "validation": {
+        "enterWorkStart": "Введите дату и время начала.",
+        "enterWorkEnd": "Введите дату и время окончания.",
+        "endAfterStart": "Время окончания должно быть позже времени начала.",
+        "enterBreakStart": "Введите дату и время начала перерыва {{index}}.",
+        "enterBreakEnd": "Введите дату и время окончания перерыва {{index}}.",
+        "breakEndAfterStart": "Время окончания перерыва {{index}} должно быть позже времени начала.",
+        "breakWithinWork": "Перерыв {{index}} должен быть в пределах рабочего времени.",
+        "endNotFuture": "Время окончания работы не может быть в будущем.",
+        "overlappingBreaks": "Времена перерывов {{index1}} и {{index2}} пересекаются."
+      }
+    }
   }
 }
