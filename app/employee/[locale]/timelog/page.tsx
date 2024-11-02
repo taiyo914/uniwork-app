@@ -27,7 +27,7 @@ export default function Timelog() {
   return (
     <div className="min-h-screen pb-1 lg:px-3">
       <div className="max-w-[1350px] mx-auto">
-        <h1 className="text-3xl lg:text-4xl font-bold mb-5 sm:mb-6 lg:mb-7 mt-2 sm:mt-3 lg:mt-4 text-blue-700 text-center lg:text-left">
+        <h1 className="text-3xl font-bold mb-5 sm:mb-6  mt-2 sm:mt-3  text-blue-700 text-center lg:text-left">
           {t("timelog.headerTitle")}
         </h1>
         <div className="space-y-5 mx-auto w-full">
