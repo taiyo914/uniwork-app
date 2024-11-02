@@ -20,7 +20,7 @@ const supportedLocales = { ja, en, ar, de, es, fa, fr, hi, id, it, ko, ms, pt, r
 export default function Component() {
   const { locale } =  useParams()
   const { t:translate } = useTranslation();
-  const t = (key: string) => translate(`timelog.attendanceHistory.${key}`);
+  const t = (key: string, params?: Record<string, any>) => translate(`timelog.attendanceHistory.${key}`, params);
   const { records, setRecords } = useAttendanceStore()
   const sortedRecords = [...records].sort((a, b) => {
     const dateA = a.work_start ? new Date(a.work_start).getTime() : 0;
@@ -157,7 +157,11 @@ export default function Component() {
     const durationInMinutes = endMinutes - startMinutes;
     const hours = Math.floor(durationInMinutes / 60);
     const minutes = durationInMinutes % 60;
-    return hours ? `${hours}${t("hour")} ${minutes.toString().padStart(1, '0')}${t("minute")}` : `${minutes}${t("minute")}`;
+    if (hours) {
+      return t("hourAndMinute", { hour: hours, minute: minutes.toString().padStart(2, '0') });
+    } else {
+      return t("minuteOnly", { minute: minutes.toString().padStart(2, '0') });
+    }
   };
 
   const calculateActualWorkDuration = (record: AttendanceRecord) => {
@@ -187,7 +191,11 @@ export default function Component() {
     const hours = Math.floor(actualWorkMinutes / 60);
     const minutes = actualWorkMinutes % 60;
   
-    return hours ? `${hours}${t("hour")} ${minutes.toString().padStart(1, '0')}${t("minute")}` : `${minutes}${t("minute")}`;
+    if (hours) {
+      return t("hourAndMinute", { hour: hours, minute: minutes.toString().padStart(2, '0') });
+    } else {
+      return t("minuteOnly", { minute: minutes.toString().padStart(2, '0') });
+    }
   };
   
 
