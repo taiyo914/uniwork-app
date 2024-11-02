@@ -201,12 +201,12 @@ export default function Component() {
 
   return (<>
     <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans w-full">
-      <CardHeader className="bg-blue-100 py-5">
-        <CardTitle className="text-2xl text-blue-800 flex items-center gap-2 ">{t("workHistory")}<History className="h-6 w-6"/></CardTitle>
+      <CardHeader className="bg-blue-100 py-5 xs:py-4 xs:px-4">
+        <CardTitle className="text-2xl xs:text-xl text-blue-800 flex items-center gap-2 ">{t("workHistory")}<History className="h-6 w-6"/></CardTitle>
       </CardHeader>
-      <CardContent className="px-3 md:px-6 py-0 bg-slate-50/30">
+      <CardContent className="px-3 xs:px-2 md:px-6 py-0 bg-slate-50/30">
         <ScrollArea className="min-h-[500px] h-[calc(100vh-700px)] lg:h-[calc(100vh-250px)] w-full rounded-md  px-2">
-          <div className="space-y-4 py-4 md:py-7">
+          <div className="space-y-4 xs:py-3.5 py-4 md:py-7">
             {sortedRecords.map((record) => (
               <Card key={record.id} className="w-full">
                 <CardHeader className="flex-row items-center justify-between border-b rounded-t-md bg-blue-100/50 py-3 pl-[1.15rem] pr-4">
