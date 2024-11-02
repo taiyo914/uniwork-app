@@ -142,7 +142,7 @@ export default function Component() {
 
   // 秒は切り捨てて分だけで考えるか
   const calculateDuration = (start: string | null, end: string | null) => {
-    if (!start) return '0分';
+    if (!start || !end) return '-';
     const startDate = parseISO(start);
     const endDate = end ? parseISO(end) : new Date();
     const startMinutes = Math.floor(startDate.getTime() / 60000);
@@ -185,16 +185,16 @@ export default function Component() {
   
 
   return (<>
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans max-w-3xl mx-auto w-full">
-      <CardHeader className="bg-blue-100">
-        <CardTitle className="text-2xl text-blue-800 flex items-center gap-2">打刻履歴<History className="h-6 w-6"/></CardTitle>
+    <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans max-w-2xl lg:max-w-5xl mx-auto w-full">
+      <CardHeader className="bg-blue-100 py-5">
+        <CardTitle className="text-2xl text-blue-800 flex items-center gap-2 ">打刻履歴<History className="h-6 w-6"/></CardTitle>
       </CardHeader>
-      <CardContent>
-        <ScrollArea className="min-h-[500px] h-[calc(100vh-700px)] xl:h-[calc(100vh-250px)] w-full rounded-md pt-5  px-2">
-          <div className="space-y-4 py-3">
+      <CardContent className="px-3 md:px-6 py-0 bg-slate-50/30">
+        <ScrollArea className="min-h-[500px] h-[calc(100vh-700px)] lg:h-[calc(100vh-250px)] w-full rounded-md  px-2">
+          <div className="space-y-4 py-4 md:py-7">
             {sortedRecords.map((record) => (
               <Card key={record.id} className="w-full">
-                <CardHeader className="flex-row items-center justify-between border-b bg-slate-50/50 py-3 pl-[1.15rem] pr-4">
+                <CardHeader className="flex-row items-center justify-between border-b rounded-t-md bg-blue-100/50 py-3 pl-[1.15rem] pr-4">
                   <div className="flex items-baseline ">
                     <div className="text-2xl font-bold">{formatDate(record.work_start)}</div>
                     <div className="text-muted-foreground mx-2">
@@ -241,15 +241,15 @@ export default function Component() {
                   </div>
 
                   {/* メモ */}
-                  <div className="flex items-center gap-1 mb-3">
-                    <StickyNote className=" h-4 w-4 text-muted-foreground "/>
-                    <div className="text-muted-foreground ">
+                  <div className="mb-3">
+                    <StickyNote className="inline h-4 w-4 text-muted-foreground mb-0.5"/>
+                    <span className="text-muted-foreground ">
                       メモ : 
-                    </div>
-                    <div className="">
+                    </span>
+                    <span className="ml-1">
                       {record.memo}
                       <PenSquare className="h-[1.15rem] w-[1.15rem] inline mb-0.5 ml-1 text-blue-500 hover:text-blue-700 hover:cursor-pointer" onClick={() => openMemoDialog(record)}/>
-                    </div>
+                    </span>
                   </div>
 
                   {record.break_logs && record.break_logs.length > 0 && (
@@ -269,15 +269,15 @@ export default function Component() {
                                 </span>
                               </div>
                               
-                              <div className="flex items-center gap-1 ">
-                                <StickyNote className=" h-4 w-4 text-muted-foreground "/>
-                                <div className="text-muted-foreground ">
+                              <div className="">
+                                <StickyNote className="inline h-4 w-4 text-muted-foreground mb-0.5"/>
+                                <span className="text-muted-foreground ">
                                   メモ : 
-                                </div>
-                                <div className="">
+                                </span>
+                                <span className="ml-1">
                                   {breakLog.memo}
                                   <PenSquare className="h-[1.15rem] w-[1.15rem] inline mb-0.5 mx-1 text-blue-500 hover:text-blue-700 hover:cursor-pointer"  onClick={() => openBreakMemoDialog(record, breakLog)}/>
-                                </div>
+                                </span>
                               </div>
                             </div>
                           </div>
