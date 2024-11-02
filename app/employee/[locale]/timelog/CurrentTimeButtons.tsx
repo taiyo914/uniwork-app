@@ -10,11 +10,10 @@ import { BreakLog } from "@/stores/useAttendanceStore";
 
 
 const CurrentTimeButtons = () => {
-  const { workStatus, setWorkStatus, setRecords, addRecord, records } = useAttendanceStore();
+  const { workStatus, setWorkStatus, setRecords, addRecord, records , totalBreakTime, setTotalBreakTime} = useAttendanceStore();
 
   const [workTime, setWorkTime] = useState(0);
   const [breakTime, setBreakTime] = useState(0);
-  const [totalBreakTime, setTotalBreakTime] = useState(0);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -35,16 +34,21 @@ const CurrentTimeButtons = () => {
         const start = new Date(currentRecord.work_start).getTime();
         const elapsedWorkTime = Math.floor((Date.now() - start) / 1000);
         setWorkTime(elapsedWorkTime - totalBreakTime);
+        setBreakTime(0); 
       }
-      if (workStatus === "onBreak" && currentRecord.break_logs.length > 0) {
+      if (workStatus === "onBreak" && currentRecord.work_start) {
+        const start = new Date(currentRecord.work_start).getTime();
+        const elapsedWorkTime = Math.floor((Date.now() - start) / 1000);
+        setWorkTime(elapsedWorkTime - totalBreakTime);
         const lastBreak = currentRecord.break_logs[currentRecord.break_logs.length - 1];
+        console.log(currentRecord, lastBreak)
         if (lastBreak.break_start) {
           const breakStart = new Date(lastBreak.break_start).getTime();
           setBreakTime(Math.floor((Date.now() - breakStart) / 1000));
         }
       }
     }
-  }, [records, workStatus]);
+  }, [records, workStatus, totalBreakTime]);
 
   const updateWorkStatus = async (userId: string, status: "working" | "notStarted" | "onBreak") => {
     const { error } = await supabase
@@ -97,18 +101,17 @@ const CurrentTimeButtons = () => {
 
     } else if (action === "endWork" && currentRecord) {
 
-      const { data: updatedRecord, error } = await supabase
+      const { error } = await supabase
         .from("attendance_logs")
         .update({ work_end: now })
         .eq("id", currentRecord.id)
-        .select('*, break_logs(*)')
-        .single();
 
       if (error) {
         console.error("Failed to update record (CurrentTimeButtons/handleTimeRecord/endWork):", error.message);
         return;
       }
 
+      const updatedRecord = { ...currentRecord, work_end: now };
       const updatedRecords = [updatedRecord, ...records.slice(1)];
       setRecords(updatedRecords);
       setWorkStatus("notStarted");
@@ -148,27 +151,37 @@ const CurrentTimeButtons = () => {
       if (!(await updateWorkStatus(user.id, "onBreak"))) return;
       
     } else if (action === "endBreak" && currentRecord) {
-      const lastBreak = currentRecord.break_logs[currentRecord.break_logs.length - 1];
+      const lastBreakIndex = currentRecord.break_logs.length - 1;
+      const lastBreak = currentRecord.break_logs[lastBreakIndex];
       if (!lastBreak || lastBreak.break_end) return;
 
-      const { data: updatedBreak, error } = await supabase
+      const { error } = await supabase
         .from("break_logs")
         .update({ break_end: now })
         .eq("id", lastBreak.id)
-        .select()
-        .single();
 
       if (error) {
         console.error("Failed to update record (CurrentTimeButtons/handleTimeRecord/endBreak):", error.message);
         return;
       }
 
-      const updatedBreakLogs = currentRecord.break_logs.map((b) =>
-        b.id === (updatedBreak as BreakLog)?.id ? updatedBreak : b
-      );
+      const updatedBreakLogs = [
+        ...currentRecord.break_logs.slice(0, lastBreakIndex),
+        { ...lastBreak, break_end: now }
+      ];
+    
 
-      const breakDuration = breakTime; 
-      setTotalBreakTime((prev) => prev + breakDuration);
+      let calculatedTotalBreakTime = 0;
+      calculatedTotalBreakTime = updatedBreakLogs.reduce((acc, log) => {
+        if (log.break_start) {
+          const breakStart = new Date(log.break_start).getTime();
+          const breakEnd = log.break_end ? new Date(log.break_end).getTime() : Date.now();
+          return acc + Math.floor((breakEnd - breakStart) / 1000); // 秒単位で加算
+        }
+        return acc;
+      }, 0);
+
+      setTotalBreakTime(calculatedTotalBreakTime); //あんまりよくない書き方
       setBreakTime(0);
 
       const updatedRecord = { ...currentRecord, break_logs: updatedBreakLogs };
@@ -207,27 +220,27 @@ const CurrentTimeButtons = () => {
   }
 
   const getMainButtonStyle = () => {
-    const baseStyle = "w-full h-20 text-xl font-semibold transition-all duration-300";
+    const baseStyle = "w-full h-16 sm:h-20 text-xl font-semibold transition-all duration-300";
     if (workStatus === "working") return `${baseStyle} bg-green-200 hover:bg-green-300 text-green-800 border border-green-300 shadow`;
     if (workStatus === "onBreak") return `${baseStyle} bg-gray-200 text-gray-500 border border-gray-300 cursor-not-allowed`;
     if (workStatus === "notStarted") return `${baseStyle} bg-blue-200 hover:bg-blue-300 border border-blue-300 text-blue-700 shadow`;
   };
 
   return (
-    <div >
-    <div className="max-w-3xl mx-auto">
+    <>
+    <div className="max-w-2xl mx-auto">
       <Card className={`shadow border-0 border-t-4 ${getBorderColor()}`}>
         <CardHeader className="pb-2">
-          <CardTitle className="text-xl font-semibold text-center mt-3 text-gray-900">現在の勤務時間</CardTitle>
+          <CardTitle className="text-xl font-semibold text-center mt-3 lg:mt-4 text-gray-900">現在の勤務時間</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-6 lg:space-y-7  px-5 pb-5 sm:pb-7 sm:px-7">
           <div className="text-center">
-            <p className={`text-6xl font-bold  font-sans tracking-wide transition-colors 
+            <p className={`sm:text-6xl text-5xl font-bold  font-sans lg:tracking-wide transition-colors 
               ${workStatus === "onBreak" ? "text-gray-300 duration-200" : "text-black"}
             `} >
               {formatTime(workTime)}
             </p>
-            <div className="mt-[1.15rem]">
+            <div className="mt-[1.15rem] lg:mt-5">
               <Badge className={`${getBadgeStyle()} transition-all`}>{getBadgeLabel()}</Badge>
             </div>
           </div>
@@ -253,7 +266,7 @@ const CurrentTimeButtons = () => {
               </p>
               <Button
                 onClick={() => handleTimeRecord(workStatus === "onBreak" ? "endBreak" : "startBreak")}
-                className={`w-1/3 h-12 text-base font-semibold mx-auto shadow
+                className={`w-1/3 h-12 text-base font-semibold mx-auto shadow min-w-fit
                   ${workStatus === "onBreak" 
                     ? "bg-orange-200 text-orange-800 border border-orange-300 hover:bg-orange-300" 
                     : "bg-yellow-100 text-yellow-800 border border-yellow-300 hover:bg-yellow-200"
@@ -268,7 +281,7 @@ const CurrentTimeButtons = () => {
         </CardContent>
       </Card>
     </div>
-  </div>
+  </>
   );
 };
 
