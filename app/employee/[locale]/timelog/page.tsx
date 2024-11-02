@@ -30,7 +30,7 @@ export default function Timelog() {
         <h1 className="text-3xl font-bold mb-5 sm:mb-6  mt-2 sm:mt-3  text-blue-700 text-center lg:text-left">
           {t("timelog.headerTitle")}
         </h1>
-        <div className="space-y-5 mx-auto w-full">
+        <div className=" mx-auto w-full">
           {loading
             ? (
               <div className="flex justify-center">
@@ -38,8 +38,8 @@ export default function Timelog() {
               </div>
             ) : (
               <>
-                <div className="flex flex-col lg:flex-row lg:justify-end items-center lg:items-start space-y-5 lg:space-y-0 lg:space-x-7">
-                  <div className="space-y-5 lg:space-y-7 w-full lg:flex-1 lg:max-w-[550px] max-w-[650px]">
+                <div className="flex flex-col lg:flex-row lg:justify-end items-center lg:items-start  xs:space-y-4 space-y-5 lg:space-y-0 lg:space-x-7">
+                  <div className="space-y-5 xs:space-y-4 lg:space-y-7 w-full lg:flex-1 lg:max-w-[550px] max-w-[650px]">
                     <CurrentTimeButtons />
                     {workStatus === "notStarted" && <ScheduledTimeDialog />}
                   </div>

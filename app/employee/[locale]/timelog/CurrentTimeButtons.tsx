@@ -232,17 +232,17 @@ const CurrentTimeButtons = () => {
     <>
     <div className="w-full">
       <Card className={`shadow border-0 border-t-4 ${getBorderColor()}`}>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xl font-semibold text-center mt-3 lg:mt-4 text-gray-900">{t("currentWorkTime")}</CardTitle> 
+        <CardHeader className="pb-2 xs:pb-1 short:pb-1">
+          <CardTitle className="text-xl font-semibold text-center short:mt-1 xs:mt-1 mt-3 lg:mt-4 text-gray-900">{t("currentWorkTime")}</CardTitle> 
         </CardHeader>
-        <CardContent className="space-y-6 lg:space-y-7  px-5 pb-5 sm:pb-7 sm:px-7">
+        <CardContent className="short:space-y-5 xs:space-y-5 space-y-6 lg:space-y-7 short:pb-5 short:px-5 xs:px-4 xs:pb-4 px-5 pb-5 sm:pb-7 sm:px-7">
           <div className="text-center">
-            <p className={`sm:text-6xl text-5xl font-bold  font-sans lg:tracking-wide transition-colors 
+            <div className={`sm:text-6xl text-5xl font-bold  font-sans lg:tracking-wide transition-colors 
               ${workStatus === "onBreak" ? "text-gray-300 duration-200" : "text-black"}
             `} >
               {formatTime(workTime)}
-            </p>
-            <div className="mt-[1.15rem] lg:mt-5">
+            </div>
+            <div className="short:mt-4 xs:mt-4 mt-[1.15rem] lg:mt-5 ">
               <Badge className={`${getBadgeStyle()} transition-all`}>{getBadgeLabel()}</Badge>
             </div>
           </div>
