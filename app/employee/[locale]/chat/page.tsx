@@ -2,6 +2,7 @@
 
 import { supabase } from "@/utils/supabase/client";
 import { truncate } from "fs";
+import { PlusCircle } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -25,11 +26,20 @@ interface Reaction {
   reaction_type: string;
 }
 
+const REACTION_TYPES = ["👍", "🙏", "🙇‍♂️", "😊", "😢", "😲", "😂"];
+
 export default function GroupChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [userId, setUserId] = useState<string | null>(null);
+
+  const fetchUserId = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) setUserId(user.id);
+  };
 
   useEffect(()=>{
+    fetchUserId();
     fetchMessages();
     setupRealtimeListeners()
   },[])
@@ -70,72 +80,72 @@ export default function GroupChatPage() {
     return () => supabase.removeChannel(messageSubscription);
   };
 
-    // 新しいメッセージ処理
-    const handleNewMessage = async (payload:any) => {
-      const newMessage = payload.new as Message;
-      const { data: profileData, error } = await supabase
-        .from('profiles')
-        .select('japanese_name, english_name, image_url')
-        .eq('user_id', newMessage.sender_id)
-        .single();
-  
-      if (error) {
-        console.error("Failed to fetch profile:", error);
-        return;
-      }
-  
-      const messageWithProfile = {
-        ...newMessage,
-        profiles: {
-          japanese_name: profileData?.japanese_name,
-          english_name: profileData?.english_name,
-          image_url: profileData?.image_url || ""
-        },
-        reactions: [],
-      };
-      setMessages((currentMessages) => [...currentMessages, messageWithProfile]);
+  // 新しいメッセージ処理
+  const handleNewMessage = async (payload:any) => {
+    const newMessage = payload.new as Message;
+    const { data: profileData, error } = await supabase
+      .from('profiles')
+      .select('japanese_name, english_name, image_url')
+      .eq('user_id', newMessage.sender_id)
+      .single();
+
+    if (error) {
+      console.error("Failed to fetch profile:", error);
+      return;
+    }
+
+    const messageWithProfile = {
+      ...newMessage,
+      profiles: {
+        japanese_name: profileData?.japanese_name,
+        english_name: profileData?.english_name,
+        image_url: profileData?.image_url || ""
+      },
+      reactions: [],
     };
+    setMessages((currentMessages) => [...currentMessages, messageWithProfile]);
+  };
   
-    // 新しいリアクション処理
-    const handleNewReaction = (payload:any) => {
-      const newReaction = payload.new as Reaction;
-      setMessages((currentMessages) =>
-        currentMessages.map((message) =>
-          message.message_id === newReaction.target_id
-            ? { ...message, reactions: [...message.reactions, newReaction] }
-            : message
-        )
-      );
-    };
-  
-    // リアクション削除処理
-    const handleDeleteReaction = (payload:any) => {
-      const deletedReaction = payload.old as Reaction;
-      setMessages((currentMessages) =>
-        currentMessages.map((message) =>
-          message.message_id === deletedReaction.target_id
-            ? { ...message, reactions: message.reactions.filter(r => r.reaction_id !== deletedReaction.reaction_id) }
-            : message
-        )
-      );
-    };
-  
-    // リアクション更新処理
-    const handleUpdateReaction = (payload:any) => {
-      const updatedReaction = payload.new as Reaction;
-      setMessages((currentMessages) =>
-        currentMessages.map((message) =>
-          message.message_id === updatedReaction.target_id
-            ? {
-                ...message,
-                reactions: message.reactions.map((reaction) =>
-                  reaction.reaction_id === updatedReaction.reaction_id ? updatedReaction : reaction
-                ),
-              }
-            : message
-        )
-      );
-    };
+  // 新しいリアクション処理
+  const handleNewReaction = (payload:any) => {
+    const newReaction = payload.new as Reaction;
+    setMessages((currentMessages) =>
+      currentMessages.map((message) =>
+        message.message_id === newReaction.target_id
+          ? { ...message, reactions: [...message.reactions, newReaction] }
+          : message
+      )
+    );
+  };
+
+  // リアクション削除処理
+  const handleDeleteReaction = (payload:any) => {
+    const deletedReaction = payload.old as Reaction;
+    setMessages((currentMessages) =>
+      currentMessages.map((message) =>
+        message.message_id === deletedReaction.target_id
+          ? { ...message, reactions: message.reactions.filter(r => r.reaction_id !== deletedReaction.reaction_id) }
+          : message
+      )
+    );
+  };
+
+  // リアクション更新処理
+  const handleUpdateReaction = (payload:any) => {
+    const updatedReaction = payload.new as Reaction;
+    setMessages((currentMessages) =>
+      currentMessages.map((message) =>
+        message.message_id === updatedReaction.target_id
+          ? {
+              ...message,
+              reactions: message.reactions.map((reaction) =>
+                reaction.reaction_id === updatedReaction.reaction_id ? updatedReaction : reaction
+              ),
+            }
+          : message
+      )
+    );
+  };
 
   const handleSendMessage = async () => {
     if (newMessage.trim() === '') return;
@@ -162,66 +172,35 @@ export default function GroupChatPage() {
 
   const handleToggleReaction = async (messageId: number, reactionType: string) => {
     const { data: { user } } = await supabase.auth.getUser();
-
     if (!user) {
       console.error("Failed to get user (chat/handleToggleReaction)");
       return;
     }
 
-    // 現在のリアクションを取得
     const currentReaction = messages
       .find(message => message.message_id === messageId)
       ?.reactions.find(reaction => reaction.user_id === user.id);
 
     if (currentReaction) {
-      // 既存のリアクションが同じタイプの場合は削除
       if (currentReaction.reaction_type === reactionType) {
         await supabase.from('reactions').delete().eq('reaction_id', currentReaction.reaction_id);
       } else {
-        // 異なるリアクションタイプなら更新
-        await supabase
-          .from('reactions')
-          .update({ reaction_type: reactionType })
-          .eq('reaction_id', currentReaction.reaction_id);
+        await supabase.from('reactions').update({ reaction_type: reactionType }).eq('reaction_id', currentReaction.reaction_id);
       }
     } else {
-      // リアクションが存在しなければ新規追加
       await supabase.from('reactions').insert([
-        {
-          user_id: user.id,
-          target_id: messageId,
-          reaction_type: reactionType,
-        },
+        {user_id: user.id, target_id: messageId, reaction_type: reactionType,},
       ]);
     }
   };
-
-  const MessageComponent = ({ message }:{message: Message}) => (
-    <div className="p-4 bg-white border rounded shadow">
-      <div className="flex items-center space-x-2">
-        <img src={message.profiles?.image_url || '/default-avatar.png'} alt="User Avatar" className="w-10 h-10 rounded-full" />
-        <p>{message.profiles?.japanese_name || message.profiles?.english_name}</p>
-        <span className="text-gray-500 text-sm ml-2">{message.created_at}</span>
-      </div>
-      <p>{message.content}</p>
-      <div className="mt-2 flex space-x-2">
-        {message.reactions.map((reaction) => (
-          <span key={reaction.reaction_id} className="text-sm text-gray-600">{reaction.reaction_type}</span>
-        ))}
-      </div>
-      <div className="mt-2 flex space-x-2">
-        <button onClick={() => handleToggleReaction(message.message_id, "good")} className="text-sm text-gray-600">👍 いいね</button>
-        <button onClick={() => handleToggleReaction(message.message_id, "smile")} className="text-sm text-gray-600">😊 笑顔</button>
-      </div>
-    </div>
-  );
 
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">全体チャット</h2>
       <div className="flex flex-col h-full overflow-auto">
         <div className="flex-1 overflow-y-auto space-y-4 mb-4">
-          {messages.map((message) => <MessageComponent key={message.message_id} message={message} />)}
+          {messages.map((message) =>( 
+            <MessageComponent key={message.message_id} message={message} handleToggleReaction={handleToggleReaction} userId={userId!} />))}
         </div>
         <div className="flex items-center border-t p-4">
           <input
@@ -237,3 +216,72 @@ export default function GroupChatPage() {
     </div>
   )
 }
+
+interface ReactionCounts {
+  [reactionType: string]: number;
+}
+
+interface MessageComponentProps {
+  message: Message;
+  handleToggleReaction: (messageId: number, reactionType: string) => void;
+  userId: string;  // 現在のユーザーIDを追加
+}
+
+const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleToggleReaction, userId}) => {
+  // リアクションのカウントを計算
+  const reactionCounts: ReactionCounts = message.reactions.reduce((acc: ReactionCounts, reaction: Reaction) => {
+    if (!acc[reaction.reaction_type]) acc[reaction.reaction_type] = 0;
+    acc[reaction.reaction_type]++;
+    return acc;
+  }, {});
+
+  return (
+    <div className="p-4 bg-white border rounded shadow">
+      <div className="flex items-center space-x-2">
+        <img src={message.profiles?.image_url || '/default-avatar.png'} alt="User Avatar" className="w-10 h-10 rounded-full" />
+        <p>{message.profiles?.japanese_name || message.profiles?.english_name}</p>
+        <span className="text-gray-500 text-sm ml-2">{new Date(message.created_at).toLocaleString()}</span>
+      </div>
+      <p>{message.content}</p>
+      <div className="mt-2 flex space-x-2">
+        {/* リアクションとカウントの表示 */}
+        {Object.entries(reactionCounts).map(([reactionType, count]) => {
+          const userReacted = message.reactions.some(
+            (reaction) => reaction.reaction_type === reactionType && reaction.user_id === userId
+          );
+
+          return (
+            <button
+              key={reactionType}
+              onClick={() => handleToggleReaction(message.message_id, reactionType)}
+              className={`text-sm flex items-center space-x-1 ${
+                userReacted ? 'text-blue-500 border border-blue-500 p-1 rounded' : 'text-gray-600'
+              }`}
+            >
+              <span>{reactionType}</span>
+              <span>{count}</span>
+            </button>
+          );
+        })}
+
+        <div className="relative group">
+          <button className="text-sm text-gray-600 flex items-center space-x-1">
+            <PlusCircle/>
+          </button>
+          {/* スタンプ選択メニュー */}
+          <div className="absolute left-0 top-full bg-white border border-gray-300 rounded shadow-lg hidden group-hover:flex space-x-2">
+            {REACTION_TYPES.map((reaction) => (
+              <button
+                key={reaction}
+                onClick={() => handleToggleReaction(message.message_id, reaction)}
+                className="text-lg"
+              >
+                {reaction}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
