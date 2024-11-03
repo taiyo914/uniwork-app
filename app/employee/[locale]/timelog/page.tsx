@@ -39,7 +39,7 @@ export default function Timelog() {
             ) : (
               <>
                 <div className="flex flex-col lg:flex-row lg:justify-end items-center lg:items-start  space-y-4 sm:space-y-5 lg:space-y-0 lg:space-x-6 xl:space-x-7">
-                  <div className="sm:space-y-5 space-y-4 lg:space-y-7 w-full lg:flex-1 lg:max-w-[550px] max-w-[650px]">
+                  <div className="sm:space-y-5 space-y-4 lg:space-y-6 w-full lg:flex-1 lg:max-w-[550px] max-w-[650px]">
                     <CurrentTimeButtons />
                     {workStatus === "notStarted" && <ScheduledTimeDialog />}
                   </div>
