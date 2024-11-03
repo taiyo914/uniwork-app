@@ -34,7 +34,7 @@ export default function VerticalNav() {
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
     >
-      <ul className="py-2 space-y-1 short:space-y-0 short:py-1">
+      <ul className="py-2 space-y-1 short:space-y-0 short:py-0">
         <li className="relative">
           <div
             className={`flex items-center p-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600`}

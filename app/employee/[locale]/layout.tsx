@@ -16,10 +16,10 @@ export default async function EmployeeLayout({ children, params:{locale} }: Layo
   const { t, resources } = await initTranslations(locale, i18nNamespaces);
   return (
     <TranslationsProvider namespaces={i18nNamespaces} locale={locale} resources={resources}>
-      <div className=" flex h-screen overflow-hidden xs:h-[1150px]">
+      <div className="">
         <VerticalNav />
         <MobileNav/>
-        <main className="flex-1 overflow-auto notxs:ml-16 xs:mt-12 p-4">{children}</main>
+        <main className="notxs:ml-16 xs:mt-[3.5rem] xs:mb-20">{children}</main>
       </div>
     </TranslationsProvider>
   );
