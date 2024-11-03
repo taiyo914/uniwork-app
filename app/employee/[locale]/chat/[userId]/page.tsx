@@ -1,12 +1,13 @@
 "use client"
-
+import { useParams } from "next/navigation";
 import { useState } from "react";
 
-export default function GroupChatPage() {
+export default function PrivateChatPage() {
+  const {locale, userId} =  useParams()
+
   const [messages, setMessages] = useState([
-    { id: 1, user: '田中太郎', content: 'こんにちは、みなさん！', createdAt: '2023/06/19 19:00:00' },
-    { id: 2, user: '山田花子', content: 'こんにちは、田中さん！', createdAt: '2023/06/19 19:05:00' },
-    { id: 3, user: '佐藤次郎', content: '今日の会議の時間を確認したいのですが、何時からでしたっけ？', createdAt: '2023/06/19 19:10:00' },
+    { id: 1, user: userId, content: 'こんにちは、田中さん！', createdAt: '2023/06/19 19:05:00' },
+    { id: 2, user: '自分', content: 'こんにちは、' + userId + 'さん！', createdAt: '2023/06/19 19:10:00' },
   ]);
 
   const [newMessage, setNewMessage] = useState('');
@@ -20,9 +21,9 @@ export default function GroupChatPage() {
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">全体チャット</h2>
-      <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full">
+      <h2 className="text-xl font-bold mb-4">{userId}さんとのチャット</h2>
+
       {/* メッセージ一覧 */}
       <div className="flex-1 overflow-y-auto space-y-4 mb-4">
         {messages.map((message) => (
@@ -46,7 +47,6 @@ export default function GroupChatPage() {
           送信
         </button>
       </div>
-    </div>
     </div>
   );
 }
