@@ -200,13 +200,13 @@ export default function Component() {
   
 
   return (<>
-    <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans w-full">
-      <CardHeader className="bg-blue-100 py-5 xs:py-4 xs:px-4">
-        <CardTitle className="text-2xl xs:text-xl text-blue-800 flex items-center gap-2 ">{t("workHistory")}<History className="h-6 w-6"/></CardTitle>
+    <Card className="bg-white shadow-lg rounded-xl overflow-hidden font-sans w-full notxs:mb-5">
+      <CardHeader className="bg-blue-100 py-5 p-4">
+        <CardTitle className="text-xl text-blue-800 flex items-center gap-2 ">{t("workHistory")}<History className="h-5 w-5 "/></CardTitle>
       </CardHeader>
-      <CardContent className="px-3 xs:px-2 md:px-6 py-0 bg-slate-50/30">
-        <ScrollArea className="min-h-[500px] h-[calc(100vh-700px)] lg:h-[calc(100vh-250px)] w-full rounded-md  px-2">
-          <div className="space-y-4 xs:py-3.5 py-4 md:py-7">
+      <CardContent className="px-2 sm:px-3 md:px-4 py-0 bg-slate-50/30">
+        <ScrollArea className="min-h-[450px] lg:min-h-[373px] h-[calc(100vh-535px)] sm:h-[calc(100vh-585px)] lg:h-[calc(100vh-165px)] w-full rounded-md  px-2">
+          <div className="space-y-4 xs:py-3.5 py-4 ">
             {sortedRecords.map((record) => (
               <Card key={record.id} className="w-full">
                 <CardHeader className="flex-row items-center justify-between border-b rounded-t-md bg-blue-100/50 py-3 pl-[1.15rem] pr-4">

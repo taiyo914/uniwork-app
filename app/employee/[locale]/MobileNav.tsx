@@ -35,7 +35,7 @@ export default function MobileNav() {
     <div className="hidden xs:block">
 
       {/* ヘッダー */}
-      <header className="fixed top-0 left-0 w-full bg-gray-50 shadow flex justify-between items-center z-20">
+      <header className="h-[3.5rem] fixed top-0 left-0 w-full bg-gray-50 shadow flex justify-between items-center z-20">
         <div className="flex items-center ml-4 py-1.5">
           <Earth className="h-6 w-6 text-blue-500 mb-0.5" />
           <span className="text-[1.6rem] font-semibold ml-1 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600">Uniwork</span>
