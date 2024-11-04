@@ -267,7 +267,7 @@ export default function GroupChatPage() {
         ))}
       </div>
     </div>
-    <footer className="bg-white border-t p-4">
+    <div className="bg-white border-t p-4">
       <div className="max-w-4xl mx-auto">
         <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="flex items-center space-x-2">
           <Input
@@ -275,15 +275,14 @@ export default function GroupChatPage() {
             placeholder="メッセージを入力..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            className="flex-grow"
+            className="flex-grow focus-visible:ring-1 focus-visible:ring-offset-2"
           />
-          <Button type="submit" size="icon">
+          <Button type="submit" size="icon" className={` ${newMessage.trim() ? "bg-blue-500 text-white":"bg-white text-gray-600 border"}`}>
             <Send className="h-4 w-4" />
-            <span className="sr-only">Send</span>
           </Button>
         </form>
       </div>
-    </footer>
+    </div>
   </div>
 )
 }
@@ -353,15 +352,15 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
               >
                 {reactionType} {count}
               </button>
-              <div className="absolute bottom-full left-0 mb-1 p-2 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block w-48 z-10 space-y-1">
+              <div className="absolute bottom-full left-0 mb-1 p-1 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block w-40 z-10 space-y-1">
                 {userProfiles.length > 0 ? (
                   userProfiles.map((profile, index) => (
                     <div key={index} className="flex items-center space-x-1">
-                      <Avatar className="h-6 w-6 border">
+                      <Avatar className="h-5 w-5 border">
                         <AvatarImage src={profile.imageUrl} alt="User Avatar" />
                         <AvatarFallback>{profile.name[0]}</AvatarFallback>
                       </Avatar>
-                      <span className="truncate mt-0.5">{profile.name}</span>
+                      <span className="truncate mt-0.5 text-sm">{profile.name}</span>
                     </div>
                   ))
                 ) : (
@@ -376,7 +375,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
           <div className="flex items-center gap-1 group-hover:text-gray-500 text-gray-400 cursor-pointer">
             <SmilePlus className="h-5 w-5 " />
             {Object.entries(reactionCounts).length === 0 && (
-              <span className="text-xs font-semibold text-gray-400"> +リアクション</span>
+              <span className="text-xs font-semibold"> +リアクション</span>
             )}
           </div>
 
