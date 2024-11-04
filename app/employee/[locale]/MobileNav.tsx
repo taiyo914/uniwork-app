@@ -4,7 +4,7 @@ import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useLogout } from "@/hooks/useLogout";
 import { useTranslation } from 'react-i18next';
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useLockBodyScroll } from "@uidotdev/usehooks";
 
 const Overlay = ({onClose}:{onClose: ()=> void})=>{
