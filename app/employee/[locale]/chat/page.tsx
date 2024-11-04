@@ -1,9 +1,7 @@
 "use client"
 
 import { supabase } from "@/utils/supabase/client";
-import { truncate } from "fs";
 import { PlusCircle } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface Message {
@@ -43,11 +41,23 @@ export default function GroupChatPage() {
     if (user) setUserId(user.id);
   };
 
+  const setupRealtimeListeners = () => {
+    const messageSubscription = supabase
+      .channel('messages')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: 'is_group_message=eq.true' }, handleNewMessage)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reactions' }, handleNewReaction)
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'reactions' }, handleDeleteReaction)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reactions' }, handleUpdateReaction)
+      .subscribe();
+
+    return () => supabase.removeChannel(messageSubscription);
+  };
+
   useEffect(()=>{
     fetchUserId();
     fetchMessages();
     setupRealtimeListeners()
-  },[])
+  },[setupRealtimeListeners])
 
   const fetchMessages = async () => {
     const { data, error } = await supabase
@@ -78,17 +88,7 @@ export default function GroupChatPage() {
     setMessages(data || []);
   };
 
-  const setupRealtimeListeners = () => {
-    const messageSubscription = supabase
-      .channel('messages')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: 'is_group_message=eq.true' }, handleNewMessage)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reactions' }, handleNewReaction)
-      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'reactions' }, handleDeleteReaction)
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reactions' }, handleUpdateReaction)
-      .subscribe();
 
-    return () => supabase.removeChannel(messageSubscription);
-  };
 
   // 新しいメッセージ処理
   const handleNewMessage = async (payload:any) => {
