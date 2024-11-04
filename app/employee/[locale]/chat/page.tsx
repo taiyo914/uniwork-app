@@ -337,7 +337,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
       .filter((reaction) => reaction.reaction_type === reactionType)
       .map((reaction) => ({
         name: reaction.profiles
-          ? reaction.profiles.japanese_name || reaction.profiles.english_name || reaction.user_id
+          ? reaction.profiles.english_name || reaction.profiles.japanese_name || reaction.user_id
           : reaction.user_id,
         imageUrl: reaction.profiles?.image_url || '/default-avatar.png'
       }));
@@ -419,15 +419,15 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
               >
                 {reactionType} {count}
               </button>
-              <div className="absolute bottom-full left-0 mb-1 p-1 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block w-40 z-10 space-y-1">
+              <div className="absolute bottom-full -left-0.5 mb-[0.17rem] p-1.5 pr-3 pl-2 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block w-fit z-10 space-y-1">
                 {userProfiles.length > 0 ? (
                   userProfiles.map((profile, index) => (
                     <div key={index} className="flex items-center space-x-1">
-                      <Avatar className="h-5 w-5 border">
-                        <AvatarImage src={profile.imageUrl} alt="User Avatar" />
+                      <Avatar className="h-6 w-6 border">
+                        <AvatarImage src={profile.imageUrl} alt="User Avatar" className="object-cover"/>
                         <AvatarFallback>{profile.name[0]}</AvatarFallback>
                       </Avatar>
-                      <span className="truncate mt-0.5 text-sm">{profile.name}</span>
+                      <span className="truncate mt-0.5 text-nowrap text-gray-500">{profile.name}</span>
                     </div>
                   ))
                 ) : (
