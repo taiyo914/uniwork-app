@@ -1,8 +1,11 @@
 "use client"
 
 import { supabase } from "@/utils/supabase/client";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Send, SmilePlus } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface Message {
   sender_id: string;
@@ -247,26 +250,42 @@ export default function GroupChatPage() {
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">全体チャット</h2>
-      <div className="flex flex-col h-full overflow-auto">
-        <div className="flex-1 overflow-y-auto space-y-4 mb-4">
-          {messages.map((message) =>( 
-            <MessageComponent key={message.message_id} message={message} handleToggleReaction={handleToggleReaction} userId={userId!} />))}
-        </div>
-        <div className="flex items-center border-t p-4">
-          <input
-            type="text"
-            placeholder="メッセージを入力..."
-            className="flex-1 border border-gray-300 rounded p-2 mr-2"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+  <div className="flex flex-col h-screen w-full bg-gray-50">
+    <div className="bg-white shadow-sm py-4 px-6">
+      <h2 className="text-2xl font-bold text-blue-600">全体チャット</h2>
+    </div>
+
+    <div className="flex-grow overflow-auto p-5">
+      <div className="max-w-4xl mx-auto space-y-4">
+        {messages.map((message) => (
+          <MessageComponent
+            key={message.message_id}
+            message={message}
+            handleToggleReaction={handleToggleReaction}
+            userId={userId!}
           />
-          <button onClick={handleSendMessage} className="bg-blue-500 text-white px-4 py-2 rounded">送信</button>
-        </div>
+        ))}
       </div>
     </div>
-  )
+    <footer className="bg-white border-t p-4">
+      <div className="max-w-4xl mx-auto">
+        <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="flex items-center space-x-2">
+          <Input
+            type="text"
+            placeholder="メッセージを入力..."
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            className="flex-grow"
+          />
+          <Button type="submit" size="icon">
+            <Send className="h-4 w-4" />
+            <span className="sr-only">Send</span>
+          </Button>
+        </form>
+      </div>
+    </footer>
+  </div>
+)
 }
 
 interface ReactionCounts {
@@ -299,67 +318,81 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
   };
 
   return (
-    <div className="p-4 bg-white border rounded shadow">
-      <div className="flex items-center space-x-2">
-        <img src={message.profiles?.image_url || '/default-avatar.png'} alt="User Avatar" className="w-10 h-10 rounded-full" />
-        <p>{message.profiles?.japanese_name || message.profiles?.english_name}</p>
-        <span className="text-gray-500 text-sm ml-2">{new Date(message.created_at).toLocaleString()}</span>
+    <div className="bg-white rounded-lg shadow-sm pb-2 p-3 border">
+      <div className="flex items-start space-x-3 mb-2">
+        <Avatar className="h-8 w-8">
+          <AvatarImage src={message.profiles?.image_url || '/placeholder.svg?height=40&width=40'} alt="User Avatar" />
+          <AvatarFallback>{message.profiles?.japanese_name?.[0] || message.profiles?.english_name?.[0] || 'U'}</AvatarFallback>
+        </Avatar>
+        <div className="flex-grow">
+          <p className="font-semibold text-blue-600 text-sm">
+            {message.profiles?.japanese_name || message.profiles?.english_name}
+            <span className="text-xs text-gray-400 ml-2">
+              {new Date(message.created_at).toLocaleString()}
+            </span>
+          </p>
+          <p className="text-gray-700 mt-1">{message.content}</p>
+        </div>
       </div>
-      <p>{message.content}</p>
-      <div className="mt-2 flex space-x-2">
-        {/* リアクションとカウントの表示 */}
+  
+      <div className="-mt-1.5 ml-10 flex flex-wrap gap-2 items-center">
+
         {Object.entries(reactionCounts).map(([reactionType, count]) => {
           const userReacted = message.reactions.some(
             (reaction) => reaction.reaction_type === reactionType && reaction.user_id === userId
-          );
-          const userProfiles = getUserProfilesByReaction(reactionType);
+          )
+          const userProfiles = getUserProfilesByReaction(reactionType)
 
           return (
-            <div className="relative group" key={reactionType}>
+            <div key={reactionType} className="relative group">
               <button
                 onClick={() => handleToggleReaction(message.message_id, reactionType)}
-                className={`text-sm flex items-center space-x-1 ${
-                  userReacted ? 'text-blue-500 border border-blue-500 p-1 rounded' : 'text-gray-600'
-                }`}
+                className={`text-sm border p-1 px-1.5 rounded-md 
+                    ${userReacted && "bg-blue-50 border-blue-200"}
+                  `}
               >
-                <span>{reactionType}</span>
-                <span>{count}</span>
+                {reactionType} {count}
               </button>
-              {/* ユーザー名とアイコンのホバーメニュー */}
-              <div className="absolute bottom-full left-0 mb-1 p-2 bg-white border border-gray-300 rounded shadow-lg text-xs hidden group-hover:flex flex-wrap gap-2 w-48">
+              <div className="absolute bottom-full left-0 mb-1 p-2 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block w-48 z-10 space-y-1">
                 {userProfiles.length > 0 ? (
                   userProfiles.map((profile, index) => (
                     <div key={index} className="flex items-center space-x-1">
-                      <img src={profile.imageUrl} alt="User Avatar" className="w-6 h-6 rounded-full" />
-                      <span>{profile.name}</span>
+                      <Avatar className="h-6 w-6 border">
+                        <AvatarImage src={profile.imageUrl} alt="User Avatar" />
+                        <AvatarFallback>{profile.name[0]}</AvatarFallback>
+                      </Avatar>
+                      <span className="truncate mt-0.5">{profile.name}</span>
                     </div>
                   ))
                 ) : (
                   <div>ユーザーなし</div>
                 )}
               </div>
-
             </div>
-          );
+          )
         })}
 
-        <div className="relative group">
-          <button className="text-sm text-gray-600 flex items-center space-x-1">
-            <PlusCircle/>
-          </button>
-          {/* スタンプ選択メニュー */}
-          <div className="absolute left-0 top-full bg-white border border-gray-300 rounded shadow-lg hidden group-hover:flex space-x-2 z-10">
+        <div className="relative group mt-0.5">
+          <div className="flex items-center gap-1 group-hover:text-gray-500 text-gray-400 cursor-pointer">
+            <SmilePlus className="h-5 w-5 " />
+            {Object.entries(reactionCounts).length === 0 && (
+              <span className="text-xs font-semibold text-gray-400"> +リアクション</span>
+            )}
+          </div>
+
+          <div className="absolute -left-2 top-0 mt-5 w-[13.6rem] bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:flex flex-wrap gap-1 z-10 py-0.5 p-1">
             {REACTION_TYPES.map((reaction) => (
               <button
                 key={reaction}
                 onClick={() => handleToggleReaction(message.message_id, reaction)}
-                className="text-lg"
+                className="text-lg hover:bg-gray-100 px-1 rounded inline"
               >
                 {reaction}
               </button>
             ))}
           </div>
         </div>
+
       </div>
     </div>
   );
