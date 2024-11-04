@@ -24,6 +24,11 @@ interface Reaction {
   reaction_id: number;
   user_id: string;
   reaction_type: string;
+  profiles: {
+    japanese_name: string;
+    english_name: string;
+    image_url: string;
+  };
 }
 
 const REACTION_TYPES = ["👍", "🙏", "🙇‍♂️", "😊", "😢", "😲", "😂"];
@@ -58,7 +63,12 @@ export default function GroupChatPage() {
           reaction_id,
           user_id,
           reaction_type,
-          target_id
+          target_id,
+          profiles!reactions_user_id_fkey ( 
+            japanese_name,
+            english_name,
+            image_url
+          )
         )
       `)
       .eq('is_group_message', true)
@@ -107,12 +117,32 @@ export default function GroupChatPage() {
   };
   
   // 新しいリアクション処理
-  const handleNewReaction = (payload:any) => {
+  const handleNewReaction = async (payload:any) => {
     const newReaction = payload.new as Reaction;
+    const { data: profileData, error } = await supabase
+      .from('profiles')
+      .select('japanese_name, english_name, image_url')
+      .eq('user_id', newReaction.user_id)
+      .single();
+    
+    if (error) {
+      console.error("Failed to fetch profile for reaction:", error);
+      return;
+    }
+
+    const completeReaction = {
+      ...newReaction,
+      profiles: {
+        japanese_name: profileData?.japanese_name,
+        english_name: profileData?.english_name,
+        image_url: profileData?.image_url || ""
+      }
+    };
+
     setMessages((currentMessages) =>
       currentMessages.map((message) =>
         message.message_id === newReaction.target_id
-          ? { ...message, reactions: [...message.reactions, newReaction] }
+          ? { ...message, reactions: [...message.reactions, completeReaction] }
           : message
       )
     );
@@ -131,15 +161,37 @@ export default function GroupChatPage() {
   };
 
   // リアクション更新処理
-  const handleUpdateReaction = (payload:any) => {
+  const handleUpdateReaction = async (payload:any) => {
     const updatedReaction = payload.new as Reaction;
+
+    // profilesテーブルからユーザー情報を取得
+    const { data: profileData, error } = await supabase
+      .from('profiles')
+      .select('japanese_name, english_name, image_url')
+      .eq('user_id', updatedReaction.user_id)
+      .single();
+
+    if (error) {
+      console.error("Failed to fetch profile for reaction:", error);
+      return;
+    }
+
+    const completeReaction = {
+      ...updatedReaction,
+      profiles: {
+        japanese_name: profileData?.japanese_name,
+        english_name: profileData?.english_name,
+        image_url: profileData?.image_url || ""
+      }
+    };
+
     setMessages((currentMessages) =>
       currentMessages.map((message) =>
         message.message_id === updatedReaction.target_id
           ? {
               ...message,
               reactions: message.reactions.map((reaction) =>
-                reaction.reaction_id === updatedReaction.reaction_id ? updatedReaction : reaction
+                reaction.reaction_id === updatedReaction.reaction_id ? completeReaction : reaction
               ),
             }
           : message
@@ -235,6 +287,17 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
     return acc;
   }, {});
 
+  const getUserProfilesByReaction = (reactionType: string): { name: string, imageUrl: string }[] => {
+    return message.reactions
+      .filter((reaction) => reaction.reaction_type === reactionType)
+      .map((reaction) => ({
+        name: reaction.profiles
+          ? reaction.profiles.japanese_name || reaction.profiles.english_name || reaction.user_id
+          : reaction.user_id,
+        imageUrl: reaction.profiles?.image_url || '/default-avatar.png'
+      }));
+  };
+
   return (
     <div className="p-4 bg-white border rounded shadow">
       <div className="flex items-center space-x-2">
@@ -249,18 +312,34 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
           const userReacted = message.reactions.some(
             (reaction) => reaction.reaction_type === reactionType && reaction.user_id === userId
           );
+          const userProfiles = getUserProfilesByReaction(reactionType);
 
           return (
-            <button
-              key={reactionType}
-              onClick={() => handleToggleReaction(message.message_id, reactionType)}
-              className={`text-sm flex items-center space-x-1 ${
-                userReacted ? 'text-blue-500 border border-blue-500 p-1 rounded' : 'text-gray-600'
-              }`}
-            >
-              <span>{reactionType}</span>
-              <span>{count}</span>
-            </button>
+            <div className="relative group" key={reactionType}>
+              <button
+                onClick={() => handleToggleReaction(message.message_id, reactionType)}
+                className={`text-sm flex items-center space-x-1 ${
+                  userReacted ? 'text-blue-500 border border-blue-500 p-1 rounded' : 'text-gray-600'
+                }`}
+              >
+                <span>{reactionType}</span>
+                <span>{count}</span>
+              </button>
+              {/* ユーザー名とアイコンのホバーメニュー */}
+              <div className="absolute bottom-full left-0 mb-1 p-2 bg-white border border-gray-300 rounded shadow-lg text-xs hidden group-hover:flex flex-wrap gap-2 w-48">
+                {userProfiles.length > 0 ? (
+                  userProfiles.map((profile, index) => (
+                    <div key={index} className="flex items-center space-x-1">
+                      <img src={profile.imageUrl} alt="User Avatar" className="w-6 h-6 rounded-full" />
+                      <span>{profile.name}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div>ユーザーなし</div>
+                )}
+              </div>
+
+            </div>
           );
         })}
 
@@ -269,7 +348,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
             <PlusCircle/>
           </button>
           {/* スタンプ選択メニュー */}
-          <div className="absolute left-0 top-full bg-white border border-gray-300 rounded shadow-lg hidden group-hover:flex space-x-2">
+          <div className="absolute left-0 top-full bg-white border border-gray-300 rounded shadow-lg hidden group-hover:flex space-x-2 z-10">
             {REACTION_TYPES.map((reaction) => (
               <button
                 key={reaction}
