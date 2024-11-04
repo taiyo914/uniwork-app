@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 export default function PrivateChatPage() {
-  const {locale, userId} =  useParams()
+  const { userId} =  useParams()
 
   const [messages, setMessages] = useState([
     { id: 1, user: userId, content: 'こんにちは、田中さん！', createdAt: '2023/06/19 19:05:00' },
