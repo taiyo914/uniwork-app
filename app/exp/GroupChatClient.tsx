@@ -123,6 +123,7 @@ export default function GroupChatClient({initialMessages}: Props) {
   
   // 新しいリアクション処理
   const handleNewReaction = async (payload:any) => {
+    console.log("hanleNewReaction", payload)
     const newReaction = payload.new as Reaction;
     const { data: profileData, error } = await supabase
       .from('profiles')
