@@ -2,7 +2,7 @@
 
 import { supabase } from "@/utils/supabase/client";
 import { PlusCircle, Send, SmilePlus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useRef, useCallback, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,6 +38,25 @@ export default function GroupChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [userId, setUserId] = useState<string | null>(null);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const isFirstRender = useRef(true); 
+  const prevMessageCount = useRef(messages.length);
+
+  const scrollToBottom = () => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: isFirstRender.current ? "instant" : "smooth"  });
+      isFirstRender.current = false;
+    }
+  };
+
+  useEffect(() => {
+    if (messages.length > prevMessageCount.current) { // メッセージ数の変化を確認
+      if (bottomRef.current) {
+        scrollToBottom();
+      }
+    }
+    prevMessageCount.current = messages.length; // メッセージ数を更新
+  }, [messages.length]); 
 
   const fetchUserId = async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -90,8 +109,6 @@ export default function GroupChatPage() {
     if (error) console.error(error);
     setMessages(data || []);
   };
-
-
 
   // 新しいメッセージ処理
   const handleNewMessage = async (payload:any) => {
@@ -255,7 +272,9 @@ export default function GroupChatPage() {
       <h2 className="text-2xl font-bold text-blue-600">全体チャット</h2>
     </div>
 
-    <div className="flex-grow overflow-auto p-5">
+    <div 
+      className="flex-grow overflow-auto p-5"
+    >
       <div className="max-w-4xl mx-auto space-y-4">
         {messages.map((message) => (
           <MessageComponent
@@ -266,6 +285,7 @@ export default function GroupChatPage() {
           />
         ))}
       </div>
+      <div ref={bottomRef} />
     </div>
     <div className="bg-white border-t p-4">
       <div className="max-w-4xl mx-auto">
