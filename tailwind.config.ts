@@ -65,6 +65,20 @@ const config: Config = {
         sans: ['var(--font-geist-sans)'],
         mono: ['var(--font-geist-mono)'],
       },
+			keyframes: {
+        'slide-up': {
+          '0%': { transform: 'translateY(50%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+				'slide-down': {
+          '0%': { transform: 'translateY(-50%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+      },
+      animation: {
+        'slide-up': 'slide-up 0.2s ease-out forwards',
+				'slide-down': 'slide-down 0.2s ease-out forwards',
+      },
   	}
   },
   plugins: [require("tailwindcss-animate")],
