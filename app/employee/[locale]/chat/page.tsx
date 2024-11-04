@@ -1,11 +1,13 @@
 "use client"
 
 import { supabase } from "@/utils/supabase/client";
-import { PlusCircle, Send, SmilePlus } from "lucide-react";
-import { useRef, useCallback, useEffect, useState } from "react";
+import { Send, SmilePlus, Languages, Loader2 } from "lucide-react";
+import { useRef, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { format } from 'date-fns';
+import { useParams } from "next/navigation";
 
 interface Message {
   sender_id: string;
@@ -268,14 +270,14 @@ export default function GroupChatPage() {
 
   return (
   <div className="flex flex-col h-screen w-full bg-gray-50">
-    <div className="bg-white shadow-sm py-4 px-6">
-      <h2 className="text-2xl font-bold text-blue-600">全体チャット</h2>
+    <div className="bg-blue-100 shadow-sm p-4 border-b border-blue-200">
+      <h2 className="text-xl font-bold text-blue-700">全体チャット</h2>
     </div>
 
     <div 
-      className="flex-grow overflow-auto p-5"
+      className="flex-grow overflow-auto pb-6"
     >
-      <div className="max-w-4xl mx-auto space-y-4">
+      <div className="">
         {messages.map((message) => (
           <MessageComponent
             key={message.message_id}
@@ -287,8 +289,8 @@ export default function GroupChatPage() {
       </div>
       <div ref={bottomRef} />
     </div>
-    <div className="bg-white border-t p-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="bg-white border-t p-3">
+      <div className="">
         <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="flex items-center space-x-2">
           <Input
             type="text"
@@ -297,7 +299,7 @@ export default function GroupChatPage() {
             onChange={(e) => setNewMessage(e.target.value)}
             className="flex-grow focus-visible:ring-1 focus-visible:ring-offset-2"
           />
-          <Button type="submit" size="icon" className={` ${newMessage.trim() ? "bg-blue-500 text-white":"bg-white text-gray-600 border"}`}>
+          <Button type="submit" size="icon" className={` ${newMessage.trim() ? "bg-blue-500 hover:bg-blue-600 text-white":"bg-white text-gray-600 border hover:cursor-default"}`}>
             <Send className="h-4 w-4" />
           </Button>
         </form>
@@ -318,6 +320,11 @@ interface MessageComponentProps {
 }
 
 const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleToggleReaction, userId}) => {
+  const [translatedText, setTranslatedText] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { locale } = useParams()
+  const targetLang = Array.isArray(locale) ? locale[0] : locale;
+
   // リアクションのカウントを計算
   const reactionCounts: ReactionCounts = message.reactions.reduce((acc: ReactionCounts, reaction: Reaction) => {
     if (!acc[reaction.reaction_type]) acc[reaction.reaction_type] = 0;
@@ -336,25 +343,65 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
       }));
   };
 
+  const handleTranslate = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `/api/translate?text=${encodeURIComponent(
+          message.content
+        )}&targetLang=${targetLang}&sourceLang=`
+      );
+      const data = await response.json();
+      if (response.ok) {
+        setTranslatedText(data.translatedText);
+      } else {
+        console.error('Translation error:', data.error);
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+      setTranslatedText("翻訳に失敗しました...");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-sm pb-2 p-3 border">
-      <div className="flex items-start space-x-3 mb-2">
+    <div className="px-3 py-2 ">
+      <div className="flex items-start mb-2">
         <Avatar className="h-8 w-8">
           <AvatarImage src={message.profiles?.image_url || '/placeholder.svg?height=40&width=40'} alt="User Avatar" />
           <AvatarFallback>{message.profiles?.japanese_name?.[0] || message.profiles?.english_name?.[0] || 'U'}</AvatarFallback>
         </Avatar>
         <div className="flex-grow">
-          <p className="font-semibold text-blue-600 text-sm">
-            {message.profiles?.japanese_name || message.profiles?.english_name}
-            <span className="text-xs text-gray-400 ml-2">
-              {new Date(message.created_at).toLocaleString()}
+          <div className="font-semibold text-blue-600 text-sm ml-2">
+            {message.profiles?.english_name || message.profiles?.japanese_name}
+            <span className="text-xs text-gray-400 ml-1 font-light">
+              {format(message.created_at, "MM/dd HH:mm")}
             </span>
-          </p>
-          <p className="text-gray-700 mt-1">{message.content}</p>
+          </div>
+          <div className="flex mt-0.5 gap-1">
+            <div className=" bg-white p-2 rounded-xl rounded-tl-none border ml-1 flex-grow">
+              {message.content}
+              {translatedText && (
+              <div className="text-gray-500 mt-1.5 border-t pt-1.5 px-0.5">{translatedText}</div>
+            )}
+            </div>
+            <div 
+              className="border p-1 rounded-lg rounded-bl-none h-8 w-8 flex items-center justify-center mt-[0.5px] transition-all hover:bg-blue-100"
+            >
+              {isLoading ? (
+                <Loader2 className="animate-spin text-blue-500 h-5 w-5" />
+              ) : (
+                <button onClick={handleTranslate}>
+                  <Languages className="text-blue-500 h-5 w-5" />
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
   
-      <div className="-mt-1.5 ml-10 flex flex-wrap gap-2 items-center">
+      <div className="-mt-0.5 ml-10 flex flex-wrap gap-2 items-center">
 
         {Object.entries(reactionCounts).map(([reactionType, count]) => {
           const userReacted = message.reactions.some(
@@ -366,8 +413,8 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
             <div key={reactionType} className="relative group">
               <button
                 onClick={() => handleToggleReaction(message.message_id, reactionType)}
-                className={`text-sm border p-1 px-1.5 rounded-md 
-                    ${userReacted && "bg-blue-50 border-blue-200"}
+                className={`text-sm border p-0.5 px-1.5 rounded-md 
+                    ${userReacted ? "bg-blue-100/80 border-blue-300/80" : "border-gray-300/80"}
                   `}
               >
                 {reactionType} {count}
@@ -391,15 +438,15 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
           )
         })}
 
-        <div className="relative group mt-0.5">
+        <div className={`relative group mt-0.5 ${Object.entries(reactionCounts).length === 0 && "ml-1 mt-0"}`}>
           <div className="flex items-center gap-1 group-hover:text-gray-500 text-gray-400 cursor-pointer">
-            <SmilePlus className="h-5 w-5 " />
+            <SmilePlus className={`h-4 w-4`} />
             {Object.entries(reactionCounts).length === 0 && (
               <span className="text-xs font-semibold"> +リアクション</span>
             )}
           </div>
 
-          <div className="absolute -left-2 top-0 mt-5 w-[13.6rem] bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:flex flex-wrap gap-1 z-10 py-0.5 p-1">
+          <div className="absolute -left-2 top-0 mt-4 w-[13.6rem] bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:flex flex-wrap gap-1 z-10 py-0.5 p-1">
             {REACTION_TYPES.map((reaction) => (
               <button
                 key={reaction}
