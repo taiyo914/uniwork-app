@@ -1,13 +1,14 @@
 "use client"
 
 import { supabase } from "@/utils/supabase/client";
-import { Send, SmilePlus, Languages, Loader2 } from "lucide-react";
+import { Send, SmilePlus, Languages, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { useParams } from "next/navigation";
+import { useChatStore } from "@/stores/useChatStore";
 
 interface Message {
   sender_id: string;
@@ -43,6 +44,7 @@ export default function GroupChatPage() {
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const isFirstRender = useRef(true); 
   const prevMessageCount = useRef(messages.length);
+  const { isSidebarExpanded, toggleSidebar } = useChatStore()
 
   const scrollToBottom = () => {
     if (bottomRef.current) {
@@ -270,7 +272,14 @@ export default function GroupChatPage() {
 
   return (
   <div className="flex flex-col h-screen w-full bg-gray-50">
-    <div className="bg-blue-100 shadow-sm p-4 border-b border-blue-200">
+    <div className="bg-blue-100 shadow-sm p-4 border-b border-blue-200 flex">
+      <button
+        onClick={toggleSidebar}
+        className="p-1 rounded-full hover:bg-gray-100 block sm:hidden"
+        // aria-label={isSidebarExpanded ? t('collapse_sidebar') : t('expand_sidebar')}
+      >
+        {isSidebarExpanded ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+      </button>
       <h2 className="text-xl font-bold text-blue-700">全体チャット</h2>
     </div>
 
@@ -419,7 +428,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
               >
                 {reactionType} {count}
               </button>
-              <div className="absolute bottom-full -left-0.5 mb-[0.17rem] p-1.5 pr-3 pl-2 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block w-fit z-10 space-y-1">
+              <div className="absolute bottom-full -left-0.5 mb-[0.17rem] p-1.5 pr-3 pl-2 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block w-fit space-y-1">
                 {userProfiles.length > 0 ? (
                   userProfiles.map((profile, index) => (
                     <div key={index} className="flex items-center space-x-1">
@@ -446,7 +455,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
             )}
           </div>
 
-          <div className="absolute -left-2 top-0 mt-4 w-[13.6rem] bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:flex flex-wrap gap-1 z-10 py-0.5 p-1">
+          <div className="absolute -left-2 top-0 mt-4 w-[13.6rem] bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:flex flex-wrap gap-1 py-0.5 p-1">
             {REACTION_TYPES.map((reaction) => (
               <button
                 key={reaction}
