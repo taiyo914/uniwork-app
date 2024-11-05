@@ -59,6 +59,7 @@ const config: Config = {
 			screens: {
         'xs': {'max': '450px'}, 
         'notxs': '450.1px',
+				'notsm': {'max': '640px'},
 				'short': { 'raw': '(max-height: 430px)' },
       },
 			fontFamily: {
