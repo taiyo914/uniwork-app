@@ -58,20 +58,26 @@ export default function MobileNav() {
           </button>
         </div>
         <ul className="mt-4 space-y-1">
-          {navItems.map((item, index) => (
-            <li key={index} className="relative">
-              <Link
-                href={item.href}
-                className={`flex items-center p-3 rounded-lg ${
-                  pathname === item.href ? "bg-gray-200" : "hover:bg-gray-100"
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <span className="mr-2.5">{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            </li>
-          ))}
+          {navItems.map((item, index) => {
+            const isActive =
+            item.href === `/employee/${locale}`
+              ? pathname === item.href // ホームアイコンは完全一致
+              : pathname.startsWith(item.href); // 他のアイコンは前方一致
+            return(
+              <li key={index} className="relative">
+                <Link
+                  href={item.href}
+                  className={`flex items-center p-3 rounded-lg ${
+                    isActive ? "bg-gray-200" : "hover:bg-gray-100"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <span className="mr-2.5">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              </li>
+            )
+          })}
         </ul>
 
         <div className="absolute bottom-0 left-0 w-full px-2">
@@ -90,14 +96,20 @@ export default function MobileNav() {
 
       {/* ボトムナビゲーション */}
       <nav className="fixed bottom-0 left-0 w-full bg-gray-50 border-t border-gray-300/80 flex justify-around py-1.5 z-20">
-        {navItems.map((item, index) => (
-          <Link key={index} href={item.href} className="relative flex flex-col items-center p-2">
-            {item.icon}
-            {pathname === item.href && (
-              <span className="absolute inset-0 rounded-lg bg-gray-500 opacity-20"></span>
-            )}
-          </Link>
-        ))}
+        {navItems.map((item, index) => {
+          const isActive =
+          item.href === `/employee/${locale}`
+            ? pathname === item.href // ホームアイコンは完全一致
+            : pathname.startsWith(item.href); // 他のアイコンは前方一致
+          return(
+            <Link key={index} href={item.href} className="relative flex flex-col items-center p-2">
+              {item.icon}
+              {isActive && (
+                <span className="absolute inset-0 rounded-lg bg-gray-500 opacity-20"></span>
+              )}
+            </Link>
+          )
+        })}
       </nav>
 
       {isMenuOpen && <Overlay onClose={() => setIsMenuOpen(false)}/>}

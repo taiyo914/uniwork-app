@@ -49,30 +49,36 @@ export default function VerticalNav() {
             </div>
           </div>
         </li>
-        {navItems.map((item, index) => (
-          <li key={index} className="relative">
-            <Link
-              href={item.href}
-              className={`flex items-center p-3 transition-all ease-in-out rounded-lg
-                ${pathname !== item.href && "hover:bg-gray-200"}
-              `}
-            >
-              <div className="mr-4">
-                {item.icon}
-                {pathname === item.href && (
-                  <span className="absolute inset-0 bg-gray-600 opacity-20  rounded-lg"></span>
-                )}
-              </div>
-              <div
-                className={`whitespace-nowrap transition-all duration-100 overflow-hidden ${
-                  isExpanded ? "opacity-100" : "opacity-50"
-                }`}
+        {navItems.map((item, index) => { 
+          const isActive =
+          item.href === `/employee/${locale}`
+            ? pathname === item.href          // ホームアイコンは完全一致
+            : pathname.startsWith(item.href); // 他のアイコンは前方一致
+          return (
+            <li key={index} className="relative">
+              <Link
+                href={item.href}
+                className={`flex items-center p-3 transition-all ease-in-out rounded-lg
+                  ${!isActive && "hover:bg-gray-200"}
+                `}
               >
-                {item.label}
-              </div>
-            </Link>
-          </li>
-        ))}
+                <div className="mr-4">
+                  {item.icon}
+                  {isActive && (
+                    <span className="absolute inset-0 bg-gray-600 opacity-20  rounded-lg"></span>
+                  )}
+                </div>
+                <div
+                  className={`whitespace-nowrap transition-all duration-100 overflow-hidden ${
+                    isExpanded ? "opacity-100" : "opacity-50"
+                  }`}
+                >
+                  {item.label}
+                </div>
+              </Link>
+            </li>
+          )
+        })}
       </ul>
       <div className="py-2 border-t border-gray-300">
         <button
