@@ -1,27 +1,18 @@
-"use client";
+"use client"
 import React from "react";
-import { useParams } from "next/navigation";
-import VerticalChatNav from "./VerticalChatNav";
-import DirectChat from "./DirectChat"; // チャットスペースの表示エリアコンポーネントを作成する
+import { MessageCircle } from "lucide-react"
+
+//チャット全体に対する情報を教えてあげるでもいいな
 
 export default function ChatPage() {
-  const { userId } = useParams(); // ユーザーIDを取得
 
   return (
-    // <div className="flex h-screen ">
-    //   <div className="sm:max-w-52 md:max-w-64 w-full ">
-    //     <VerticalChatNav />
-    //   </div>
-
-    //   <div className="w-full flex justify-center items-center hidden sm:block">
-    //     {userId ? <DirectChat userId={userId[0]} /> : <p>チャットスペースを選択してください。</p>}
-    //   </div>
-    // </div>
-    <div>
-      <div className="w-full block sm:hidden">
-        <VerticalChatNav />
-       </div>
-      <div className="sm:block hidden">チャットを選んでください</div>
+    <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-100">
+        <MessageCircle className="mx-auto h-12 w-12 text-muted-foreground/80 mb-4" />
+        <div className="text-xl font-semibold text-muted-foreground/80 mb-2 text-center">チャットを選んでください</div>
+        <div className="text-sm text-muted-foreground/80 text-center">
+          左側のリストからチャットを選択してください
+        </div>
     </div>
   );
 }
