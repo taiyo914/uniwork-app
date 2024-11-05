@@ -13,7 +13,7 @@ interface LayoutProps {
 }
 
 export default async function EmployeeLayout({ children, params:{locale} }: LayoutProps) {
-  const { t, resources } = await initTranslations(locale, i18nNamespaces);
+  const { resources } = await initTranslations(locale, i18nNamespaces);
   return (
     <TranslationsProvider namespaces={i18nNamespaces} locale={locale} resources={resources}>
       <div className="">
