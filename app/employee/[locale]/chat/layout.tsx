@@ -9,7 +9,7 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
   const isRootChatPage = pathname === `/employee/${locale}/chat` // ルートページかどうかを判定
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen w-full">
       <div className={`sm:max-w-52 md:max-w-64 lg:max-w-72 w-full
         ${isRootChatPage 
           ? "block "
@@ -17,7 +17,7 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
       `}>
         <VerticalChatNav />
       </div>
-      <div className={`w-full
+      <div className={`flex-grow h-full
         ${isRootChatPage 
           ? "sm:block hidden"
           : ""}
