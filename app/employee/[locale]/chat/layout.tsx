@@ -1,13 +1,29 @@
-import React from 'react'
-import ChatSidebar from './ChatSidebar'
+// chat/layout.tsx
+"use client";
+import React from "react";
+import VerticalChatNav from "./VerticalChatNav";
+import { useParams, usePathname } from "next/navigation";
 
-export default function layout({children}:{children: React.ReactNode;}) {
+export default function ChatLayout({ children }: { children: React.ReactNode }) {
+  const { locale} = useParams();
+  const pathname = usePathname();
+  const isRootChatPage = pathname === `/employee/${locale}/chat` // ルートページかどうかを判定
   return (
-    <div className="flex overflow-hidden h-screen ">
-      <ChatSidebar />
-      <div className="flex-1 overflow-auto ">
+    <div className="flex h-screen">
+      <div className={`sm:max-w-52 md:max-w-64 w-full
+        ${isRootChatPage 
+          ? "block "
+          : "hidden sm:block"}
+      `}>
+        <VerticalChatNav />
+      </div>
+      <div className={`w-full
+        ${isRootChatPage 
+          ? "sm:block hidden"
+          : ""}
+      `}>
         {children}
       </div>
     </div>
-  )
+  );
 }
