@@ -51,13 +51,13 @@ export default function VerticalChatNav() {
   return (
     <nav className="h-full w-full sm:border-r-[2px] bg-gray-50">
       <ScrollArea className="h-full">
-        <div className="pb-4 notxs:pb-10">
-          <h2 className="text-lg font-semibold text-gray-700 px-3 pt-3 pb-1">チャット</h2>
+        <div className="xs:pb-4 pb-10 md:px-2">
+          <h2 className="text-lg font-semibold text-gray-700 px-3 lg:px-4 pt-3  pb-1">チャット</h2>
           {chatSpaces.map((space) => (
             <Link
               key={space.id}
               href={`/employee/${locale}/chat/${space.id}`}
-              className={`flex items-center px-4 sm:px-2.5 py-2.5 transition-colors ${
+              className={`flex items-center pl-4 pr-6 sm:px-2 lg:px-3 py-2.5 transition-colors md:rounded-lg ${
                 userId === space.id || pathname === `/employee/${locale}/chat/${space.id}`
                   ? "bg-blue-100 text-blue-800"
                   : "hover:bg-gray-200"
@@ -76,7 +76,7 @@ export default function VerticalChatNav() {
               <div className="flex-1 min-w-0 mr-1">
                 <p className="xs:text-lg ont-medium text-gray-900 truncate">{space.name}</p>
               </div>
-              <MessageCircle className="text-gray-400 mr-1 sm:mr-0 md:mr-1" size={16} />
+              <MessageCircle className="text-gray-400 sm:h-4 sm:w-4"  />
             </Link>
           ))}
         </div>

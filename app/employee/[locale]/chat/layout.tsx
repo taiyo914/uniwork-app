@@ -10,7 +10,7 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
   const isRootChatPage = pathname === `/employee/${locale}/chat` // ルートページかどうかを判定
   return (
     <div className="flex h-screen">
-      <div className={`sm:max-w-52 md:max-w-64 w-full
+      <div className={`sm:max-w-52 md:max-w-64 lg:max-w-72 w-full
         ${isRootChatPage 
           ? "block "
           : "hidden sm:block"}
