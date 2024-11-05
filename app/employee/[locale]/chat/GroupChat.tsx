@@ -1,14 +1,14 @@
 "use client"
 
 import { supabase } from "@/utils/supabase/client";
-import { Send, SmilePlus, Languages, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Send, SmilePlus, Languages, Loader2, ChevronLeft, ChevronRight, ArrowLeft, Users } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { useParams } from "next/navigation";
-import { useChatStore } from "@/stores/useChatStore";
+import { useRouter } from "next/navigation";
 
 interface Message {
   sender_id: string;
@@ -44,7 +44,8 @@ export default function GroupChat() {
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const isFirstRender = useRef(true); 
   const prevMessageCount = useRef(messages.length);
-  const { isSidebarExpanded, toggleSidebar } = useChatStore()
+  const router = useRouter();
+  const { locale } = useParams();
 
   const scrollToBottom = () => {
     if (bottomRef.current) {
@@ -271,51 +272,48 @@ export default function GroupChat() {
   };
 
   return (
-  <div className="flex flex-col h-screen w-full bg-gray-50">
-    <div className="bg-blue-100 shadow-sm p-4 border-b border-blue-200 flex">
-      <button
-        onClick={toggleSidebar}
-        className="p-1 rounded-full hover:bg-gray-100 block sm:hidden"
-        // aria-label={isSidebarExpanded ? t('collapse_sidebar') : t('expand_sidebar')}
-      >
-        {isSidebarExpanded ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
-      </button>
-      <h2 className="text-xl font-bold text-blue-700">全体チャット</h2>
-    </div>
+    <div className="flex flex-col notxs:h-screen w-full bg-gray-50 relaitve xs:fixed xs:top-[3.5rem] xs:bottom-[3.3rem] ">
+      <div className="bg-blue-100 shadow-sm pl-2 pr-3 sm:px-4 py-2.5 md:py-3.5 border-b border-blue-200 flex items-center justify-between abusolute top-0 left-0 w-full ">
+        <button onClick={() => router.push(`/employee/${locale}/chat`)} className="flex items-center space-x-0.5 text-blue-500 sm:hidden py-1 px-1 rounded-lg hover:bg-blue-200 transition">
+          <ArrowLeft className="w-5 h-5" />
+          <span className="text-sm font-semibold ">戻る</span>
+        </button>
+        <h2 className="text-xl xs:font-semibold font-bold text-blue-700 flex items-center gap-2"><Users className="" size={20} />全体チャット</h2>
+      </div>
 
-    <div 
-      className="flex-grow overflow-auto pb-6"
-    >
-      <div className="">
-        {messages.map((message) => (
-          <MessageComponent
-            key={message.message_id}
-            message={message}
-            handleToggleReaction={handleToggleReaction}
-            userId={userId!}
-          />
-        ))}
+      <div 
+        className="flex-grow overflow-auto pb-6"
+      >
+        <div className="">
+          {messages.map((message) => (
+            <MessageComponent
+              key={message.message_id}
+              message={message}
+              handleToggleReaction={handleToggleReaction}
+              userId={userId!}
+            />
+          ))}
+        </div>
+        <div ref={bottomRef} />
       </div>
-      <div ref={bottomRef} />
-    </div>
-    <div className="bg-white border-t p-3">
-      <div className="">
-        <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="flex items-center space-x-2">
-          <Input
-            type="text"
-            placeholder="メッセージを入力..."
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            className="flex-grow focus-visible:ring-1 focus-visible:ring-offset-2"
-          />
-          <Button type="submit" size="icon" className={` ${newMessage.trim() ? "bg-blue-500 hover:bg-blue-600 text-white":"bg-white text-gray-600 border hover:cursor-default"}`}>
-            <Send className="h-4 w-4" />
-          </Button>
-        </form>
+      <div className="bg-white border-t p-3 abusolute bottom-0 left-0 w-full">
+        <div className="">
+          <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="flex items-center space-x-2">
+            <Input
+              type="text"
+              placeholder="メッセージを入力..."
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              className="flex-grow focus-visible:ring-1 focus-visible:ring-offset-2"
+            />
+            <Button type="submit" size="icon" className={` ${newMessage.trim() ? "bg-blue-500 hover:bg-blue-600 text-white":"bg-white text-gray-600 border hover:cursor-default"}`}>
+              <Send className="h-4 w-4" />
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-)
+  )
 }
 
 interface ReactionCounts {
@@ -375,7 +373,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
   };
 
   return (
-    <div className="px-3 py-2 ">
+    <div className="pr-2 sm:pr-1 md:pr-3 pl-3 sm:pl-2 md:pl-3 py-2 ">
       <div className="flex items-start mb-2">
         <Avatar className="h-8 w-8">
           <AvatarImage src={message.profiles?.image_url || '/placeholder.svg?height=40&width=40'} alt="User Avatar" />
