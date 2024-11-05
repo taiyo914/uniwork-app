@@ -19,7 +19,7 @@ export default async function EmployeeLayout({ children, params:{locale} }: Layo
       <div className="">
         <VerticalNav />
         <MobileNav/>
-        <main className="notxs:pl-16 xs:pt-[3.5rem] xs:pb-20">{children}</main>
+        <main className="notxs:ml-16 xs:mt-[3.5rem] xs:mb-20">{children}</main>
       </div>
     </TranslationsProvider>
   );
