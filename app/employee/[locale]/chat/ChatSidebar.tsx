@@ -1,82 +1,68 @@
-'use client'
+import React from 'react';
+import Link from 'next/link';
+import { createClient } from '@/utils/supabase/server';
 
-import Link from 'next/link'
-import { usePathname, useParams } from 'next/navigation'
-import { MessageCircle, Users, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
-import { useChatStore } from '@/stores/useChatStore'
+export const revalidate = 0;
 
+interface Profile {
+  user_id: string;
+  english_name: string;
+  japanese_name: string;
+  image_url: string;
+}
 
-const users = [
-  { id: 'user1', name: 'Alice' },
-  { id: 'user2', name: 'Bob' },
-  { id: 'user3', name: 'Charlie' },
-  { id: 'user4', name: 'David' },
-  { id: 'user5', name: 'Eve' },
-]
+interface ChatSpace {
+  id: string;
+  name: string;
+  imageUrl?: string;
+  isGroup?: boolean;
+}
 
-export default function ChatSidebar() {
-  const { isSidebarExpanded, toggleSidebar } = useChatStore()
-  const pathname = usePathname()
-  const { locale } = useParams()
-  const { t } = useTranslation()
+async function fetchProfiles(): Promise<Profile[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('user_id, english_name, japanese_name, image_url');
+
+  if (error) {
+    console.error('Error fetching profiles:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+export default async function VerticalChatNav() {
+  const profiles = await fetchProfiles();
+
+  const chatSpaces: ChatSpace[] = [
+    {
+      id: 'group',
+      name: 'グループチャット',
+      isGroup: true,
+    },
+    ...profiles.map((profile) => ({
+      id: profile.user_id,
+      name: profile.japanese_name || profile.english_name,
+      imageUrl: profile.image_url,
+      isGroup: false,
+    })),
+  ];
 
   return (
-    <div className={`
-      fixed top-0 left-0 h-full xs:ml-0 ml-16 sm:ml-0 w-64 xs:w-full xs:mt-[3.5rem]
-      border-r border-gray-200 bg-white
-      transition-all duration-300 ease-in-out
-      ${isSidebarExpanded ? 'w-64' : 'w-0 -translate-x-full sm:w-64 sm:translate-x-0'}
-      z-10 sm:relative sm:translate-x-0 
-    `}>
-      <div className="flex items-center justify-between py-2 px-3 border-gray-200">
-        <h3 className={`font-semibold text-gray-700 ${isSidebarExpanded ? '' : 'hidden sm:block'}`}>チャット一覧</h3>
-        <button
-          onClick={toggleSidebar}
-          className={`p-1 rounded-full hover:bg-gray-100 block sm:hidden ${isSidebarExpanded ? '' : 'hidden sm:block'}`}
-          // aria-label={isSidebarExpanded ? t('collapse_sidebar') : t('expand_sidebar')}
-        >
-           <ChevronLeft size={20} /> 
-        </button>
-      </div>
-      <div className="flex-1 overflow-y-auto">
-        <div className="p-4">
-          <h3 className={`text-sm font-medium text-gray-500 mb-2 ${isSidebarExpanded ? '' : 'hidden sm:block'}`}>
-            全体チャット
-          </h3>
-          <div className="space-y-1">
+    <nav className="h-full w-full border-r-[2px] bg-gray-50 xs:fixed xs:top-0 xs:left-0 xs:h-full">
+      <ul className="p-4 space-y-2">
+        {chatSpaces.map((space) => (
+          <li key={space.id}>
             <Link
-              href={`/employee/${locale}/chat`}
-              className={`flex items-center p-2 rounded-lg hover:bg-gray-100 ${
-                pathname === `/employee/${locale}/chat` ? 'bg-blue-100 text-blue-700' : 'text-gray-700'
-              }`}
+              href={`/employee/ja-JP/chat/${space.isGroup ? 'group' : space.id}`}
+              className="block px-4 py-2 rounded-md hover:bg-gray-200"
             >
-              <Users size={20} className="flex-shrink-0" />
-                <span className="ml-3">全体チャット</span>
+              {space.name}
             </Link>
-          </div>
-        </div>
-        <div className="p-4 border-t border-gray-200">
-          <h3 className={`text-sm font-medium text-gray-500 mb-2 ${isSidebarExpanded ? '' : 'hidden sm:block'}`}>
-            個人チャット
-          </h3>
-          <ul className="space-y-1">
-            {users.map((user) => (
-              <li key={user.id}>
-                <Link
-                  href={`/employee/${locale}/chat/${user.id}`}
-                  className={`flex items-center p-2 rounded-lg hover:bg-gray-100 ${
-                    pathname === `/employee/${locale}/chat/${user.id}` ? 'bg-blue-100 text-blue-700' : 'text-gray-700'
-                  }`}
-                >
-                  <MessageCircle size={20} className="flex-shrink-0" />
-                   <span className="ml-3">{user.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  )
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
 }
