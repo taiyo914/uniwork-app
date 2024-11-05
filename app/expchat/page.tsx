@@ -9,11 +9,11 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-screen ">
-      <div className="max-w-52 md:max-w-60 w-full ">
+      <div className="sm:max-w-52 md:max-w-60 w-full ">
         <VerticalChatNav />
       </div>
       
-      <div className="w-full flex justify-center items-center">
+      <div className="w-full flex justify-center items-center hidden sm:block">
         {userId ? <ChatDisplay userId={userId[0]}  /> : <p>チャットスペースを選択してください。</p>}
       </div>
     </div>

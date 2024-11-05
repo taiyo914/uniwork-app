@@ -10,7 +10,7 @@ export default function ChatUserPage() {
   return (
     <div className="flex h-screen">
       {/* チャットスペースナビゲーション */}
-      <div className="max-w-60 w-full notxs:block xs:hidden ">
+      <div className="max-w-60 w-full hidden sm:block ">
         <VerticalChatNav />
       </div>
       
