@@ -14,6 +14,6 @@ export default function ChatUserPage() {
   }
 
   return (
-    <DirectChat userId={userId as string} />
+    <DirectChat/>
   );
 }
