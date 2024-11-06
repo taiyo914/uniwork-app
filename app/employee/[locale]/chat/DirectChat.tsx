@@ -104,7 +104,7 @@ export default function DirectChat() {
     fetchCurrentUserId();
     fetchPartnerProfile();
     fetchMessages();
-  }, [currentUserId, chatPartnerId, fetchCurrentUserId, fetchPartnerProfile]);
+  }, [currentUserId, chatPartnerId, fetchCurrentUserId, fetchPartnerProfile]); 
 
   useEffect(() => {
     if (!currentUserId || !chatPartnerId) return;
@@ -113,7 +113,7 @@ export default function DirectChat() {
     return () => {
       unsubscribe();
     };
-  }, [currentUserId, chatPartnerId, setupRealtimeListeners]);
+  }, [currentUserId, chatPartnerId,setupRealtimeListeners ]); 
 
   const fetchMessages = async () => {
     if (!currentUserId || !chatPartnerId) return;
@@ -243,7 +243,7 @@ export default function DirectChat() {
       </div>
 
       <div 
-        className="flex-grow overflow-auto pb-7"
+        className="flex-grow overflow-auto pb-8"
       >
         <div className="">
           {messages.map((message) => (
@@ -292,8 +292,12 @@ interface MessageComponentProps {
 const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleToggleReaction, currentUserId, partnerProfile}) => {
   const [translatedText, setTranslatedText] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { locale } = useParams()
+  const [isReactionMenuOpen, setIsReactionMenuOpen] = useState(false);
+  const reactionMenuRef = useRef<HTMLDivElement>(null);
+  const reactionButtonRef = useRef<HTMLButtonElement>(null);
+  const { locale } = useParams();
   const targetLang = Array.isArray(locale) ? locale[0] : locale;
+  const isCurrentUserMessage = message.sender_id === currentUserId;
 
   const reactionCounts: ReactionCounts = message.reactions.reduce((acc: ReactionCounts, reaction: Reaction) => {
     if (!acc[reaction.reaction_type]) acc[reaction.reaction_type] = 0;
@@ -332,73 +336,103 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
     }
   };
 
-  const isCurrentUserMessage = message.sender_id === currentUserId;
+  const handleReactionClick = () => {
+    setIsReactionMenuOpen(!isReactionMenuOpen);
+  };
+
+  const handleReactionSelect = (messageId: number, reactionType: string) => {
+    handleToggleReaction(messageId, reactionType);
+    setIsReactionMenuOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isReactionMenuOpen &&
+        reactionMenuRef.current &&
+        !reactionMenuRef.current.contains(event.target as Node) &&
+        reactionButtonRef.current &&
+        !reactionButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsReactionMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isReactionMenuOpen]);
 
   return (
-    <div className={`px-2 sm:px-2 md:px-3 py-1 `}>
+    <div className={`px-2 sm:px-2 md:px-3 py-1`}>
       <div className="flex items-start mb-0.5">
         {!isCurrentUserMessage && partnerProfile && (
           <Avatar className="h-8 w-8 mr-1 mt-1.5">
-            <AvatarImage src={partnerProfile.image_url } alt="Partner Avatar" className="object-cover"/>
+            <AvatarImage src={partnerProfile.image_url} alt="Partner Avatar" className="object-cover"/>
             <AvatarFallback>{partnerProfile.english_name[0]}</AvatarFallback>
           </Avatar>
         )}
         <div className={`flex-grow ${isCurrentUserMessage ? 'order-2' : 'order-1'}`}>
-         
           <div className={`flex gap-1 ${isCurrentUserMessage ? 'justify-end' : 'justify-start'}`}>
-
-            {isCurrentUserMessage && (
-              <div 
-                className="border p-1 rounded-lg rounded-br-none h-7 w-7 sm:h-8 sm:w-8 flex items-center justify-center mt-[1.05rem] transition-all hover:bg-blue-100"
-              >
-                {isLoading ? (
-                  <Loader2 className={`animate-spin sm:h-5 sm:w-5 h-[1.1rem] w-[1.1rem] text-blue-500`} />
-                ) : (
-                  <button onClick={handleTranslate}>
-                    <Languages className="text-blue-500 sm:h-5 sm:w-5 h-[1.1rem] w-[1.1rem]" />
-                  </button>
-                )}
-              </div>
-            )}
-
-            <div className="max-w-[87%] md:max-w-[70%]">
+            {isCurrentUserMessage && <div className="w-12"></div>}
+            
+            <div className="max-w-[87%] md:max-w-[70%] relative">
               <div className={`text-xs text-gray-400 ml-1 font-light font-sans ${isCurrentUserMessage ? 'text-right mr-0.5' : ''}`}>
                 {format(message.created_at, "MM/dd HH:mm")}
               </div>
-              <div className={`bg-white p-2 rounded-xl ${isCurrentUserMessage ? 'rounded-tr-none' : 'rounded-tl-none'} border inline-block  group relative hover:cursor-pointer`}>
-                {message.content}
-                {translatedText && (
-                  <div className="text-gray-500 mt-1.5 border-t pt-1.5 px-0.5">{translatedText}</div>
-                )}
-                <div className={`absolute top-full ${isCurrentUserMessage ? 'right-0' : 'left-0'} hidden group-hover:block w-[13.6rem] z-10`}>
-                  <div className={`bg-white border border-gray-200 rounded-md shadow-lg p-1 space-x-1`}>
+              <div className="relative group">
+                <div className={`bg-white p-2 rounded-xl ${isCurrentUserMessage ? 'rounded-tr-none' : 'rounded-tl-none'} border inline-block hover:cursor-pointer`}>
+                  {message.content}
+                  {translatedText && (
+                    <div className="text-gray-500 mt-1.5 border-t pt-1.5 px-0.5">{translatedText}</div>
+                  )}
+                </div>
+
+                <div className={`absolute top-1/2 -translate-y-1/2 z-10 px-[0.2rem] gap-0.5 hidden group-hover:flex items-center
+                  ${isCurrentUserMessage ? '-left-[3rem] flex-row-reverse' : '-right-[3rem]'}`}
+                >
+                  <button 
+                    ref={reactionButtonRef}
+                    onClick={handleReactionClick}
+                    className="p-0.5 hover:bg-gray-100 rounded-full"
+                  >
+                    <SmilePlus className="h-4 w-4 text-gray-500/80" />
+                  </button>
+                  <button 
+                    onClick={handleTranslate}
+                    className="p-0.5 hover:bg-gray-100 rounded-full"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+                    ) : (
+                      <Languages className="h-4 w-4 text-gray-500/80" />
+                    )}
+                  </button>
+                </div>
+
+                {isReactionMenuOpen && (
+                  <div 
+                    ref={reactionMenuRef}
+                    className={`absolute z-10 -mt-[1px] bg-white border rounded-lg shadow-lg p-1 flex gap-[0.2rem]
+                      ${isCurrentUserMessage ? 'right-0' : 'left-0'}`}
+                  >
                     {REACTION_TYPES.map((reaction) => (
                       <button
                         key={reaction}
-                        onClick={() => handleToggleReaction(message.message_id, reaction)}
-                        className="text-lg hover:bg-gray-100 px-1 rounded inline"
+                        onClick={() => handleReactionSelect(message.message_id, reaction)}
+                        className="text-[1.1rem] hover:bg-gray-100 px-1 rounded"
                       >
                         {reaction}
                       </button>
                     ))}
                   </div>
-                </div>
+                )}
               </div>
             </div>
 
-            {!isCurrentUserMessage && (
-              <div 
-                className="border p-1 rounded-lg rounded-bl-none h-7 w-7 sm:h-8 sm:w-8 flex items-center justify-center mt-[1.05rem] transition-all hover:bg-blue-100"
-              >
-                {isLoading ? (
-                  <Loader2 className="animate-spin text-blue-500 sm:h-5 sm:w-5 h-[1.1rem] w-[1.1rem]" />
-                ) : (
-                  <button onClick={handleTranslate}>
-                    <Languages className="text-blue-500 sm:h-5 sm:w-5 h-[1.1rem] w-[1.1rem]" />
-                  </button>
-                )}
-              </div>
-            )}
+            {!isCurrentUserMessage && <div className="w-12"></div>}
           </div>
         </div>
       </div>
