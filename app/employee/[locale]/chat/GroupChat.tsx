@@ -2,13 +2,14 @@
 
 import { supabase } from "@/utils/supabase/client";
 import { Send, SmilePlus, Languages, Loader2, ChevronLeft, ChevronRight, ArrowLeft, Users } from "lucide-react";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 interface Message {
   sender_id: string;
@@ -63,60 +64,8 @@ export default function GroupChat() {
     prevMessageCount.current = messages.length; // メッセージ数を更新
   }, [messages.length]); 
 
-  const fetchUserId = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) setUserId(user.id);
-  };
-
-  const setupRealtimeListeners = () => {
-    const messageSubscription = supabase
-      .channel('messages')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: 'is_group_message=eq.true' }, handleNewMessage)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reactions' }, handleNewReaction)
-      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'reactions' }, handleDeleteReaction)
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reactions' }, handleUpdateReaction)
-      .subscribe();
-
-    return () => supabase.removeChannel(messageSubscription);
-  };
-
-  useEffect(()=>{
-    fetchUserId();
-    fetchMessages();
-    setupRealtimeListeners()
-  },[setupRealtimeListeners])
-
-  const fetchMessages = async () => {
-    const { data, error } = await supabase
-      .from('messages')
-      .select(`
-        *,
-        profiles!messages_sender_id_fkey (
-          japanese_name,
-          english_name,
-          image_url
-        ),
-        reactions (
-          reaction_id,
-          user_id,
-          reaction_type,
-          target_id,
-          profiles!reactions_user_id_fkey ( 
-            japanese_name,
-            english_name,
-            image_url
-          )
-        )
-      `)
-      .eq('is_group_message', true)
-      .order('created_at', { ascending: true });
-    
-    if (error) console.error(error);
-    setMessages(data || []);
-  };
-
-  // 新しいメッセージ処理
-  const handleNewMessage = async (payload:any) => {
+  const handleNewMessage = useCallback(async (payload: any) => {
+    console.log('handleNewMessage called with payload:', payload);
     const newMessage = payload.new as Message;
     const { data: profileData, error } = await supabase
       .from('profiles')
@@ -138,11 +87,13 @@ export default function GroupChat() {
       },
       reactions: [],
     };
-    setMessages((currentMessages) => [...currentMessages, messageWithProfile]);
-  };
-  
-  // 新しいリアクション処理
-  const handleNewReaction = async (payload:any) => {
+    setMessages((currentMessages) => {
+      return [...currentMessages, messageWithProfile];
+    });
+  }, []);
+
+  const handleNewReaction = useCallback(async (payload: any) => {
+    console.log('handleNewReaction called with payload:', payload);
     const newReaction = payload.new as Reaction;
     const { data: profileData, error } = await supabase
       .from('profiles')
@@ -171,10 +122,10 @@ export default function GroupChat() {
           : message
       )
     );
-  };
+  }, []);
 
-  // リアクション削除処理
-  const handleDeleteReaction = (payload:any) => {
+  const handleDeleteReaction = useCallback((payload: any) => {
+    console.log('handleDeleteReaction called with payload:', payload);
     const deletedReaction = payload.old as Reaction;
     setMessages((currentMessages) =>
       currentMessages.map((message) =>
@@ -183,10 +134,10 @@ export default function GroupChat() {
           : message
       )
     );
-  };
+  }, []);
 
-  // リアクション更新処理
-  const handleUpdateReaction = async (payload:any) => {
+  const handleUpdateReaction = useCallback(async (payload: any) => {
+    console.log('handleUpdateReaction called with payload:', payload);
     const updatedReaction = payload.new as Reaction;
 
     // profilesテーブルからユーザー情報を取得
@@ -222,22 +173,101 @@ export default function GroupChat() {
           : message
       )
     );
-  };
+  }, []);
+
+  const fetchUserId = useCallback(async () => {
+    if(userId) return;
+    console.log('fetchUserId called, current userId:', userId);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      console.log('Setting new userId:', user.id);
+      setUserId(user.id);
+    }
+  }, [userId]);
+
+  const fetchMessages = useCallback(async () => {
+    console.log('fetchMessages called');
+    const { data, error } = await supabase
+      .from('messages')
+      .select(`
+        *,
+        profiles!messages_sender_id_fkey (
+          japanese_name,
+          english_name,
+          image_url
+        ),
+        reactions (
+          reaction_id,
+          user_id,
+          reaction_type,
+          target_id,
+          profiles!reactions_user_id_fkey ( 
+            japanese_name,
+            english_name,
+            image_url
+          )
+        )
+      `)
+      .eq('is_group_message', true)
+      .order('created_at', { ascending: true });
+    
+    if (error) {
+      console.error('Error fetching messages:', error);
+    } else {
+      setMessages(data || []);
+    }
+  }, []);
+
+  const setupRealtimeListeners = useCallback(() => {
+    console.log('Setting up realtime listeners');
+    const messageSubscription = supabase
+      .channel('messages')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: 'is_group_message=eq.true' }, handleNewMessage)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reactions' }, handleNewReaction)
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'reactions' }, handleDeleteReaction)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reactions' }, handleUpdateReaction)
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log("Realtime subscription successful");
+        } else {
+          console.error("Realtime subscription error:", status);
+        }
+      });
+
+    return () => {
+      console.log('Cleaning up realtime listeners');
+      supabase.removeChannel(messageSubscription);
+    };
+  }, [handleNewMessage, handleNewReaction, handleDeleteReaction, handleUpdateReaction]);
+
+  useEffect(() => {
+    fetchUserId();
+    fetchMessages();
+  }, [fetchUserId, fetchMessages]);
+
+  useEffect(() => {
+    const cleanup = setupRealtimeListeners();
+    return () => {
+      cleanup();
+    };
+  }, [setupRealtimeListeners]); 
+
+  useEffect(() => {
+    if (messages.length > prevMessageCount.current) {
+      if (bottomRef.current) {
+        scrollToBottom();
+      }
+    }
+    prevMessageCount.current = messages.length;
+  }, [messages.length]);
 
   const handleSendMessage = async () => {
     if (newMessage.trim() === '') return;
 
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user) {
-      console.error("Failed to get user (chat/handleSendMessage)");
-      return;
-    }
-
     const { error } = await supabase.from('messages').insert([
       {
-        sender_id: user.id, 
-        receiver_id: user.id, 
+        sender_id: userId, 
+        receiver_id: userId, 
         content: newMessage,
         is_group_message: true
       },
@@ -248,15 +278,10 @@ export default function GroupChat() {
   };
 
   const handleToggleReaction = async (messageId: number, reactionType: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      console.error("Failed to get user (chat/handleToggleReaction)");
-      return;
-    }
 
     const currentReaction = messages
       .find(message => message.message_id === messageId)
-      ?.reactions.find(reaction => reaction.user_id === user.id);
+      ?.reactions.find(reaction => reaction.user_id === userId);
 
     if (currentReaction) {
       if (currentReaction.reaction_type === reactionType) {
@@ -266,7 +291,7 @@ export default function GroupChat() {
       }
     } else {
       await supabase.from('reactions').insert([
-        {user_id: user.id, target_id: messageId, reaction_type: reactionType,},
+        {user_id: userId, target_id: messageId, reaction_type: reactionType,},
       ]);
     }
   };
@@ -282,7 +307,7 @@ export default function GroupChat() {
       </div>
 
       <div 
-        className="flex-grow overflow-auto pb-6"
+        className="flex-grow overflow-auto pb-7"
       >
         <div className="">
           {messages.map((message) => (
@@ -375,8 +400,8 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
   return (
     <div className="pr-2 sm:pr-1 md:pr-3 pl-3 sm:pl-2 md:pl-3 py-2 ">
       <div className="flex items-start mb-2">
-        <Avatar className="h-8 w-8">
-          <AvatarImage src={message.profiles?.image_url || '/placeholder.svg?height=40&width=40'} alt="User Avatar" />
+        <Avatar className="h-8 w-8 mt-0.5">
+          <AvatarImage src={message.profiles?.image_url } alt="User Avatar" />
           <AvatarFallback>{message.profiles?.japanese_name?.[0] || message.profiles?.english_name?.[0] || 'U'}</AvatarFallback>
         </Avatar>
         <div className="flex-grow">
