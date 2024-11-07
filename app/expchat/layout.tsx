@@ -1,7 +1,7 @@
 import VerticalNav from "@/app/employee/[locale]/VerticalNav";
 import initTranslations from "@/app/i18n"
 import TranslationsProvider from "@/components/TranslationProvider";
-import MobileNav from "./MobileNav";
+import MobileNav from "../employee/[locale]/MobileNav";
 
 const i18nNamespaces = ["all"];
 

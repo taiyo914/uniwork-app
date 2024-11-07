@@ -1,27 +1,35 @@
-"use client";
-import {dictionary} from "./locales/dictionary";
+import { createClient } from '@/utils/supabase/server' 
+import GroupChatClient from './GroupChatClient'
 
-import { useState } from "react";
-const IndexPage = () => {
-  const [lang, setLang] = useState("en");
-  const translations = dictionary[lang];
+export const revalidate = 0;
 
-  return (
-    <div>
-      <LanguageSwitcher onChange={setLang} />
-      <h1>{translations.greeting}</h1>
-      <p>{translations.welcome}</p>
-    </div>
-  );
-};
+export default async function GroupChatPage() {
+  const supabase = createClient()
 
-export default IndexPage;
+  const { data: initialMessages } = await supabase
+    .from('messages')
+    .select(`
+      *,
+      profiles!messages_sender_id_fkey (
+        japanese_name,
+        english_name,
+        image_url
+      ),
+      reactions (
+        reaction_id,
+        user_id,
+        reaction_type,
+        target_id,
+        profiles!reactions_user_id_fkey ( 
+          japanese_name,
+          english_name,
+          image_url
+        )
+      )
+    `)
+    .eq('is_group_message', true)
+    .order('created_at', { ascending: true })
+    .limit(20)
 
-const LanguageSwitcher = ({ onChange }: { onChange: (lang: string) => void }) => {
-  return (
-    <select onChange={(e) => onChange(e.target.value)} defaultValue="en">
-      <option value="en">English</option>
-      <option value="ja">日本語</option>
-    </select>
-  );
-};
+  return <GroupChatClient initialMessages={initialMessages || []}  />
+}
