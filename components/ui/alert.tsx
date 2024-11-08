@@ -11,6 +11,7 @@ const alertVariants = cva(
         default: "bg-background text-foreground",
         destructive:
           "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive",
+        success: "border-green-500/50 bg-green-50 text-green-700",
       },
     },
     defaultVariants: {
@@ -21,12 +22,22 @@ const alertVariants = cva(
 
 const Alert = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
->(({ className, variant, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & {
+    variant?: "default" | "destructive" | "success"
+  }
+>(({ className, variant = "default", ...props }, ref) => (
   <div
     ref={ref}
     role="alert"
-    className={cn(alertVariants({ variant }), className)}
+    className={cn(
+      "relative w-full rounded-lg border p-4",
+      {
+        "bg-background text-foreground": variant === "default",
+        "border-destructive/30 text-destructive dark:border-destructive bg-red-50": variant === "destructive",
+        "border-green-500/50 bg-green-50 text-green-700": variant === "success",
+      },
+      className
+    )}
     {...props}
   />
 ))
