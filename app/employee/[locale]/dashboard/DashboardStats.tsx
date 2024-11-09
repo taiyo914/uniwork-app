@@ -5,84 +5,13 @@ import { ja } from "date-fns/locale";
 import { supabase } from "@/utils/supabase/client";
 import { useUser } from "@/hooks/useUser";
 import type { Profile } from "@/types/profile";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Bell, Clock, DollarSign, Calendar, PlayCircle, PauseCircle, StopCircle, User, InfoIcon, Wallet, RefreshCw, Hourglass, CheckCircle, CalendarDays } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-
-// 通知データを配列として直接定義
-const notifications = [
-  {
-    id: 1,
-    title: "休憩時間超過注意",
-    message: "本日の休憩時間が1時間を超えています",
-    createdAt: new Date(new Date().getTime() - 2 * 60 * 60 * 1000), // 2時間前
-    type: "warning" as const,
-  },
-  {
-    id: 2,
-    title: "勤務時間報告",
-    message: "先週の勤務時間が確定しました",
-    createdAt: new Date(new Date().getTime() - 24 * 60 * 60 * 1000), // 1日前
-    type: "info" as const,
-  },
-  {
-    id: 3,
-    title: "承認完了のお知らせ",
-    message: "3月分の勤務時間が承認されました",
-    createdAt: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // 3日前
-    type: "success" as const,
-  },
-  {
-    id: 4,
-    title: "システムメンテナンス予定",
-    message: "明日午前2時からメンテナンスを実施します",
-    createdAt: new Date(new Date().getTime() - 5 * 24 * 60 * 60 * 1000), // 5日前
-    type: "info" as const,
-  },
-  {
-    id: 5,
-    title: "給与振込完了",
-    message: "今月分の給与が振り込まれました",
-    createdAt: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000), // 7日前
-    type: "success" as const,
-  },
-  {
-    id: 6,
-    title: "古い通知",
-    message: "これは古い通知です。",
-    createdAt: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000), // 40日前
-    type: "info" as const,
-  },
-  {
-    id: 7,
-    title: "古い通知",
-    message: "これは古い通知です。",
-    createdAt: new Date(new Date().getTime() - 40 * 24 * 60 * 60 * 1000), // 40日前
-    type: "info" as const,
-  },
-];
-
-// 相対時間を計算する関数
-const getRelativeTime = (date: Date) => {
-  const now = new Date();
-  const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-  const diffInHours = Math.floor(diffInMinutes / 60);
-  const diffInDays = Math.floor(diffInHours / 24);
-  const diffInMonths = Math.floor(diffInDays / 30);
-
-  if (diffInMinutes < 60) {
-    return `${diffInMinutes}分前`;
-  } else if (diffInHours < 24) {
-    return `${diffInHours}時間前`;
-  } else if (diffInDays < 30) {
-    return `${diffInDays}日前`;
-  } else {
-    return format(date, 'yyyy/MM/dd'); // 日付フォーマット
-  }
-};
+import Notifications from "./Notifications";
+import { fetchExchangeRate } from "@/utils/fetchExchangeRate";
 
 const workStatusMap = {
   notStarted: { label: "勤務外", icon: StopCircle, color: "bg-gray-200" },
@@ -90,15 +19,6 @@ const workStatusMap = {
   onBreak: { label: "休憩中", icon: PauseCircle, color: "bg-yellow-200" },
 };
 
-// 為替レート（実際のアプリケーションでは外部APIから取得）
-const exchangeRates = {
-  USD: 0.0067,
-  EUR: 0.0062,
-  KRW: 8.89,
-  TWD: 0.21,
-};
-
-type CurrencyCode = keyof typeof exchangeRates;
 
 // 分を「○○時間○○分」形式に変換する関数
 const formatMinutesToHoursAndMinutes = (totalMinutes: number) => {
@@ -155,6 +75,17 @@ const formatMonthDisplay = (date: Date) => {
   return format(date, 'M月', { locale: ja });
 };
 
+// 通貨変換用のヘルパー関数を追加
+const convertCurrency = (amount: number, rate: number | null) => {
+  if (!rate) return amount;
+
+  if (rate < 1) {
+    return Number((amount * rate).toFixed(2));
+  } else {
+    return Number(Math.floor(amount * rate));
+  }
+};
+
 // 共通の統計情報の型
 type Stats = {
   weekly: {
@@ -177,40 +108,37 @@ type Stats = {
     approved: number;
     unapproved: number;
     hourlyWage: number;
+    currency: string;
   };
+};
+
+// 為替レート表示用のヘルパー関数を追加
+const formatExchangeRate = (rate: number | null, currency: string) => {
+  if (!rate) return null;
+
+  // rateが1より小さい場合: 1 (海外通貨) = 1 / rate (JPY)
+  if (rate < 1) {
+    return `1 ${currency} = ${(1 / rate).toFixed(2)} JPY`;
+  } 
+  // rateが1以上の場合: 1 JPY = rate (海外通貨)
+  else {
+    return `1 JPY = ${(rate).toFixed(2)} ${currency}`;
+  }
 };
 
 export default function DashboardStats() {
   const { user } = useUser();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showJPY, setShowJPY] = useState(true);
+  const [exchangeRate, setExchangeRate] = useState<number | null>(null);
   const [stats, setStats] = useState<Stats>({
     weekly: { total: 0, approved: 0, unapproved: 0 },
     lastSevenDays: { total: 0, approved: 0, unapproved: 0 },
     monthly: { total: 0, approved: 0, unapproved: 0 },
-    income: { total: 0, approved: 0, unapproved: 0, hourlyWage: 0 },
+    income: { total: 0, approved: 0, unapproved: 0, hourlyWage: 0, currency: 'JPY' },
   });
-  const [showUSD, setShowUSD] = useState(false)
-  const exchangeRate = 0.0068 // 1 JPY = 0.0068 USD
-  const salaryJPY = 13200
-  const salaryUSD = (salaryJPY * exchangeRate).toFixed(2)
-  const approvedJPY = 7800
-  const approvedUSD = (approvedJPY * exchangeRate).toFixed(2)
-  const unapprovedJPY = 5400
-  const unapprovedUSD = (unapprovedJPY * exchangeRate).toFixed(2)
-  const hourlyRateJPY = 1200
-  const hourlyRateUSD = (hourlyRateJPY * exchangeRate).toFixed(2)
-
-  const formatCurrency = (amount: number, currency: 'JPY' | 'USD') => {
-    return currency === 'JPY' ? `¥${amount.toLocaleString()}` : `$${(amount * exchangeRate).toFixed(2)}`
-  }
-
-  const calculateTimeRange = () => {
-    const now = new Date();
-    const oneWeekAgo = new Date(now);
-    oneWeekAgo.setDate(now.getDate() - 7);
-    return { now, oneWeekAgo };
-  };
+  const [isLoadingRate, setIsLoadingRate] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -219,7 +147,7 @@ export default function DashboardStats() {
       // プロフィール情報の取得
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select('english_name, hourly_wage, work_status')
+        .select('english_name, hourly_wage, work_status, currency')
         .eq('user_id', user.id)
         .single();
 
@@ -330,6 +258,7 @@ export default function DashboardStats() {
         approved: Math.floor(monthlyStats.approved * minuteRate),
         unapproved: Math.floor(monthlyStats.unapproved * minuteRate),
         hourlyWage: hourlyWage,
+        currency: profileData?.currency || 'JPY',
       };
 
       setStats({
@@ -345,9 +274,6 @@ export default function DashboardStats() {
     loadData();
   }, [user?.id]);
 
-  const convertCurrency = (amount: number, currency: CurrencyCode) => {
-    return Math.round(amount * exchangeRates[currency] * 100) / 100;
-  };
 
   if (loading) {
     return (
@@ -382,47 +308,14 @@ export default function DashboardStats() {
 
         <div className="h-4 md:h-5 "></div>
 
-        {/* 通知セクション */}
-        <section className="w-full shadow rounded-xl overflow-hidden">
-          <Card className="border-none">
-            <CardHeader className="gap-2 bg-blue-100 py-4 px-4 md:px-5">
-              <h2 className="text-lg font-bold text-blue-800">
-                <Bell className="h-5 w-5 text-blue-600 inline mb-1 mr-1" />通知・お知らせ
-              </h2>
-            </CardHeader>
-            <CardContent className="max-h-[250px] overflow-y-auto bg-gray-50/40 px-3 md:px-4">
-              <div className="space-y-2.5 md:space-y-3 pt-3 md:pt-4">
-                {notifications.map(notification => (
-                  <Alert 
-                    key={notification.id} 
-                    variant={notification.type === "warning" ? "destructive" : 
-                            notification.type === "success" ? "success" : "default"}
-                  >
-                    <AlertTitle className="flex justify-between items-center">
-                      <div className="flex-1 truncate pr-4">
-                        {notification.title}
-                      </div>
-                      <span className="text-xs text-muted-foreground whitespace-nowrap">
-                        {getRelativeTime(notification.createdAt)}
-                      </span>
-                    </AlertTitle>
-                    <AlertDescription>
-                      {notification.message}
-                    </AlertDescription>
-                  </Alert>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </section>
+        {/* 統計セクション */}
+        <Notifications />
 
         <div className="h-5"></div>
-
-        {/* 統計セクション */}
        
         <div className="grid gap-4 lg:gap-5 sm:grid-cols-2">
           {/* 今週の勤務時間 */}
-          <Card className="bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800">
+          <Card className="bg-blue-50/50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
             <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2">
               <div className="flex items-center space-x-1">
                 <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -458,7 +351,7 @@ export default function DashboardStats() {
           </Card>
 
           {/* 直近7日間の勤務時間 */}
-          <Card className="bg-purple-50 dark:bg-purple-900/20 border-purple-200/70 dark:border-purple-800">
+          <Card className="bg-purple-50/50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800">
             <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2">
               <div className="flex items-center space-x-1">
                 <Calendar className="w-5 h-5 text-purple-600 dark:text-purple-400" />
@@ -496,7 +389,7 @@ export default function DashboardStats() {
 
         <div className="mt-4 lg:mt-5 flex flex-col sm:flex-row gap-4 lg:gap-5 items-start">
           {/* 今月の勤務時間 */}
-          <Card className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 w-full">
+          <Card className="bg-green-50/50 dark:bg-green-900/20 border-green-300 dark:border-green-800 w-full">
             <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2">
               <div className="flex items-center space-x-1">
                 <CalendarDays className="w-5 h-5 text-green-600 dark:text-green-400" />
@@ -531,20 +424,83 @@ export default function DashboardStats() {
             </CardContent>
           </Card>
 
-          <Card className="bg-amber-50 dark:bg-amber-900/20 border-amber-200/70 dark:border-amber-800 w-full">
-            <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2">
+          <Card className="bg-amber-50/50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 w-full">
+            <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2 relative">
               <div className="flex items-center space-x-1">
                 <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                 <CardTitle className="text-base sm:text-lg font-medium">今月の給与</CardTitle>
               </div>
-              <div className="text-2xl sm:text-3xl font-bold text-amber-600 dark:text-amber-400 text-right whitespace-nowrap sm:w-full lg:w-auto">
-                ¥{stats.income.total.toLocaleString()}
+              <div className="text-2xl sm:text-3xl font-bold text-amber-600 dark:text-amber-400 text-right whitespace-nowrap sm:w-full lg:w-auto flex items-center ">
+                {showJPY ? (
+                  <div className="w-full ">
+                    ¥{stats.income.total.toLocaleString()}
+                   
+                    {stats.income.currency !== 'JPY' && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-5 px-1 hover:bg-orange-100 rounded-full hover:text-orange-800 -mr-1.5"
+                              onClick={async () => {
+                                if (!exchangeRate) {
+                                  setIsLoadingRate(true);
+                                  try {
+                                    const rate = await fetchExchangeRate(stats.income.currency);
+                                    setExchangeRate(rate);
+                                  } finally {
+                                    setIsLoadingRate(false);
+                                  }
+                                }
+                                setShowJPY(false);
+                              }}
+                              disabled={isLoadingRate}
+                            >
+                              <RefreshCw className={`h-4 w-4 ${isLoadingRate ? 'animate-spin' : ''}`} />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{stats.income.currency}で表示</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+                  </div>
+                ) : (
+                  <div className=" w-full">
+                    <div >
+                      {stats.income.currency} {convertCurrency(stats.income.total, exchangeRate).toLocaleString()}
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-5 px-1 hover:bg-orange-100 rounded-full hover:text-orange-800 -mr-1.5"
+                              onClick={() => setShowJPY(true)}
+                            >
+                              <RefreshCw className="h-4 w-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>円で表示</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                  </div>
+                )}
               </div>
             </CardHeader>
             <CardContent className="px-4 sm:px-5">
               <div className="space-y-4">
                 <div className="text-xs sm:text-sm text-muted-foreground">
-                  {formatMinutesToHoursAndMinutes(stats.monthly.total)} × ¥{stats.income.hourlyWage.toLocaleString()}/時
+                  {formatMinutesToHoursAndMinutes(stats.monthly.total)} × {showJPY ? (
+                    `¥${stats.income.hourlyWage.toLocaleString()}/時`
+                  ) : (
+                    `${stats.income.currency} ${convertCurrency(stats.income.hourlyWage, exchangeRate).toLocaleString()}/時`
+                  )}
                 </div>
                 <div className="space-y-2 text-xs sm:text-sm">
                   <div className="flex justify-between">
@@ -552,22 +508,41 @@ export default function DashboardStats() {
                       <CheckCircle className="w-4 h-4 text-green-500" />
                       <span>承認済み</span>
                     </span>
-                    <span className="font-semibold">¥{stats.income.approved.toLocaleString()}</span>
+                    <span className="font-semibold">
+                      {showJPY ? (
+                        `¥${stats.income.approved.toLocaleString()}`
+                      ) : (
+                        `${stats.income.currency} ${convertCurrency(stats.income.approved, exchangeRate).toLocaleString()}`
+                      )}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <Hourglass className="w-4 h-4 text-blue-500" />
                       <span>未承認</span>
                     </span>
-                    <span className="font-semibold">¥{stats.income.unapproved.toLocaleString()}</span>
+                    <span className="font-semibold">
+                      {showJPY ? (
+                        `¥${stats.income.unapproved.toLocaleString()}`
+                      ) : (
+                        `${stats.income.currency} ${convertCurrency(stats.income.unapproved, exchangeRate).toLocaleString()}`
+                      )}
+                    </span>
                   </div>
                 </div>
               </div>
+              {!showJPY && exchangeRate && (
+                <div className="mt-2 pt-2 sm:pt-3 border-t border-amber-200 dark:border-amber-800 -mb-3">
+                  <div className="flex justify-end text-xs sm:text-sm text-muted-foreground font-medium">
+                    {formatExchangeRate(exchangeRate, stats.income.currency)}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
 
-        <div className="h-12"></div>
+        <div className="h-20"></div>
 
       </div>
     </TooltipProvider>
