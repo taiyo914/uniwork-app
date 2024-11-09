@@ -1,39 +1,87 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDistanceToNow, format, subDays } from "date-fns";
 import { ja } from "date-fns/locale";
 import { supabase } from "@/utils/supabase/client";
 import { useUser } from "@/hooks/useUser";
 import type { Profile } from "@/types/profile";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Bell, Clock, DollarSign, Calendar, PlayCircle, PauseCircle, StopCircle, User, InfoIcon, Wallet, RefreshCw } from "lucide-react";
+import { Bell, Clock, DollarSign, Calendar, PlayCircle, PauseCircle, StopCircle, User, InfoIcon, Wallet, RefreshCw, Hourglass, CheckCircle, CalendarDays } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 
-// ダミーの通知データを増やす
-const generateNotifications = () => {
-  const types = ["warning", "info", "success"] as const;
-  return Array.from({ length: 10 }, (_, i) => ({
-    id: i + 1,
-    title: [
-      "休憩時間超過注意",
-      "勤務時間報告",
-      "承認完了のお知せ",
-      "システムメンテナンス予定",
-      "給与振込完了",
-    ][i % 5],
-    message: [
-      "本日の休憩時間が1時間を超えています",
-      "先週の勤務時間が確定しました",
-      "3月分の勤務時間が承認されました",
-      "明日午前2時からメンテナンスを実施します",
-      "今月分の給与が振り込まれました",
-    ][i % 5],
-    createdAt: new Date(2024, 2, 20 - i),
-    type: types[i % 3],
-  }));
+// 通知データを配列として直接定義
+const notifications = [
+  {
+    id: 1,
+    title: "休憩時間超過注意",
+    message: "本日の休憩時間が1時間を超えています",
+    createdAt: new Date(new Date().getTime() - 2 * 60 * 60 * 1000), // 2時間前
+    type: "warning" as const,
+  },
+  {
+    id: 2,
+    title: "勤務時間報告",
+    message: "先週の勤務時間が確定しました",
+    createdAt: new Date(new Date().getTime() - 24 * 60 * 60 * 1000), // 1日前
+    type: "info" as const,
+  },
+  {
+    id: 3,
+    title: "承認完了のお知らせ",
+    message: "3月分の勤務時間が承認されました",
+    createdAt: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // 3日前
+    type: "success" as const,
+  },
+  {
+    id: 4,
+    title: "システムメンテナンス予定",
+    message: "明日午前2時からメンテナンスを実施します",
+    createdAt: new Date(new Date().getTime() - 5 * 24 * 60 * 60 * 1000), // 5日前
+    type: "info" as const,
+  },
+  {
+    id: 5,
+    title: "給与振込完了",
+    message: "今月分の給与が振り込まれました",
+    createdAt: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000), // 7日前
+    type: "success" as const,
+  },
+  {
+    id: 6,
+    title: "古い通知",
+    message: "これは古い通知です。",
+    createdAt: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000), // 40日前
+    type: "info" as const,
+  },
+  {
+    id: 7,
+    title: "古い通知",
+    message: "これは古い通知です。",
+    createdAt: new Date(new Date().getTime() - 40 * 24 * 60 * 60 * 1000), // 40日前
+    type: "info" as const,
+  },
+];
+
+// 相対時間を計算する関数
+const getRelativeTime = (date: Date) => {
+  const now = new Date();
+  const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+  const diffInMonths = Math.floor(diffInDays / 30);
+
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes}分前`;
+  } else if (diffInHours < 24) {
+    return `${diffInHours}時間前`;
+  } else if (diffInDays < 30) {
+    return `${diffInDays}日前`;
+  } else {
+    return format(date, 'yyyy/MM/dd'); // 日付フォーマット
+  }
 };
 
 const workStatusMap = {
@@ -107,23 +155,55 @@ const formatMonthDisplay = (date: Date) => {
   return format(date, 'M月', { locale: ja });
 };
 
+// 共通の統計情報の型
+type Stats = {
+  weekly: {
+    total: number;
+    approved: number;
+    unapproved: number;
+  };
+  lastSevenDays: {
+    total: number;
+    approved: number;
+    unapproved: number;
+  };
+  monthly: {
+    total: number;
+    approved: number;
+    unapproved: number;
+  };
+  income: {
+    total: number;
+    approved: number;
+    unapproved: number;
+    hourlyWage: number;
+  };
+};
+
 export default function DashboardStats() {
   const { user } = useUser();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({
-    weeklyMinutes: 0,
-    monthlyMinutes: 0,
-    monthlyApprovedMinutes: 0,
-    expectedIncomeApproved: 0,
-    expectedIncomeTotal: 0,
-    lastSevenDaysMinutes: 0,
+  const [stats, setStats] = useState<Stats>({
+    weekly: { total: 0, approved: 0, unapproved: 0 },
+    lastSevenDays: { total: 0, approved: 0, unapproved: 0 },
+    monthly: { total: 0, approved: 0, unapproved: 0 },
+    income: { total: 0, approved: 0, unapproved: 0, hourlyWage: 0 },
   });
-  const [selectedCurrency, setSelectedCurrency] = useState<CurrencyCode | null>(null);
+  const [showUSD, setShowUSD] = useState(false)
+  const exchangeRate = 0.0068 // 1 JPY = 0.0068 USD
+  const salaryJPY = 13200
+  const salaryUSD = (salaryJPY * exchangeRate).toFixed(2)
+  const approvedJPY = 7800
+  const approvedUSD = (approvedJPY * exchangeRate).toFixed(2)
+  const unapprovedJPY = 5400
+  const unapprovedUSD = (unapprovedJPY * exchangeRate).toFixed(2)
+  const hourlyRateJPY = 1200
+  const hourlyRateUSD = (hourlyRateJPY * exchangeRate).toFixed(2)
 
-  const [attendanceLogs, setAttendanceLogs] = useState<any[]>([]);
-
-  const notifications = generateNotifications();
+  const formatCurrency = (amount: number, currency: 'JPY' | 'USD') => {
+    return currency === 'JPY' ? `¥${amount.toLocaleString()}` : `$${(amount * exchangeRate).toFixed(2)}`
+  }
 
   const calculateTimeRange = () => {
     const now = new Date();
@@ -153,7 +233,7 @@ export default function DashboardStats() {
       // 日付範囲の計算
       const dateRanges = calculateDateRanges();
       
-      // 直近7日間と今週の計算のために、より広い範囲のデータを取得
+      // 直近7日間と今週の計算のために、より広い範囲データを取得
       const earliestDate = new Date(Math.min(
         dateRanges.lastSevenDays.start.getTime(),
         dateRanges.thisWeek.start.getTime(),
@@ -186,13 +266,9 @@ export default function DashboardStats() {
         return;
       }
 
-      setAttendanceLogs(attendanceLogs);
-
-      let lastSevenDaysTotal = 0;
-      let weeklyTotal = 0;
-      let monthlyTotalApproved = 0;
-      let monthlyTotalAll = 0;
-      let monthlyApprovedMinutes = 0;
+      let weeklyStats = { total: 0, approved: 0, unapproved: 0 };
+      let lastSevenDaysStats = { total: 0, approved: 0, unapproved: 0 };
+      let monthlyStats = { total: 0, approved: 0, unapproved: 0 };
 
       attendanceLogs?.forEach(record => {
         if (!record.work_start || !record.work_end) return;
@@ -202,8 +278,6 @@ export default function DashboardStats() {
         
         // 勤務時間を分単位で計算
         const workMinutes = Math.round((workEnd.getTime() - workStart.getTime()) / (1000 * 60));
-
-        // 休憩時間を分単位で計算
         let breakMinutes = 0;
         record.break_logs?.forEach(breakLog => {
           if (breakLog.break_start && breakLog.break_end) {
@@ -217,34 +291,52 @@ export default function DashboardStats() {
 
         // 直近7日間の計算
         if (workStart >= dateRanges.lastSevenDays.start && workStart <= dateRanges.lastSevenDays.end) {
-          lastSevenDaysTotal += netWorkMinutes;
+          lastSevenDaysStats.total += netWorkMinutes;
+          if (record.approved) {
+            lastSevenDaysStats.approved += netWorkMinutes;
+          } else {
+            lastSevenDaysStats.unapproved += netWorkMinutes;
+          }
         }
 
         // 今週の計算
         if (workStart >= dateRanges.thisWeek.start && workStart <= dateRanges.thisWeek.end) {
-          weeklyTotal += netWorkMinutes;
+          weeklyStats.total += netWorkMinutes;
+          if (record.approved) {
+            weeklyStats.approved += netWorkMinutes;
+          } else {
+            weeklyStats.unapproved += netWorkMinutes;
+          }
         }
 
-        // 今月の承認済み時間を計算
+        // 今月の計算
         if (workStart >= dateRanges.thisMonth.start && workStart <= dateRanges.thisMonth.end) {
+          monthlyStats.total += netWorkMinutes;
           if (record.approved) {
-            monthlyApprovedMinutes += netWorkMinutes;
-            monthlyTotalApproved += netWorkMinutes;
+            monthlyStats.approved += netWorkMinutes;
+          } else {
+            monthlyStats.unapproved += netWorkMinutes;
           }
-          monthlyTotalAll += netWorkMinutes;
         }
       });
 
       // 給与計算（時給を分給に変換して計算）
-      const minuteRate = (profileData?.hourly_wage || 0) / 60;
+      const hourlyWage = profileData?.hourly_wage || 0;
+      const minuteRate = hourlyWage / 60;
+
+      // 収入の計算
+      const incomeStats = {
+        total: Math.floor(monthlyStats.total * minuteRate),
+        approved: Math.floor(monthlyStats.approved * minuteRate),
+        unapproved: Math.floor(monthlyStats.unapproved * minuteRate),
+        hourlyWage: hourlyWage,
+      };
 
       setStats({
-        lastSevenDaysMinutes: lastSevenDaysTotal,
-        weeklyMinutes: weeklyTotal,
-        monthlyMinutes: monthlyTotalAll,
-        monthlyApprovedMinutes,
-        expectedIncomeApproved: Math.floor(monthlyTotalApproved * minuteRate),
-        expectedIncomeTotal: Math.floor(monthlyTotalAll * minuteRate),
+        weekly: weeklyStats,
+        lastSevenDays: lastSevenDaysStats,
+        monthly: monthlyStats,
+        income: incomeStats,
       });
 
       setLoading(false);
@@ -293,24 +385,29 @@ export default function DashboardStats() {
         {/* 通知セクション */}
         <section className="w-full shadow rounded-xl overflow-hidden">
           <Card className="border-none">
-            <CardHeader className="gap-2 bg-blue-100 py-4">
-              <h2 className="text-lg font-bold text-blue-800"> <Bell className="h-5 w-5 text-blue-600 inline mb-1 mr-1" />通知・お知らせ</h2>
+            <CardHeader className="gap-2 bg-blue-100 py-4 px-4 md:px-5">
+              <h2 className="text-lg font-bold text-blue-800">
+                <Bell className="h-5 w-5 text-blue-600 inline mb-1 mr-1" />通知・お知らせ
+              </h2>
             </CardHeader>
-            <CardContent className="max-h-[250px] overflow-y-auto bg-gray-50/40 px-4">
-              <div className="space-y-3 pt-4">
+            <CardContent className="max-h-[250px] overflow-y-auto bg-gray-50/40 px-3 md:px-4">
+              <div className="space-y-2.5 md:space-y-3 pt-3 md:pt-4">
                 {notifications.map(notification => (
                   <Alert 
                     key={notification.id} 
                     variant={notification.type === "warning" ? "destructive" : 
                             notification.type === "success" ? "success" : "default"}
-                    className=""
                   >
-                    <AlertTitle className="font-bold">{notification.title}</AlertTitle>
-                    <AlertDescription className="flex justify-between items-center">
-                      <span>{notification.message}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {formatDistanceToNow(notification.createdAt, { locale: ja, addSuffix: true })}
+                    <AlertTitle className="flex justify-between items-center">
+                      <div className="flex-1 truncate pr-4">
+                        {notification.title}
+                      </div>
+                      <span className="text-xs text-muted-foreground whitespace-nowrap">
+                        {getRelativeTime(notification.createdAt)}
                       </span>
+                    </AlertTitle>
+                    <AlertDescription>
+                      {notification.message}
                     </AlertDescription>
                   </Alert>
                 ))}
@@ -322,119 +419,156 @@ export default function DashboardStats() {
         <div className="h-5"></div>
 
         {/* 統計セクション */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* 勤務時間セクション */}
-          <Card className="border-blue-100">
-            <CardHeader className=" gap-2 bg-green-100 rounded-t-lg py-3">
-              <h3 className="text-lg font-bold text-green-800"> <Clock className="h-5 w-5 text-green-600 inline mr-1 mb-1" />勤務時間</h3>
+       
+        <div className="grid gap-4 lg:gap-5 sm:grid-cols-2">
+          {/* 今週の勤務時間 */}
+          <Card className="bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800">
+            <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2">
+              <div className="flex items-center space-x-1">
+                <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <CardTitle className="text-base sm:text-lg font-medium">今週の勤務時間</CardTitle>
+              </div>
+              <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 text-right whitespace-nowrap sm:w-full lg:w-auto">
+                {formatMinutesToHoursAndMinutes(stats.weekly.total)}
+              </div>
             </CardHeader>
-            <CardContent className="space-y-4 pt-4">
-
-              <div className="grid grid-cols-2 sm:grid-cols-2 items-center">
-                <h4 className="">
-                  <span className="font-semibold text-gray-700 block">今月</span>
-                  <span className="text-xs text-gray-500 block">
-                    {formatDateWithWeekday(calculateDateRanges().thisMonth.start)} ～ {formatDateWithWeekday(calculateDateRanges().thisMonth.end)}
-                  </span>
-                </h4>
-                <p className="text-2xl font-bold text-blue-600 text-right">
-                  {formatMinutesToHoursAndMinutes(stats.monthlyMinutes)}
-                </p>
+            <CardContent className="px-4 sm:px-5">
+              <div className="space-y-4">
+                <div className="text-xs sm:text-sm text-muted-foreground">
+                  {formatDateWithWeekday(calculateDateRanges().thisWeek.start)} ～ {formatDateWithWeekday(calculateDateRanges().thisWeek.end)}
+                </div>
+                <div className="space-y-2 text-xs sm:text-sm">
+                  <div className="flex justify-between">
+                    <span className="flex items-center space-x-1">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span>承認済み</span>
+                    </span>
+                    <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.weekly.approved)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="flex items-center space-x-1">
+                      <Hourglass className="w-4 h-4 text-blue-500" />
+                      <span>未承認</span>
+                    </span>
+                    <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.weekly.unapproved)}</span>
+                  </div>
+                </div>
               </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-2 items-center">
-                <h4 className="">
-                  <span className="font-semibold text-gray-700 block">今週</span>
-                  <span className="text-xs text-gray-500 block">
-                    {formatDateWithWeekday(calculateDateRanges().thisWeek.start)} ～ {formatDateWithWeekday(calculateDateRanges().thisWeek.end)}
-                  </span>
-                </h4>
-                <p className="text-2xl font-bold text-blue-600 text-right">
-                  {formatMinutesToHoursAndMinutes(stats.weeklyMinutes)}
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-2 items-center">
-                <h4 className="">
-                  <span className="font-semibold text-gray-700 block">直近7日間</span>
-                  <span className="text-xs text-gray-500 block">
-                    {formatDateWithWeekday(calculateDateRanges().lastSevenDays.start)} ～ {formatDateWithWeekday(calculateDateRanges().lastSevenDays.end)}
-                  </span>
-                </h4>
-                <p className="text-2xl font-bold text-blue-600 text-right">
-                  {formatMinutesToHoursAndMinutes(stats.lastSevenDaysMinutes)}
-                </p>
-              </div>
-
             </CardContent>
           </Card>
 
-          {/* 給与見込みセクション */}
-          <Card className="border-orange-100">
-            <CardHeader className="gap-2 bg-yellow-100 rounded-t-lg py-3">
-              <h3 className="text-lg font-bold text-yellow-800">
-                <Wallet className="h-5 w-5 text-yellow-600 inline mr-1 mb-1" />
-                {formatMonthDisplay(calculateDateRanges().thisMonth.start)}の給与見込み
-              </h3>
+          {/* 直近7日間の勤務時間 */}
+          <Card className="bg-purple-50 dark:bg-purple-900/20 border-purple-200/70 dark:border-purple-800">
+            <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2">
+              <div className="flex items-center space-x-1">
+                <Calendar className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                <CardTitle className="text-base sm:text-lg font-medium">直近7日間の勤務時間</CardTitle>
+              </div>
+              <div className="text-2xl sm:text-3xl font-bold text-purple-600 dark:text-purple-400 text-right whitespace-nowrap sm:w-full lg:w-auto">
+                {formatMinutesToHoursAndMinutes(stats.lastSevenDays.total)}
+              </div>
             </CardHeader>
-            <CardContent className="space-y-4 pt-4">
-              <div className="grid grid-cols-2 sm:grid-cols-2 items-center">
-                <div>
-                  <h4 className="font-semibold text-gray-700">承認済み</h4>
-                  <p className="text-xs text-gray-500">
-                    {formatMinutesToHoursAndMinutes(stats.monthlyApprovedMinutes)} × ¥{profile?.hourly_wage}/時
-                  </p>
+            <CardContent className="px-4 sm:px-5">
+              <div className="space-y-4">
+                <div className="text-xs sm:text-sm text-muted-foreground">
+                  {formatDateWithWeekday(calculateDateRanges().lastSevenDays.start)} ～ {formatDateWithWeekday(calculateDateRanges().lastSevenDays.end)}
                 </div>
-                <div className="text-right">
-                  <p className="text-2xl font-bold text-yellow-600">
-                    ¥{stats.expectedIncomeApproved.toLocaleString()}
-                  </p>
-                  {selectedCurrency && (
-                    <p className="text-sm text-gray-600">
-                      ({selectedCurrency} {convertCurrency(stats.expectedIncomeApproved, selectedCurrency)})
-                    </p>
-                  )}
+                <div className="space-y-2 text-xs sm:text-sm">
+                  <div className="flex justify-between">
+                    <span className="flex items-center space-x-1">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span>承認済み</span>
+                    </span>
+                    <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.lastSevenDays.approved)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="flex items-center space-x-1">
+                      <Hourglass className="w-4 h-4 text-blue-500" />
+                      <span>未承認</span>
+                    </span>
+                    <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.lastSevenDays.unapproved)}</span>
+                  </div>
                 </div>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-2 items-center">
-                <div>
-                  <h4 className="font-semibold text-gray-700">未承認も含む</h4>
-                  <p className="text-xs text-gray-500">
-                    {formatMinutesToHoursAndMinutes(stats.monthlyMinutes)} × ¥{profile?.hourly_wage}/時
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-2xl font-bold text-yellow-600">
-                    ¥{stats.expectedIncomeTotal.toLocaleString()}
-                  </p>
-                  {selectedCurrency && (
-                    <p className="text-sm text-gray-600">
-                      ({selectedCurrency} {convertCurrency(stats.expectedIncomeTotal, selectedCurrency)})
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-2 mt-4 justify-end">
-                {Object.keys(exchangeRates).map((currency) => (
-                  <Button
-                    key={currency}
-                    variant={selectedCurrency === currency ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setSelectedCurrency(currency as CurrencyCode)}
-                    className="flex items-center gap-1"
-                  >
-                    <span>{currency}</span>
-                    {selectedCurrency === currency && <RefreshCw className="h-3 w-3" />}
-                  </Button>
-                ))}
               </div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="h-10"></div>
+        <div className="mt-4 lg:mt-5 flex flex-col sm:flex-row gap-4 lg:gap-5 items-start">
+          {/* 今月の勤務時間 */}
+          <Card className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 w-full">
+            <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2">
+              <div className="flex items-center space-x-1">
+                <CalendarDays className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <CardTitle className="text-base sm:text-lg font-medium">今月の勤務時間</CardTitle>
+              </div>
+              <div className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400 text-right whitespace-nowrap sm:w-full lg:w-auto">
+                {formatMinutesToHoursAndMinutes(stats.monthly.total)}
+              </div>
+            </CardHeader>
+            <CardContent className="px-4 sm:px-5">
+              <div className="space-y-4">
+                <div className="text-xs sm:text-sm text-muted-foreground">
+                  {formatDateWithWeekday(calculateDateRanges().thisMonth.start)} ～ {formatDateWithWeekday(calculateDateRanges().thisMonth.end)}
+                </div>
+                <div className="space-y-2 text-xs sm:text-sm">
+                  <div className="flex justify-between">
+                    <span className="flex items-center space-x-1">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span>承認済み</span>
+                    </span>
+                    <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.monthly.approved)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="flex items-center space-x-1">
+                      <Hourglass className="w-4 h-4 text-blue-500" />
+                      <span>未承認</span>
+                    </span>
+                    <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.monthly.unapproved)}</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-amber-50 dark:bg-amber-900/20 border-amber-200/70 dark:border-amber-800 w-full">
+            <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2">
+              <div className="flex items-center space-x-1">
+                <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                <CardTitle className="text-base sm:text-lg font-medium">今月の給与</CardTitle>
+              </div>
+              <div className="text-2xl sm:text-3xl font-bold text-amber-600 dark:text-amber-400 text-right whitespace-nowrap sm:w-full lg:w-auto">
+                ¥{stats.income.total.toLocaleString()}
+              </div>
+            </CardHeader>
+            <CardContent className="px-4 sm:px-5">
+              <div className="space-y-4">
+                <div className="text-xs sm:text-sm text-muted-foreground">
+                  {formatMinutesToHoursAndMinutes(stats.monthly.total)} × ¥{stats.income.hourlyWage.toLocaleString()}/時
+                </div>
+                <div className="space-y-2 text-xs sm:text-sm">
+                  <div className="flex justify-between">
+                    <span className="flex items-center space-x-1">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span>承認済み</span>
+                    </span>
+                    <span className="font-semibold">¥{stats.income.approved.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="flex items-center space-x-1">
+                      <Hourglass className="w-4 h-4 text-blue-500" />
+                      <span>未承認</span>
+                    </span>
+                    <span className="font-semibold">¥{stats.income.unapproved.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="h-12"></div>
+
       </div>
     </TooltipProvider>
   );
