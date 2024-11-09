@@ -327,10 +327,10 @@ export default function DashboardStats() {
             </CardHeader>
             <CardContent className="px-4 sm:px-5">
               <div className="space-y-4">
-                <div className="text-xs sm:text-sm text-muted-foreground">
+                <div className="text-sm text-muted-foreground">
                   {formatDateWithWeekday(calculateDateRanges().thisWeek.start)} ～ {formatDateWithWeekday(calculateDateRanges().thisWeek.end)}
                 </div>
-                <div className="space-y-2 text-xs sm:text-sm">
+                <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <CheckCircle className="w-4 h-4 text-green-500" />
@@ -363,10 +363,10 @@ export default function DashboardStats() {
             </CardHeader>
             <CardContent className="px-4 sm:px-5">
               <div className="space-y-4">
-                <div className="text-xs sm:text-sm text-muted-foreground">
+                <div className="text-sm text-muted-foreground">
                   {formatDateWithWeekday(calculateDateRanges().lastSevenDays.start)} ～ {formatDateWithWeekday(calculateDateRanges().lastSevenDays.end)}
                 </div>
-                <div className="space-y-2 text-xs sm:text-sm">
+                <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <CheckCircle className="w-4 h-4 text-green-500" />
@@ -401,10 +401,10 @@ export default function DashboardStats() {
             </CardHeader>
             <CardContent className="px-4 sm:px-5">
               <div className="space-y-4">
-                <div className="text-xs sm:text-sm text-muted-foreground">
+                <div className="text-sm text-muted-foreground">
                   {formatDateWithWeekday(calculateDateRanges().thisMonth.start)} ～ {formatDateWithWeekday(calculateDateRanges().thisMonth.end)}
                 </div>
-                <div className="space-y-2 text-xs sm:text-sm">
+                <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <CheckCircle className="w-4 h-4 text-green-500" />
@@ -495,14 +495,14 @@ export default function DashboardStats() {
             </CardHeader>
             <CardContent className="px-4 sm:px-5">
               <div className="space-y-4">
-                <div className="text-xs sm:text-sm text-muted-foreground">
+                <div className="text-sm text-muted-foreground">
                   {formatMinutesToHoursAndMinutes(stats.monthly.total)} × {showJPY ? (
                     `¥${stats.income.hourlyWage.toLocaleString()}/時`
                   ) : (
                     `${stats.income.currency} ${convertCurrency(stats.income.hourlyWage, exchangeRate).toLocaleString()}/時`
                   )}
                 </div>
-                <div className="space-y-2 text-xs sm:text-sm">
+                <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <CheckCircle className="w-4 h-4 text-green-500" />
@@ -533,7 +533,7 @@ export default function DashboardStats() {
               </div>
               {!showJPY && exchangeRate && (
                 <div className="mt-2 pt-2 sm:pt-3 border-t border-amber-200 dark:border-amber-800 -mb-3">
-                  <div className="flex justify-end text-xs sm:text-sm text-muted-foreground font-medium">
+                  <div className="flex justify-end text-sm text-muted-foreground font-medium">
                     {formatExchangeRate(exchangeRate, stats.income.currency)}
                   </div>
                 </div>
