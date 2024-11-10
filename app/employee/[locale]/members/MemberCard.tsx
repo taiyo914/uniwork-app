@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Globe, UtensilsCrossed, Info, Heart, MessageCircle, Pencil, Loader2 } from "lucide-react"
+import { Globe, UtensilsCrossed, Info, Heart, MessageCircle, Pencil, Loader2, Languages } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { translateJson } from "@/utils/translateJson"
@@ -101,7 +101,7 @@ export function MemberCard({ member, locale, userId, onChatClick }: MemberCardPr
   const displayData = showTranslated && translatedData ? translatedData : member;
 
   return (
-    <Card className="overflow-hidden border shadow-lg relative pb-8">
+    <Card className="overflow-hidden border shadow-lg relative pb-9">
       <CardHeader className={`py-4 ${getHeaderColor(member.work_status)} pr-4 transition-all duration-500`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -125,17 +125,17 @@ export function MemberCard({ member, locale, userId, onChatClick }: MemberCardPr
           <div className="flex items-center space-x-2">
             <Globe className="w-5 h-5 text-blue-600" />
             <span className="font-semibold text-sm">言語 : </span>
-            <span className="text-sm">{displayData.languages}</span>
+            <span className={`text-sm ${showTranslated ? 'text-blue-600' : ''}`}>{displayData.languages}</span>
           </div>
           <div className="space-y-2">
             <div className="flex items-center space-x-2">
               <UtensilsCrossed className="w-5 h-5 text-orange-500" />
               <span className="font-semibold text-sm">食事の好み</span>
             </div>
-            <p className="text-sm pl-7">好きな食べ物： {displayData.favorite_foods}</p>
+            <p className="text-sm pl-7">好きな食べ物： <span className={`${showTranslated ? 'text-blue-600' : ''}`}>{displayData.favorite_foods}</span></p>
             {displayData.dietary_restrictions && (
               <p className="text-sm pl-7 text-gray-600">
-                食べられないもの： {displayData.dietary_restrictions}
+                食べられないもの： <span className={`${showTranslated ? 'text-blue-500' : ''}`}>{displayData.dietary_restrictions}</span>
               </p>
             )}
           </div>
@@ -144,7 +144,7 @@ export function MemberCard({ member, locale, userId, onChatClick }: MemberCardPr
               <Heart className="w-5 h-5 text-red-500" />
               <span className="font-semibold text-sm">好きなこと</span>
             </div>
-            <p className="text-sm pl-7">{displayData.hobbies}</p>
+            <p className={`text-sm pl-7 ${showTranslated ? 'text-blue-600' : ''}`}>{displayData.hobbies}</p>
           </div>
           {displayData.shared_info && (
             <div className="space-y-2">
@@ -152,41 +152,51 @@ export function MemberCard({ member, locale, userId, onChatClick }: MemberCardPr
                 <Info className="w-5 h-5 text-blue-500" />
                 <span className="font-semibold text-sm">Please know </span>
               </div>
-              <p className="text-sm pl-7">{displayData.shared_info}</p>
+              <p className={`text-sm pl-7 ${showTranslated ? 'text-blue-600' : ''}`}>{displayData.shared_info}</p>
             </div>
           )}
         </div>
       </CardContent>
 
-      <div className="absolute bottom-2 right-2 flex gap-2">
+      <div className="absolute bottom-3 flex justify-between w-full px-3">
         <Button
           variant="ghost"
           size="sm"
-          className="text-gray-500 hover:text-gray-700 rounded-lg"
+          className={`rounded-lg border border-gray-200 text-xs px-2 h-8 
+            ${showTranslated ? 'text-blue-600 hover:bg-blue-100 hover:text-blue-600 bg-blue-50 border-blue-300' 
+              : 'text-gray-500 hover:text-gray-700 disabled:text-gray-400 disabled:hover:text-gray-400 disabled:hover:bg-gray-50 disabled:bg-gray-50'
+            }
+          `}
           onClick={handleTranslate}
           disabled={isTranslating}
         >
-          {isTranslating ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
+          {isTranslating  ? (
+            <>
+              <Loader2 className="w-[0.85rem] h-[0.85rem] animate-spin text-blue-600" />
+              翻訳中
+            </>
           ) : (
-            <Globe className={`w-4 h-4 ${showTranslated ? 'text-blue-600' : ''}`} />
+            <>
+              <Languages className={`w-[0.85rem] h-[0.85rem]`} />
+              翻訳
+            </>
           )}
         </Button>
 
         <Button
           variant="ghost"
           size="sm"
-          className="text-gray-500 hover:text-gray-700 rounded-lg"
+          className="text-gray-500 hover:text-gray-700 rounded-lg border border-gray-200 text-xs px-2 h-8"
           onClick={() => onChatClick(member.user_id)}
         >
           {userId === member.user_id ? (
             <>
-              <Pencil className="w-[0.85rem] h-[0.85rem] mb-0.5" />
+              <Pencil className="w-3.5 h-3.5 mb-0.5 " />
               編集
             </>
           ) : (
             <>
-              <MessageCircle className="w-4 h-4 mb-0.5" />
+              <MessageCircle className="w-[0.85rem] h-[0.85rem] mb-0.5" />
               チャットへ
             </>
           )}
