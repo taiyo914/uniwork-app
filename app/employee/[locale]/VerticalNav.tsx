@@ -29,7 +29,7 @@ export default function VerticalNav() {
   return (
     <nav
       className={`xs:hidden px-2 fixed top-0 left-0 h-full border-r-[2px] bg-gray-50 transition-all duration-200 ease-in-out z-20 flex flex-col justify-between ${
-         isExpanded ? "w-64" : "w-16"
+         isExpanded ? "w-64" : "sm:w-16 w-14"
       }`}
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
@@ -37,10 +37,10 @@ export default function VerticalNav() {
       <ul className="py-2 space-y-1 short:space-y-0 short:py-0">
         <li className="relative">
           <div
-            className={`flex items-center p-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600`}
+            className={`flex items-center sm:p-3 p-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600`}
           >
-            <div className="mr-3 -ml-0.5">
-              <Earth className="h-7 w-7 text-blue-600" />
+            <div className="mr-3 sm:-ml-0.5">
+              <Earth className="sm:h-7 sm:w-7 h-6 w-6 text-blue-600" />
             </div>
             <div
               className={`whitespace-nowrap overflow-hidden text-2xl font-semibold `}
@@ -58,12 +58,14 @@ export default function VerticalNav() {
             <li key={index} className="relative">
               <Link
                 href={item.href}
-                className={`flex items-center p-3 transition-all ease-in-out rounded-lg
+                className={`flex items-center sm:p-3 p-2 transition-all ease-in-out rounded-lg
                   ${!isActive && "hover:bg-gray-200"}
                 `}
               >
-                <div className="mr-4">
-                  {item.icon}
+                <div className="mr-4 mb-1 sm:mb-0">
+                  <div className="sm:h-6 sm:w-6 h-5 w-5 ">
+                    {item.icon}
+                  </div>
                   {isActive && (
                     <span className="absolute inset-0 bg-gray-600 opacity-20  rounded-lg"></span>
                   )}
@@ -80,13 +82,13 @@ export default function VerticalNav() {
           )
         })}
       </ul>
-      <div className="py-2 border-t border-gray-300">
+      <div className="sm:py-2 py-1 border-t border-gray-300">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center p-3 transition-all duration-300 ease-in-out hover:bg-gray-200 rounded-lg"
+          className="flex w-full items-center sm:p-3 p-2 transition-all duration-300 ease-in-out hover:bg-gray-200 rounded-lg"
         >
-          <span className="relative mr-3">
-            <LogOut className="h-6 w-6 text-gray-600" />
+          <span className="relative mr-4 mb-0.5 sm:mb-0">
+            <LogOut className="sm:h-6 sm:w-6 h-5 w-5 text-gray-600" />
           </span>
           <span
             className={`whitespace-nowrap transition-all duration-200 overflow-hidden ${
