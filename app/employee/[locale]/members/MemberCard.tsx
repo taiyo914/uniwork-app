@@ -132,7 +132,7 @@ export function MemberCard({ member, locale, userId, onChatClick }: MemberCardPr
               <UtensilsCrossed className="w-5 h-5 text-orange-500" />
               <span className="font-semibold text-sm">食事の好み</span>
             </div>
-            <p className="text-sm pl-7">好きな食べ物： <span className={`${showTranslated ? 'text-blue-600' : ''}`}>{displayData.favorite_foods}</span></p>
+            <p className="text-sm pl-7">好きなもの： <span className={`${showTranslated ? 'text-blue-600' : ''}`}>{displayData.favorite_foods}</span></p>
             {displayData.dietary_restrictions && (
               <p className="text-sm pl-7 text-gray-600">
                 食べられないもの： <span className={`${showTranslated ? 'text-blue-500' : ''}`}>{displayData.dietary_restrictions}</span>
