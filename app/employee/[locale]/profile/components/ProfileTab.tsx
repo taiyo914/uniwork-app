@@ -155,7 +155,7 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
   return (
     <>
       <div className="space-y-5 sm:space-y-6">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 mt-1">
           <Avatar className="w-24 h-24 border border-blue-200">
             <AvatarImage src={avatarSrc} alt="プロフィール画像" className="object-cover" />
             <AvatarFallback className="bg-blue-200 text-blue-800 text-lg">{profile.english_name.slice(0, 2)}</AvatarFallback>

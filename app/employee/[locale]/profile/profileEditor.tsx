@@ -40,6 +40,7 @@ export default function ProfileEditor({ initialProfile }: ProfileEditorProps) {
         <h1 className="text-xl sm:text-2xl font-bold">
           プロフィール設定
         </h1>
+        
 
         <div className="h-3 sm:h-4"></div>
         
