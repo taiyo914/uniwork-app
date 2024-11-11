@@ -1,4 +1,4 @@
- 'use client'
+'use client'
 
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Camera, Upload, Loader2, Check } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
+import imageCompression from 'browser-image-compression';
 
 interface Profile {
   user_id: string
@@ -37,17 +38,45 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
   const [isUploading, setIsUploading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
+  const [compressedFile, setCompressedFile] = useState<File | null>(null)
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+
     const file = event.target.files?.[0]
+
+    console.log('ファイル圧縮イベント開始', file)
+
     if (file) {
       setIsUploading(true)
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setAvatarSrc(reader.result as string)
+      
+      try {
+        const options = {
+          maxSizeMB: 0.1,
+          maxWidthOrHeight: 500,
+          useWebWorker: true,
+          fileType: 'image/jpeg',
+          initialQuality: 0.7
+        };
+
+        const compressed = await imageCompression(file, options)
+        
+        const newFileName = `${file.name.split('.')[0]}.jpg`
+        const convertedFile = new File([compressed], newFileName, { type: 'image/jpeg' })
+        
+        console.log('圧縮に成功', convertedFile)
+        
+        setCompressedFile(convertedFile)
+
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          setAvatarSrc(reader.result as string)
+          setIsUploading(false)
+        }
+        reader.readAsDataURL(convertedFile)
+      } catch (error) {
+        console.error('エラー: 画像の圧縮に失敗しました:', error)
         setIsUploading(false)
       }
-      reader.readAsDataURL(file)
     }
   }
 
@@ -56,7 +85,34 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
     const supabase = createClient()
     
     try {
+      if (compressedFile) {
+        const filePath = `profile/${profile.user_id}.jpg`
+        console.log('1. 画像アップロードを開始', filePath)
+        
+        const { error: uploadError } = await supabase.storage
+          .from('images')
+          .upload(filePath, compressedFile, {
+            upsert: true,
+          })
+
+        if (uploadError) {
+          console.error('画像のアップロードに失敗:', uploadError)
+          return
+        }
+
+        console.log('2. 画像のアップロードに成功')
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('images')
+          .getPublicUrl(filePath)
+
+        profile.image_url = publicUrl
+        
+        console.log('3. 公開URLを取得', profile.image_url)
+      }
+
       const updateData = {
+        image_url: profile.image_url,
         languages: profile.languages,
         favorite_foods: profile.favorite_foods,
         dietary_restrictions: profile.dietary_restrictions,
@@ -70,10 +126,13 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
         .eq('user_id', profile.user_id)
 
       if (error) {
-        console.error('プロフィールの更新に失敗しました:', error)
+        console.error('プロフィールの更新に失敗:', error)
         return
       }
 
+      console.log('4. プロフィールの更新に成功')
+
+      setCompressedFile(null)
       setSaveSuccess(true)
       setTimeout(() => {
         setSaveSuccess(false)
@@ -109,7 +168,7 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
                 </DialogHeader>
                 <div className="flex flex-col items-center space-y-4">
                   <Avatar className="w-32 h-32">
-                    <AvatarImage src={avatarSrc} alt="プロフィール画像" />
+                    <AvatarImage src={avatarSrc} alt="プロフィール画像" className="object-cover"/>
                     <AvatarFallback>{profile.english_name.slice(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <Label htmlFor="picture" className="cursor-pointer">
