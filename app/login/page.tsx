@@ -21,39 +21,42 @@ export default function RefinedLogin() {
     setError(null);
     setIsLoading(true);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
-      setError(`Login Error: ${error.message}`);
-      return;
-    }
-
-    const { user } = data;
-
-    if (user) {
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("role, locale")
-        .eq("user_id", user.id)
-        .single();
-
-      if (profileError || !profile) {
-        setError(`Role Error: ${profileError.message}`);
+      if (error) {
+        setError(`Login Error: ${error.message}`);
         return;
       }
 
-      // ロールに応じてリダイレクト
-      if (profile.role === "admin") {
-        router.push("/admin");
-      } else {
-        router.push(`/employee/${profile.locale}`);
-      }
-    }
+      const { user } = data;
 
-    setIsLoading(false)
+      if (user) {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("role, locale")
+          .eq("user_id", user.id)
+          .single();
+
+        if (profileError || !profile) {
+          setError(`Role Error: ${profileError.message}`);
+          return;
+        }
+
+        if (profile.role === "admin") {
+          router.push("/admin");
+        } else {
+          router.push(`/employee/${profile.locale}`);
+        }
+      }
+    } catch (error) {
+      setError('予期せぬエラーが発生しました');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (<>
