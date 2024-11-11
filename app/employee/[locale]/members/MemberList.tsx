@@ -1,16 +1,10 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Globe, UtensilsCrossed, Info, Heart, Users, MessageCircle, Pencil, Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Users } from "lucide-react"
 import { useEffect, useState } from "react"
 import { createClient } from "@/utils/supabase/client"
 import { useParams, useRouter } from "next/navigation"
 import { useUser } from "@/hooks/useUser"
-import { translateJson } from "@/utils/translateJson"
-import { translateText } from "@/utils/translate"
 import { MemberCard } from "./MemberCard"
 
 interface TeamMember {
