@@ -70,7 +70,7 @@ export default function ProfileEditor({ initialProfile }: ProfileEditorProps) {
           <TabsContent value="settings">
             <Card>
               <CardHeader className="px-4 sm:px-6 pb-4 pt-5 sm:py-6">
-                <CardTitle className="text-xl sm:text-2xl">アプリの設定</CardTitle>
+                <CardTitle className="text-xl sm:text-2xl">アプリ設定</CardTitle>
                 <CardDescription>アプリの基本設定を変更します。</CardDescription>
               </CardHeader>
               <CardContent className="px-4 sm:px-6 pb-6">
