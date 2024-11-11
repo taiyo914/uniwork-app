@@ -1,6 +1,8 @@
 import { createClient } from '@/utils/supabase/server'
 import ProfileEditor from './profileEditor'
 
+export const revalidate = 0;
+
 export default async function Page() {
   const supabase = createClient()
   const {
