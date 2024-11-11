@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -33,12 +33,21 @@ interface ProfileTabProps {
   setProfile: React.Dispatch<React.SetStateAction<Profile>>;
 }
 
+// キャッシュブレーカー
+const addCacheBreaker = (url: string) => {
+  if (!url) return url;
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}t=${new Date().getTime()}`;
+}
+
 export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
-  const [avatarSrc, setAvatarSrc] = useState(profile.image_url || "/placeholder.svg?height=96&width=96")
+  const [avatarSrc, setAvatarSrc] = useState((profile.image_url) || "/placeholder.svg?height=96&width=96") 
+    // addCacheBreaker(profile.image_url)とするとキャッシュが回避できるが、ページを開くたびに一瞬だけちらつきがある
   const [isUploading, setIsUploading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
   const [compressedFile, setCompressedFile] = useState<File | null>(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -71,6 +80,7 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
         reader.onloadend = () => {
           setAvatarSrc(reader.result as string)
           setIsUploading(false)
+          setIsDialogOpen(false)
         }
         reader.readAsDataURL(convertedFile)
       } catch (error) {
@@ -146,13 +156,13 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
     <>
       <div className="space-y-5 sm:space-y-6">
         <div className="flex items-center space-x-4">
-          <Avatar className="w-24 h-24">
+          <Avatar className="w-24 h-24 border border-blue-200">
             <AvatarImage src={avatarSrc} alt="プロフィール画像" className="object-cover" />
-            <AvatarFallback>{profile.english_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+            <AvatarFallback className="bg-blue-200 text-blue-800 text-lg">{profile.english_name.slice(0, 2)}</AvatarFallback>
           </Avatar>
           <div>
             <div className="text-2xl font-semibold ml-1 mb-1">{profile.english_name}</div>
-            <Dialog>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" className="flex items-center space-x-1 px-3 py-2">
                   <Camera className="w-4 h-4" />
@@ -169,7 +179,7 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
                 <div className="flex flex-col items-center space-y-4">
                   <Avatar className="w-32 h-32">
                     <AvatarImage src={avatarSrc} alt="プロフィール画像" className="object-cover"/>
-                    <AvatarFallback>{profile.english_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                    <AvatarFallback>{profile.english_name.slice(0, 2)}</AvatarFallback>
                   </Avatar>
                   <Label htmlFor="picture" className="cursor-pointer">
                     <div className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
@@ -189,6 +199,12 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
             </Dialog>
           </div>
         </div>
+
+        {compressedFile && (
+        <div className="text-xs text-gray-600 bg-gray-100 p-3 rounded-md">
+          アイコンを保存するには右下の保存ボタンを押してください。保存後も反映にはしばらく時間がかかることがあります。保存後すぐに反映させたい場合はブラウザのキャッシュを削除してください。
+          </div>
+        )}
 
         <div className="space-y-1">
           <Label htmlFor="languages" className="font-semibold text-gray-600">話せる言語</Label>
