@@ -8,7 +8,7 @@
     "logout": "ログアウト"
   },
   "timelog":{
-    "headerTitle": "勤務登録画面",
+    "headerTitle": "勤務登録",
     "attendanceHistory":{
       "workHistory": "打刻履歴",
       "approved": "承認済み",
