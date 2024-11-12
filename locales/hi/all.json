@@ -67,5 +67,97 @@
         "overlappingBreaks": "ब्रेक {{index1}} और {{index2}} के समय ओवरलैप हो रहे हैं।"
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "साप्ताहिक कार्य घंटे",
+    "last7Days": "पिछले 7 दिनों के कार्य घंटे",
+    "monthlyWork": "मासिक कार्य घंटे",
+    "monthlyIncome": "मासिक आय",
+    "approved": "स्वीकृत",
+    "unapproved": "अस्वीकृत",
+    "offDuty": "ड्यूटी से बाहर",
+    "working": "कार्यरत",
+    "onBreak": "ब्रेक पर",
+    "showInJPY": "येन में दिखाएं",
+    "showInForeign": "{{currency}} में दिखाएं",
+    "perHour": "/घंटा",
+    "guest": "अतिथि",
+    "hourAndMinute": "{{hour}}घं {{minute}}मि",
+    "minuteOnly": "{{minute}}मि"
+  },
+  "chat": {
+    "title": "चैट",
+    "back": "वापस",
+    "messagePlaceholder": "संदेश दर्ज करें...",
+    "translationFailed": "अनुवाद विफल...",
+    "addReaction": "+प्रतिक्रिया जोड़ें",
+    "noUsers": "कोई उपयोगकर्ता नहीं",
+    "groupChat": "समूह चैट"
+  },
+  "member": {
+    "title": "सदस्य",
+    "languages": "भाषाएं",
+    "foodPreferences": "खाद्य पसंद",
+    "favorites": "पसंदीदा",
+    "restrictions": "प्रतिबंध",
+    "hobbies": "शौक",
+    "pleaseKnow": "अतिरिक्त जानकारी",
+    "translating": "अनुवाद हो रहा है",
+    "translate": "अनुवाद करें",
+    "edit": "संपादित करें",
+    "goToChat": "चैट पर जाएं",
+    "workStatus": {
+      "working": "कार्यरत",
+      "onBreak": "ब्रेक पर",
+      "notStarted": "शुरू नहीं किया"
+    }
+  },
+  "profile": {
+    "title": "प्रोफ़ाइल सेटिंग्स",
+    "tabs": {
+      "profile": "प्रोफ़ाइल",
+      "settings": "सेटिंग्स",
+      "registrationInfo": "पंजीकरण जानकारी"
+    },
+    "settings": {
+      "title": "एप्लिकेशन सेटिंग्स",
+      "description": "बुनियादी एप्लिकेशन सेटिंग्स बदलें।",
+      "language": "भाषा सेटिंग्स",
+      "currency": "मुद्रा",
+      "selectPlaceholder": "कृपया चुनें",
+      "saved": "सहेजा गया",
+      "save": "सहेजें"
+    },
+    "profile": {
+      "changeImage": "छवि बदलें",
+      "uploadTitle": "प्रोफ़ाइल छवि अपलोड करें",
+      "uploadDescription": "नई प्रोफ़ाइल छवि चुनें और अपलोड करें।",
+      "uploading": "अपलोड हो रहा है...",
+      "selectFile": "फ़ाइल चुनें",
+      "cacheNotice": "आइकन को सहेजने के लिए दाएं नीचे के सहेजें बटन पर क्लिक करें। सहेजने के बाद प्रतिबिंबित होने में कुछ समय लग सकता है। यदि आप चाहते हैं कि सहेजने के तुरंत बाद प्रतिबिंबित हो, तो कृपया अपने ब्राउज़र का कैश साफ़ करें।",
+      "languages": "बोली जाने वाली भाषाएं",
+      "languagesPlaceholder": "उदाहरण: अंग्रेजी, जापानी, चीनी",
+      "foodPreferences": "खाद्य पसंद",
+      "favorites": "पसंदीदा",
+      "favoritesPlaceholder": "उदाहरण: सुशी, रामेन, टेम्पुरा",
+      "restrictions": "प्रतिबंध",
+      "restrictionsPlaceholder": "उदाहरण: मूंगफली, अंडा, दूध",
+      "hobbies": "शौक",
+      "hobbiesPlaceholder": "उदाहरण: पढ़ना, यात्रा, खाना पकाना",
+      "pleaseKnow": "अतिरिक्त जानकारी",
+      "pleaseKnowPlaceholder": "उदाहरण: धर्म, विश्वास, पारिवारिक स्थिति, भाषा स्तर आदि। कृपया वह जानकारी दर्ज करें जो आप चाहते हैं कि सभी को पता हो।",
+      "saved": "सहेजा गया",
+      "save": "सहेजें"
+    },
+    "registrationInfo": {
+      "title": "पंजीकरण जानकारी",
+      "description": "इस जानकारी को बदलने के लिए आवेदन आवश्यक है।",
+      "name": "नाम",
+      "nationality": "राष्ट्रीयता",
+      "email": "ईमेल",
+      "residenceStatus": "निवास स्थिति",
+      "expirationDate": "समाप्ति तिथि",
+      "requestChange": "जानकारी परिवर्तन का अनुरोध करें"
+    }
   }
 }

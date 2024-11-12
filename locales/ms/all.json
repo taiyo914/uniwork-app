@@ -67,5 +67,97 @@
         "overlappingBreaks": "Rehat {{index1}} dan Rehat {{index2}} bertindih."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "Jam Kerja Mingguan",
+    "last7Days": "Jam Kerja 7 Hari Lepas",
+    "monthlyWork": "Jam Kerja Bulanan",
+    "monthlyIncome": "Pendapatan Bulanan",
+    "approved": "Diluluskan",
+    "unapproved": "Tidak Diluluskan",
+    "offDuty": "Tidak Bertugas",
+    "working": "Sedang Bekerja",
+    "onBreak": "Sedang Berehat",
+    "showInJPY": "Papar dalam JPY",
+    "showInForeign": "Papar dalam {{currency}}",
+    "perHour": "/jam",
+    "guest": "Tetamu",
+    "hourAndMinute": "{{hour}}j {{minute}}m",
+    "minuteOnly": "{{minute}}m"
+  },
+  "chat": {
+    "title": "Sembang",
+    "back": "Kembali",
+    "messagePlaceholder": "Masukkan mesej...",
+    "translationFailed": "Terjemahan gagal...",
+    "addReaction": "+Tambah Reaksi",
+    "noUsers": "Tiada pengguna",
+    "groupChat": "Sembang Kumpulan"
+  },
+  "member": {
+    "title": "Ahli",
+    "languages": "Bahasa",
+    "foodPreferences": "Pilihan Makanan",
+    "favorites": "Kegemaran",
+    "restrictions": "Sekatan",
+    "hobbies": "Hobi",
+    "pleaseKnow": "Maklumat Tambahan",
+    "translating": "Sedang Menterjemah",
+    "translate": "Terjemah",
+    "edit": "Edit",
+    "goToChat": "Pergi ke Sembang",
+    "workStatus": {
+      "working": "Sedang Bekerja",
+      "onBreak": "Sedang Berehat",
+      "notStarted": "Belum Mula"
+    }
+  },
+  "profile": {
+    "title": "Tetapan Profil",
+    "tabs": {
+      "profile": "Profil",
+      "settings": "Tetapan",
+      "registrationInfo": "Maklumat Pendaftaran"
+    },
+    "settings": {
+      "title": "Tetapan Aplikasi",
+      "description": "Ubah tetapan asas aplikasi.",
+      "language": "Tetapan Bahasa",
+      "currency": "Mata Wang",
+      "selectPlaceholder": "Sila pilih",
+      "saved": "Disimpan",
+      "save": "Simpan"
+    },
+    "profile": {
+      "changeImage": "Tukar Gambar",
+      "uploadTitle": "Muat Naik Gambar Profil",
+      "uploadDescription": "Pilih dan muat naik gambar profil baharu.",
+      "uploading": "Sedang memuat naik...",
+      "selectFile": "Pilih Fail",
+      "cacheNotice": "Klik butang simpan di bawah kanan untuk menyimpan ikon. Kemaskinian mungkin mengambil masa selepas disimpan. Jika anda mahu perubahan dilihat serta-merta selepas disimpan, sila kosongkan cache pelayar anda.",
+      "languages": "Bahasa Yang Ditutur",
+      "languagesPlaceholder": "Contoh: Bahasa Inggeris, Bahasa Jepun, Bahasa Cina",
+      "foodPreferences": "Pilihan Makanan",
+      "favorites": "Kegemaran",
+      "favoritesPlaceholder": "Contoh: Sushi, Ramen, Tempura",
+      "restrictions": "Sekatan",
+      "restrictionsPlaceholder": "Contoh: Kacang, Telur, Susu",
+      "hobbies": "Hobi",
+      "hobbiesPlaceholder": "Contoh: Membaca, Melancong, Memasak",
+      "pleaseKnow": "Maklumat Lain",
+      "pleaseKnowPlaceholder": "Contoh: Agama, kepercayaan, keadaan keluarga, tahap bahasa, dll. Sila masukkan maklumat yang anda mahu orang lain tahu.",
+      "saved": "Disimpan",
+      "save": "Simpan"
+    },
+    "registrationInfo": {
+      "title": "Maklumat Pendaftaran",
+      "description": "Permohonan diperlukan untuk mengubah maklumat ini.",
+      "name": "Nama",
+      "nationality": "Kewarganegaraan",
+      "email": "E-mel",
+      "residenceStatus": "Status Pemastautin",
+      "expirationDate": "Tarikh Tamat",
+      "requestChange": "Mohon Perubahan Maklumat"
+    }
   }
 }

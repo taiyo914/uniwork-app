@@ -67,5 +67,97 @@
         "overlappingBreaks": "Времена перерывов {{index1}} и {{index2}} пересекаются."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "Рабочие часы за неделю",
+    "last7Days": "Рабочие часы за последние 7 дней",
+    "monthlyWork": "Рабочие часы за месяц",
+    "monthlyIncome": "Месячный доход",
+    "approved": "Одобрено",
+    "unapproved": "Не одобрено",
+    "offDuty": "Не на работе",
+    "working": "Работает",
+    "onBreak": "На перерыве",
+    "showInJPY": "Показать в иенах",
+    "showInForeign": "Показать в {{currency}}",
+    "perHour": "/час",
+    "guest": "Гость",
+    "hourAndMinute": "{{hour}}ч {{minute}}м",
+    "minuteOnly": "{{minute}}м"
+  },
+  "chat": {
+    "title": "Чат",
+    "back": "Назад",
+    "messagePlaceholder": "Введите сообщение...",
+    "translationFailed": "Ошибка перевода...",
+    "addReaction": "+Добавить реакцию",
+    "noUsers": "Нет пользователей",
+    "groupChat": "Групповой чат"
+  },
+  "member": {
+    "title": "Участники",
+    "languages": "Языки",
+    "foodPreferences": "Предпочтения в еде",
+    "favorites": "Любимое",
+    "restrictions": "Ограничения",
+    "hobbies": "Хобби",
+    "pleaseKnow": "Дополнительно",
+    "translating": "Перевод",
+    "translate": "Перевести",
+    "edit": "Редактировать",
+    "goToChat": "Перейти в чат",
+    "workStatus": {
+      "working": "Работает",
+      "onBreak": "На перерыве",
+      "notStarted": "Не начал"
+    }
+  },
+  "profile": {
+    "title": "Настройки профиля",
+    "tabs": {
+      "profile": "Профиль",
+      "settings": "Настройки",
+      "registrationInfo": "Регистрационная информация"
+    },
+    "settings": {
+      "title": "Настройки приложения",
+      "description": "Измените основные настройки приложения.",
+      "language": "Настройки языка",
+      "currency": "Валюта",
+      "selectPlaceholder": "Выберите",
+      "saved": "Сохранено",
+      "save": "Сохранить"
+    },
+    "profile": {
+      "changeImage": "Изменить изображение",
+      "uploadTitle": "Загрузка изображения профиля",
+      "uploadDescription": "Выберите и загрузите новое изображение профиля.",
+      "uploading": "Загрузка...",
+      "selectFile": "Выбрать файл",
+      "cacheNotice": "Нажмите кнопку сохранения в правом нижнем углу, чтобы сохранить значок. После сохранения может потребоваться время для отображения изменений. Если вы хотите, чтобы изменения отобразились сразу после сохранения, очистите кэш браузера.",
+      "languages": "Языки, которыми владеете",
+      "languagesPlaceholder": "Например: английский, японский, китайский",
+      "foodPreferences": "Предпочтения в еде",
+      "favorites": "Любимое",
+      "favoritesPlaceholder": "Например: суши, рамен, темпура",
+      "restrictions": "Ограничения",
+      "restrictionsPlaceholder": "Например: арахис, яйца, молоко",
+      "hobbies": "Хобби",
+      "hobbiesPlaceholder": "Например: чтение, путешествия, готовка",
+      "pleaseKnow": "Дополнительная информация",
+      "pleaseKnowPlaceholder": "Например: религия, убеждения, семейное положение, уровень владения языком и т.д. Введите информацию, которую вы хотите, чтобы знали все.",
+      "saved": "Сохранено",
+      "save": "Сохранить"
+    },
+    "registrationInfo": {
+      "title": "Регистрационная информация",
+      "description": "Для изменения этой информации требуется заявка.",
+      "name": "Имя",
+      "nationality": "Гражданство",
+      "email": "Эл. почта",
+      "residenceStatus": "Статус проживания",
+      "expirationDate": "Срок действия",
+      "requestChange": "Запросить изменение информации"
+    }
   }
 }

@@ -67,5 +67,97 @@
         "overlappingBreaks": "休息{{index1}}和休息{{index2}}的时间重叠。"
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "本周工作时间",
+    "last7Days": "过去7天工作时间",
+    "monthlyWork": "本月工作时间",
+    "monthlyIncome": "本月收入",
+    "approved": "已批准",
+    "unapproved": "未批准",
+    "offDuty": "非工作时间",
+    "working": "工作中",
+    "onBreak": "休息中",
+    "showInJPY": "以日元显示",
+    "showInForeign": "以{{currency}}显示",
+    "perHour": "/小时",
+    "guest": "访客",
+    "hourAndMinute": "{{hour}}小时{{minute}}分",
+    "minuteOnly": "{{minute}}分"
+  },
+  "chat": {
+    "title": "聊天",
+    "back": "返回",
+    "messagePlaceholder": "输入消息...",
+    "translationFailed": "翻译失败...",
+    "addReaction": "+添加表情",
+    "noUsers": "没有用户",
+    "groupChat": "群聊"
+  },
+  "member": {
+    "title": "成员",
+    "languages": "语言",
+    "foodPreferences": "饮食偏好",
+    "favorites": "喜欢的食物",
+    "restrictions": "饮食限制",
+    "hobbies": "爱好",
+    "pleaseKnow": "其他",
+    "translating": "翻译中",
+    "translate": "翻译",
+    "edit": "编辑",
+    "goToChat": "前往聊天",
+    "workStatus": {
+      "working": "工作中",
+      "onBreak": "休息中",
+      "notStarted": "未开始"
+    }
+  },
+  "profile": {
+    "title": "个人资料设置",
+    "tabs": {
+      "profile": "个人资料",
+      "settings": "应用设置",
+      "registrationInfo": "注册信息"
+    },
+    "settings": {
+      "title": "应用设置",
+      "description": "更改应用的基本设置",
+      "language": "语言设置",
+      "currency": "货币",
+      "selectPlaceholder": "请选择",
+      "saved": "已保存",
+      "save": "保存"
+    },
+    "profile": {
+      "changeImage": "更改图片",
+      "uploadTitle": "上传个人资料图片",
+      "uploadDescription": "选择并上传新的个人资料图片",
+      "uploading": "上传中...",
+      "selectFile": "选择文件",
+      "cacheNotice": "点击右下角的保存按钮保存图标。保存后可能需要一段时间才能显示。如果想在保存后立即显示，请清除浏览器缓存。",
+      "languages": "会说的语言",
+      "languagesPlaceholder": "例如：英语、日语、中文",
+      "foodPreferences": "饮食偏好",
+      "favorites": "喜欢的食物",
+      "favoritesPlaceholder": "例如：寿司、拉面、天妇罗",
+      "restrictions": "饮食限制",
+      "restrictionsPlaceholder": "例如：花生、鸡蛋、牛奶",
+      "hobbies": "爱好",
+      "hobbiesPlaceholder": "例如：阅读、旅行、烹饪",
+      "pleaseKnow": "其他",
+      "pleaseKnowPlaceholder": "例如：宗教、信仰、家庭状况、语言水平等，请输入您希望大家知道的事情。",
+      "saved": "已保存",
+      "save": "保存"
+    },
+    "registrationInfo": {
+      "title": "注册信息",
+      "description": "需要申请才能更改这些信息。",
+      "name": "姓名",
+      "nationality": "国籍",
+      "email": "电子邮件",
+      "residenceStatus": "居留资格",
+      "expirationDate": "有效期限",
+      "requestChange": "申请更改信息"
+    }
   }
 }

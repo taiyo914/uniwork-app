@@ -67,5 +67,97 @@
         "overlappingBreaks": "Mola {{index1}} ve mola {{index2}} çakışmaktadır."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "Haftalık Çalışma Saatleri",
+    "last7Days": "Son 7 Günün Çalışma Saatleri",
+    "monthlyWork": "Aylık Çalışma Saatleri",
+    "monthlyIncome": "Aylık Gelir",
+    "approved": "Onaylandı",
+    "unapproved": "Onaylanmadı",
+    "offDuty": "Görevde Değil",
+    "working": "Çalışıyor",
+    "onBreak": "Molada",
+    "showInJPY": "JPY olarak göster",
+    "showInForeign": "{{currency}} olarak göster",
+    "perHour": "/saat",
+    "guest": "Misafir",
+    "hourAndMinute": "{{hour}}s {{minute}}d",
+    "minuteOnly": "{{minute}}d"
+  },
+  "chat": {
+    "title": "Sohbet",
+    "back": "Geri",
+    "messagePlaceholder": "Mesaj girin...",
+    "translationFailed": "Çeviri başarısız oldu...",
+    "addReaction": "+Tepki Ekle",
+    "noUsers": "Kullanıcı yok",
+    "groupChat": "Grup Sohbeti"
+  },
+  "member": {
+    "title": "Üyeler",
+    "languages": "Diller",
+    "foodPreferences": "Yemek Tercihleri",
+    "favorites": "Favoriler",
+    "restrictions": "Kısıtlamalar",
+    "hobbies": "Hobiler",
+    "pleaseKnow": "Diğer",
+    "translating": "Çevriliyor",
+    "translate": "Çevir",
+    "edit": "Düzenle",
+    "goToChat": "Sohbete Git",
+    "workStatus": {
+      "working": "Çalışıyor",
+      "onBreak": "Molada",
+      "notStarted": "Başlamadı"
+    }
+  },
+  "profile": {
+    "title": "Profil Ayarları",
+    "tabs": {
+      "profile": "Profil",
+      "settings": "Uygulama Ayarları",
+      "registrationInfo": "Kayıt Bilgileri"
+    },
+    "settings": {
+      "title": "Uygulama Ayarları",
+      "description": "Temel uygulama ayarlarını değiştirin.",
+      "language": "Dil Ayarları",
+      "currency": "Para Birimi",
+      "selectPlaceholder": "Lütfen seçin",
+      "saved": "Kaydedildi",
+      "save": "Kaydet"
+    },
+    "profile": {
+      "changeImage": "Resmi Değiştir",
+      "uploadTitle": "Profil Resmi Yükleme",
+      "uploadDescription": "Yeni bir profil resmi seçin ve yükleyin.",
+      "uploading": "Yükleniyor...",
+      "selectFile": "Dosya Seç",
+      "cacheNotice": "Simgeyi kaydetmek için sağ alttaki kaydet düğmesine basın. Kaydettikten sonra değişikliklerin yansıması biraz zaman alabilir. Kaydettikten sonra değişikliklerin hemen yansımasını istiyorsanız, lütfen tarayıcı önbelleğinizi temizleyin.",
+      "languages": "Konuştuğunuz Diller",
+      "languagesPlaceholder": "Örnek: İngilizce, Japonca, Çince",
+      "foodPreferences": "Yemek Tercihleri",
+      "favorites": "Favoriler",
+      "favoritesPlaceholder": "Örnek: Suşi, Ramen, Tempura",
+      "restrictions": "Kısıtlamalar",
+      "restrictionsPlaceholder": "Örnek: Fıstık, Yumurta, Süt",
+      "hobbies": "Hobiler",
+      "hobbiesPlaceholder": "Örnek: Okuma, Seyahat, Yemek Yapma",
+      "pleaseKnow": "Diğer Bilgiler",
+      "pleaseKnowPlaceholder": "Örnek: Din, inanç, aile durumu, dil seviyesi vb. Lütfen başkalarının bilmesini istediğiniz bilgileri girin.",
+      "saved": "Kaydedildi",
+      "save": "Kaydet"
+    },
+    "registrationInfo": {
+      "title": "Kayıt Bilgileri",
+      "description": "Bu bilgileri değiştirmek için başvuru gereklidir.",
+      "name": "İsim",
+      "nationality": "Uyruk",
+      "email": "E-posta",
+      "residenceStatus": "İkamet Durumu",
+      "expirationDate": "Son Kullanma Tarihi",
+      "requestChange": "Bilgi Değişikliği Talep Et"
+    }
   }
 }

@@ -67,5 +67,97 @@
         "overlappingBreaks": "Перерви {{index1}} та {{index2}} мають перетини."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "Тижневі робочі години",
+    "last7Days": "Робочі години за останні 7 днів",
+    "monthlyWork": "Місячні робочі години",
+    "monthlyIncome": "Місячний дохід",
+    "approved": "Затверджено",
+    "unapproved": "Не затверджено",
+    "offDuty": "Не на роботі",
+    "working": "Працює",
+    "onBreak": "На перерві",
+    "showInJPY": "Показати в єнах",
+    "showInForeign": "Показати в {{currency}}",
+    "perHour": "/година",
+    "guest": "Гість",
+    "hourAndMinute": "{{hour}}год {{minute}}хв",
+    "minuteOnly": "{{minute}}хв"
+  },
+  "chat": {
+    "title": "Чат",
+    "back": "Назад",
+    "messagePlaceholder": "Введіть повідомлення...",
+    "translationFailed": "Помилка перекладу...",
+    "addReaction": "+Додати реакцію",
+    "noUsers": "Немає користувачів",
+    "groupChat": "Груповий чат"
+  },
+  "member": {
+    "title": "Учасники",
+    "languages": "Мови",
+    "foodPreferences": "Вподобання в їжі",
+    "favorites": "Улюблене",
+    "restrictions": "Обмеження",
+    "hobbies": "Хобі",
+    "pleaseKnow": "Інше",
+    "translating": "Перекладається",
+    "translate": "Перекласти",
+    "edit": "Редагувати",
+    "goToChat": "Перейти до чату",
+    "workStatus": {
+      "working": "Працює",
+      "onBreak": "На перерві",
+      "notStarted": "Не розпочато"
+    }
+  },
+  "profile": {
+    "title": "Налаштування профілю",
+    "tabs": {
+      "profile": "Профіль",
+      "settings": "Налаштування додатку",
+      "registrationInfo": "Реєстраційна інформація"
+    },
+    "settings": {
+      "title": "Налаштування додатку",
+      "description": "Змініть основні налаштування додатку.",
+      "language": "Налаштування мови",
+      "currency": "Валюта",
+      "selectPlaceholder": "Будь ласка, виберіть",
+      "saved": "Збережено",
+      "save": "Зберегти"
+    },
+    "profile": {
+      "changeImage": "Змінити зображення",
+      "uploadTitle": "Завантаження зображення профілю",
+      "uploadDescription": "Виберіть та завантажте нове зображення профілю.",
+      "uploading": "Завантаження...",
+      "selectFile": "Вибрати файл",
+      "cacheNotice": "Натисніть кнопку збереження в правому нижньому куті, щоб зберегти значок. Після збереження може знадобитися час для відображення змін. Якщо ви хочете, щоб зміни відобразилися одразу після збереження, очистіть кеш браузера.",
+      "languages": "Мови, якими володієте",
+      "languagesPlaceholder": "Наприклад: англійська, японська, китайська",
+      "foodPreferences": "Вподобання в їжі",
+      "favorites": "Улюблене",
+      "favoritesPlaceholder": "Наприклад: суші, рамен, темпура",
+      "restrictions": "Обмеження",
+      "restrictionsPlaceholder": "Наприклад: арахіс, яйця, молоко",
+      "hobbies": "Хобі",
+      "hobbiesPlaceholder": "Наприклад: читання, подорожі, готування",
+      "pleaseKnow": "Додаткова інформація",
+      "pleaseKnowPlaceholder": "Наприклад: релігія, переконання, сімейний стан, рівень володіння мовою тощо. Введіть інформацію, яку ви хочете, щоб знали інші.",
+      "saved": "Збережено",
+      "save": "Зберегти"
+    },
+    "registrationInfo": {
+      "title": "Реєстраційна інформація",
+      "description": "Для зміни цієї інформації потрібна заявка.",
+      "name": "Ім'я",
+      "nationality": "Громадянство",
+      "email": "Електронна пошта",
+      "residenceStatus": "Статус проживання",
+      "expirationDate": "Термін дії",
+      "requestChange": "Запит на зміну інформації"
+    }
   }
 }
