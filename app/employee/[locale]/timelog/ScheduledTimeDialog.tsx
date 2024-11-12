@@ -263,7 +263,7 @@ const ScheduledTimeDialog = () => {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} >
       <DialogTrigger asChild>
         <Button 
-          className={`w-full h-16 lg:h-20 border border-gray-300 text-base sm:text-lg rounded-md shadow flex items-center justify-center bg-gray-200 text-gray-700 transition-all duration-300
+          className={`w-full h-16 lg:h-[4.5rem] border border-gray-300 text-base sm:text-lg rounded-md shadow flex items-center justify-center bg-gray-200 text-gray-700 transition-all duration-300
             ${workStatus !== "notStarted" ? "cursor-not-allowed" : "hover:bg-gray-300 "}
           `}
           disabled={workStatus !== "notStarted"}
