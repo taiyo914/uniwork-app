@@ -14,9 +14,9 @@ import Notifications from "./Notifications";
 import { fetchExchangeRate } from "@/utils/fetchExchangeRate";
 
 const workStatusMap = {
-  notStarted: { label: "勤務外", icon: StopCircle, color: "bg-gray-200" },
-  working: { label: "勤務中", icon: PlayCircle, color: "bg-green-200" },
-  onBreak: { label: "休憩中", icon: PauseCircle, color: "bg-yellow-200" },
+  notStarted: { label: "勤務外", icon: StopCircle, color: "bg-blue-300 text-white" },
+  working: { label: "勤務中", icon: PlayCircle, color: "bg-green-200 text-green-800" },
+  onBreak: { label: "休憩中", icon: PauseCircle, color: "bg-yellow-200 text-yellow-800" },
 };
 
 
@@ -299,9 +299,8 @@ export default function DashboardStats() {
           </h1>
           <Badge 
             className={`${workStatusMap[profile?.work_status || 'notStarted'].color} 
-              text-gray-800 flex items-center gap-1 px-2 py-1`}
+              flex items-center gap-1 px-3 py-1`}
           >
-            {React.createElement(workStatusMap[profile?.work_status || 'notStarted'].icon, { className: "h-4 w-4" })}
             {workStatusMap[profile?.work_status || 'notStarted'].label}
           </Badge>
         </div>

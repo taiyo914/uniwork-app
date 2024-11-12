@@ -182,7 +182,7 @@ export default function Notifications() {
   }
 
   const getTitleTextColor = (type: Notification['type'], isChecked: boolean) => {
-    if (isChecked && readFilter === 'all') return 'text-gray-400/70'
+    if (isChecked && readFilter === 'all') return 'text-gray-400'
     switch (type) {
       case 'warning': return 'text-red-500'
       case 'info': return 'text-gray-600'
@@ -193,7 +193,7 @@ export default function Notifications() {
   }
 
   const getContentTextColor = (type: Notification['type'], isChecked: boolean) => {
-    if (isChecked && readFilter === 'all') return 'text-gray-400/70'
+    if (isChecked && readFilter === 'all') return 'text-gray-400/80'
     switch (type) {
       case 'warning': return 'text-red-600'
       // case 'info': return 'text-gray-600'
@@ -204,7 +204,7 @@ export default function Notifications() {
   }
 
   const getBorderColor = (type: Notification['type'], isChecked: boolean) => {
-    if (isChecked && readFilter === 'all') return 'border-gray-100'
+    if (isChecked && readFilter === 'all') return 'border-gray-200'
     switch (type) {
       case 'warning': return 'border-red-200';
       // case 'info': return 'border-gray-300';
@@ -218,7 +218,7 @@ export default function Notifications() {
     <div>
       <section className="w-full shadow rounded-xl overflow-hidden">
         <Card>
-          <CardHeader className="gap-1 bg-blue-100 xs:py-2 py-3 sm:py-4 pl-4 md:pl-5 pr-0 md:pr-1">
+          <CardHeader className="gap-1 bg-blue-100 xs:py-2 py-3 pl-4 md:pl-5 pr-0 md:pr-1">
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-bold text-blue-800">
                 <Bell className="h-5 w-5 text-blue-600 inline mb-1 mr-1" />通知・お知らせ
@@ -250,7 +250,7 @@ export default function Notifications() {
                     return (
                       <div 
                         key={notification.id}
-                        className={`hover:cursor-pointer pb-2 pt-3 px-3 rounded-lg relative transition-colors duration-300 ${getBackgroundColor(notification.type, notification.is_read)} border ${getBorderColor(notification.type, notification.is_read)}`}
+                        className={`hover:cursor-pointer hover:scale-[1.005] hover:shadow-sm pb-2 pt-3 px-3 rounded-lg relative transition-all duration-300 ${getBackgroundColor(notification.type, notification.is_read)} border ${getBorderColor(notification.type, notification.is_read)}`}
                         onClick={() => openModal(notification)}
                       >
                         <div className="flex items-center justify-between mb-1">
@@ -260,12 +260,12 @@ export default function Notifications() {
                               e.stopPropagation()
                               handleReadStatusChange(notification.id)
                             }}
-                              className={`w-4 h-4 rounded-full mr-1  flex items-center justify-center cursor-pointer ${
-                                notification.is_read ? 'bg-green-500' : 'border-[1px] bg-white border-gray-300'
+                              className={`w-5 h-5 rounded-full mr-1.5 flex items-center justify-center cursor-pointer ${
+                                notification.is_read ? 'bg-green-400' : 'border-[1px] bg-white border-gray-300 hover:bg-green-100 transition-colors '
                               }`}
                             >
                               <Check 
-                                className={`h-3 w-3 ${notification.is_read ? 'text-white' : 'text-gray-300'}`} 
+                                className={`h-4 w-4 ${notification.is_read ? 'text-white' : 'text-gray-300'}`} 
                                 aria-hidden="true"
                               />
                             </div>
