@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Check } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
+import { useTranslation } from 'react-i18next'
 
 interface Profile {
   user_id: string
@@ -97,6 +98,8 @@ export function SettingsTab({ profile, initialProfile, setProfile }: SettingsTab
   const [isSettingsSaving, setIsSettingsSaving] = useState(false)
   const [settingsSaveSuccess, setSettingsSaveSuccess] = useState(false)
   const router = useRouter()
+  const { t: translate } = useTranslation();
+  const t = (key: string) => translate(`profile.settings.${key}`);
 
   const handleSettingsSave = async () => {
     setIsSettingsSaving(true)
@@ -137,13 +140,13 @@ export function SettingsTab({ profile, initialProfile, setProfile }: SettingsTab
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <Label htmlFor="app-language" className="font-semibold text-gray-600">言語設定</Label>
+        <Label htmlFor="app-language" className="font-semibold text-gray-600">{t('language')}</Label>
         <Select
           value={profile.locale}
           onValueChange={(value) => setProfile({ ...profile, locale: value })}
         >
           <SelectTrigger id="app-language">
-            <SelectValue placeholder="選択してください" />
+            <SelectValue placeholder={t('selectPlaceholder')} />
           </SelectTrigger>
           <SelectContent className="max-h-[250px] overflow-y-auto">
             {LANGUAGES.map((language) => (
@@ -156,13 +159,13 @@ export function SettingsTab({ profile, initialProfile, setProfile }: SettingsTab
       </div>
 
       <div className="space-y-1">
-        <Label htmlFor="currency" className="font-semibold text-gray-600">通貨</Label>
+        <Label htmlFor="currency" className="font-semibold text-gray-600">{t('currency')}</Label>
         <Select
           value={profile.currency}
           onValueChange={(value) => setProfile({ ...profile, currency: value })}
         >
           <SelectTrigger id="currency">
-            <SelectValue placeholder="選択してください" />
+            <SelectValue placeholder={t('selectPlaceholder')} />
           </SelectTrigger>
           <SelectContent className="max-h-[250px] overflow-y-auto">
             {CURRENCIES.map((currency) => (
@@ -183,10 +186,10 @@ export function SettingsTab({ profile, initialProfile, setProfile }: SettingsTab
           {settingsSaveSuccess ? (
             <div className="flex items-center justify-center">
               <Check className="w-3.5 h-3.5 mr-1" />
-              <span>保存済み</span>
+              <span>{t('saved')}</span>
             </div>
           ) : (
-            <span>保存</span>
+            <span>{t('save')}</span>
           )}
         </Button>
       </div>

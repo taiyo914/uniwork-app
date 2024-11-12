@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Camera, Upload, Loader2, Check } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
 import imageCompression from 'browser-image-compression';
+import { useTranslation } from 'react-i18next';
 
 interface Profile {
   user_id: string
@@ -41,6 +42,9 @@ const addCacheBreaker = (url: string) => {
 }
 
 export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
+  const { t: translate } = useTranslation();
+  const t = (key: string) => translate(`profile.profile.${key}`);
+  
   const [avatarSrc, setAvatarSrc] = useState((profile.image_url) || "/placeholder.svg?height=96&width=96") 
     // addCacheBreaker(profile.image_url)とするとキャッシュが回避できるが、ページを開くたびに一瞬だけちらつきがある
   const [isUploading, setIsUploading] = useState(false)
@@ -166,14 +170,14 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
               <DialogTrigger asChild>
                 <Button variant="outline" className="flex items-center space-x-1 px-3 py-2">
                   <Camera className="w-4 h-4" />
-                  <span>画像を変更</span>
+                  <span>{t('changeImage')}</span>
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>プロフィール画像のアップロード</DialogTitle>
+                  <DialogTitle>{t('uploadTitle')}</DialogTitle>
                   <DialogDescription>
-                    新しいプロフィール画像を選択してアップロードしてください。
+                    {t('uploadDescription')}
                   </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col items-center space-y-4">
@@ -184,7 +188,7 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
                   <Label htmlFor="picture" className="cursor-pointer">
                     <div className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
                       <Upload className="w-4 h-4" />
-                      <span>{isUploading ? 'アップロード中...' : 'ファイルを選択'}</span>
+                      <span>{isUploading ? t('uploading') : t('selectFile')}</span>
                     </div>
                     <Input 
                       id="picture" 
@@ -201,13 +205,13 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
         </div>
 
         {compressedFile && (
-        <div className="text-xs text-gray-600 bg-gray-100 p-3 rounded-md">
-          アイコンを保存するには右下の保存ボタンを押してください。保存後も反映にはしばらく時間がかかることがあります。保存後すぐに反映させたい場合はブラウザのキャッシュを削除してください。
+          <div className="text-xs text-gray-600 bg-gray-100 p-3 rounded-md">
+            {t('cacheNotice')}
           </div>
         )}
 
         <div className="space-y-1">
-          <Label htmlFor="languages" className="font-semibold text-gray-600">話せる言語</Label>
+          <Label htmlFor="languages" className="font-semibold text-gray-600">{t('languages')}</Label>
           <Input 
             id="languages" 
             value={profile.languages}
@@ -217,10 +221,10 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="favorite-foods" className="font-semibold text-gray-600">食事の好み</Label>
+          <Label htmlFor="favorite-foods" className="font-semibold text-gray-600">{t('foodPreferences')}</Label>
           <div className="space-y-2 sm:space-y-4 ml-2">
             <div className="space-y-1">
-              <Label htmlFor="favorite-foods" className="font-semibold text-gray-500">好きなもの</Label>
+              <Label htmlFor="favorite-foods" className="font-semibold text-gray-500">{t('favorites')}</Label>
               <Input 
                 id="favorite-foods"
                 value={profile.favorite_foods}
@@ -229,7 +233,7 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="food-allergies" className="font-semibold text-gray-500">食べられないもの</Label>
+              <Label htmlFor="food-allergies" className="font-semibold text-gray-500">{t('restrictions')}</Label>
               <Input 
                 id="food-allergies"
                 value={profile.dietary_restrictions}
@@ -241,7 +245,7 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="hobbies" className="font-semibold text-gray-600">好きなこと・趣味</Label>
+          <Label htmlFor="hobbies" className="font-semibold text-gray-600">{t('hobbies')}</Label>
           <Input 
             id="hobbies"
             value={profile.hobbies}
@@ -251,7 +255,7 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="please-know" className="font-semibold text-gray-600">Please know</Label>
+          <Label htmlFor="please-know" className="font-semibold text-gray-600">{t('pleaseKnow')}</Label>
           <Textarea 
             id="please-know" 
             value={profile.shared_info}
@@ -260,12 +264,11 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
             className="h-32"
           />
         </div>
-
       </div>
 
       <div className="h-4 sm:h-5"></div>
 
-      <div className="flex justify-end ">
+      <div className="flex justify-end">
         <Button 
           onClick={handleSave}
           disabled={isSaving || saveSuccess}
@@ -274,15 +277,13 @@ export function ProfileTab({ profile, setProfile }: ProfileTabProps) {
           {saveSuccess ? (
             <>
               <Check className="w-4 h-4 mr-1" />
-              保存済み
+              {t('saved')}
             </>
           ) : (
-            <>
-              保存
-            </>
+            <>{t('save')}</>
           )}
         </Button>
       </div>
     </>
-  )
+  );
 }

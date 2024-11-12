@@ -111,5 +111,53 @@
       "onBreak": "On Break",
       "notStarted": "Off Duty"
     }
+  },
+  "profile": {
+    "title": "Profile Settings",
+    "tabs": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "registrationInfo": "Registration Info"
+    },
+    "settings": {
+      "title": "App Settings",
+      "description": "Change basic app settings.",
+      "language": "Language Settings",
+      "currency": "Currency",
+      "selectPlaceholder": "Please select",
+      "saved": "Saved",
+      "save": "Save"
+    },
+    "profile": {
+      "changeImage": "Change Image",
+      "uploadTitle": "Upload Profile Image",
+      "uploadDescription": "Select and upload a new profile image.",
+      "uploading": "Uploading...",
+      "selectFile": "Select File",
+      "cacheNotice": "Click the save button at the bottom right to save the icon. It may take some time to reflect after saving. If you want to reflect immediately after saving, please clear your browser's cache.",
+      "languages": "Languages",
+      "languagesPlaceholder": "Example: English, Japanese, Chinese",
+      "foodPreferences": "Food Preferences",
+      "favorites": "Favorites",
+      "favoritesPlaceholder": "Example: Sushi, Ramen, Tempura",
+      "restrictions": "Restrictions",
+      "restrictionsPlaceholder": "Example: Peanuts, Eggs, Milk",
+      "hobbies": "Hobbies",
+      "hobbiesPlaceholder": "Example: Reading, Traveling, Cooking",
+      "pleaseKnow": "Please know",
+      "pleaseKnowPlaceholder": "Example: Religion, Belief, Family situation, Language level, etc. Please enter things you want everyone to know.",
+      "saved": "Saved",
+      "save": "Save"
+    },
+    "registrationInfo": {
+      "title": "Registration Information",
+      "description": "Application required to change these information.",
+      "name": "Name",
+      "nationality": "Nationality",
+      "email": "Email",
+      "residenceStatus": "Residence Status",
+      "expirationDate": "Expiration Date",
+      "requestChange": "Request Information Change"
+    }
   }
 }
