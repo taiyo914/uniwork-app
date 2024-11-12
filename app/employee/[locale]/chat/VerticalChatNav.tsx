@@ -57,7 +57,7 @@ export default function VerticalChatNav() {
   }, []);
 
   return (
-    <nav className="h-full w-full sm:border-r-[2px] bg-gray-50">
+    <nav className="h-full w-full sm:border-r-[2px]">
       <ScrollArea className="h-full">
         <div className="xs:pb-4 pb-10 md:px-2">
           <h2 className="text-lg font-semibold px-3 lg:px-4 pt-4 pb-1 text-blue-700">チャット</h2>
