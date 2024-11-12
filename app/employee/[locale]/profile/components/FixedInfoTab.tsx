@@ -42,7 +42,7 @@ export function FixedInfoTab({ profile }: FixedInfoTabProps) {
       ))}
       <div className='h-[1px] sm:h-1'></div>
       <div className=" text-end">
-        <Button variant="outline" className="">情報変更を申請する</Button>
+        <Button variant="outline" className="" onClick={() => {alert('この機能はまだ実装されていません...')}}>情報変更を申請する</Button>
       </div>
     </div>
   )
