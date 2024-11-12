@@ -18,81 +18,81 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 type WorkStatus = 'working' | 'notStarted' | 'onBreak'
 
 type Employee = {
-  id: string
-  empId: number
+  user_id: string
+  emp_id: number
   name: string
-  weeklyHours: number
-  visaExpirationDate: string
-  imageUrl: string
-  visaStatus: string
-  unapprovedShifts: number
-  currentWorkStatus: WorkStatus
-  lastWorkDay: string
+  weekly_hours: number //リレーションと計算が必要
+  expiration_date: string //実際はDate型
+  image_url: string
+  residence_status: string
+  unapproved_shifts: number //リレーションと計算が必要
+  work_status: WorkStatus
+  last_work_day: string //リレーションで最後の勤務日を取得
   remarks?: string
 }
 
 const mockEmployees: Employee[] = [
   {
-    id: '1',
-    empId: 1,
+    user_id: '1',
+    emp_id: 1,
     name: '山田 太郎',
-    weeklyHours: 38,
-    visaExpirationDate: '2024-12-31',
-    imageUrl: '/placeholder.svg?height=32&width=32',
-    visaStatus: '技能実習',
-    unapprovedShifts: 2,
-    currentWorkStatus: 'working',
-    lastWorkDay: '2023-06-15',
+    weekly_hours: 38,
+    expiration_date: '2024-12-31',
+    image_url: '/placeholder.svg?height=32&width=32',
+    residence_status: '技能実習',
+    unapproved_shifts: 2,
+    work_status: 'working',
+    last_work_day: '2023-06-15',
     remarks: '研修中'
   },
   {
-    id: '2',
-    empId: 2,
+    user_id: '2',
+    emp_id: 2,
     name: '佐藤 花子',
-    weeklyHours: 42,
-    visaExpirationDate: '2023-08-15',
-    imageUrl: '/placeholder.svg?height=32&width=32',
-    visaStatus: '特定技能',
-    unapprovedShifts: 0,
-    currentWorkStatus: 'onBreak',
-    lastWorkDay: '2023-06-14',
-    remarks: '来月契約更新'
+    weekly_hours: 42,
+    expiration_date: '2023-08-15',
+    image_url: '/placeholder.svg?height=32&width=32',
+    residence_status: '特定技能',
+    unapproved_shifts: 0,
+    work_status: 'onBreak',
+    last_work_day: '2023-06-14',
+    remarks: '来月契約更新来'
   },
   {
-    id: '3',
-    empId: 3,
+    user_id: '3',
+    emp_id: 3,
     name: '鈴木 一郎',
-    weeklyHours: 35,
-    visaExpirationDate: '2025-03-31',
-    imageUrl: '/placeholder.svg?height=32&width=32',
-    visaStatus: '留学',
-    unapprovedShifts: 1,
-    currentWorkStatus: 'notStarted',
-    lastWorkDay: '2023-06-13',
+    weekly_hours: 35,
+    expiration_date: '2025-03-31',
+    image_url: '/placeholder.svg?height=32&width=32',
+    residence_status: '留学',
+    unapproved_shifts: 1,
+    work_status: 'notStarted',
+    last_work_day: '2023-06-13',
   },
   {
-    id: '4',
-    empId: 4,
+    user_id: '4',
+    emp_id: 4,
     name: '高橋 美咲',
-    weeklyHours: 20,
-    visaExpirationDate: '2024-09-30',
-    imageUrl: '/placeholder.svg?height=32&width=32',
-    visaStatus: '家族滞在',
-    unapprovedShifts: 0,
-    currentWorkStatus: 'notStarted',
-    lastWorkDay: '2023-06-12',
+    weekly_hours: 20,
+    expiration_date: '2024-09-30',
+    image_url: '/placeholder.svg?height=32&width=32',
+    residence_status: '家族滞在',
+    unapproved_shifts: 0,
+    work_status: 'notStarted',
+    last_work_day: '2023-06-12',
   },
   {
-    id: '5',
-    empId: 5,
+    user_id: '5',
+    emp_id: 5,
     name: '田中 健太',
-    weeklyHours: 40,
-    visaExpirationDate: '2023-12-31',
-    imageUrl: '/placeholder.svg?height=32&width=32',
-    visaStatus: '技能実習',
-    unapprovedShifts: 3,
-    currentWorkStatus: 'working',
-    lastWorkDay: '2023-06-15',
+    weekly_hours: 40,
+    expiration_date: '2023-12-31',
+    image_url: '/placeholder.svg?height=32&width=32',
+    residence_status: '技能実習',
+    unapproved_shifts: 3,
+    work_status: 'working',
+    last_work_day: '2023-06-15',
   },
 ]
 
@@ -135,7 +135,7 @@ export default function AdminDashborad() {
       <div className="h-2"></div>
 
       <div className="w-full overflow-x-auto h-full">  
-        <Card className="border-none shadow-lg min-w-[1000px] mx-3 sm:mx-4 overflow-hidden">
+        <Card className="border-none shadow-lg min-w-[1080px] mx-3 sm:mx-4 overflow-hidden">
           
         <CardContent className="p-0">
           {loading ? (
@@ -147,39 +147,39 @@ export default function AdminDashborad() {
               <Table className="w-full ">
                 <TableHeader>
                   <TableRow className="bg-gray-100">
-                    <TableHead className="font-semibold text-gray-600 max-w-24">ID</TableHead>
-                    <TableHead className="font-semibold text-gray-600 max-w-60">名前</TableHead>
-                    <TableHead className="font-semibold text-gray-600 max-w-40 ">勤務状況</TableHead>
-                    <TableHead className="font-semibold text-gray-600 max-w-40">労働時間</TableHead>
-                    <TableHead className="font-semibold text-gray-600 max-w-44">在留資格</TableHead>
-                    <TableHead className="font-semibold text-gray-600 max-w-56">在留期限</TableHead>
-                    <TableHead className="font-semibold text-gray-600 max-w-28">承認勤務</TableHead>
-                    <TableHead className="font-semibold text-gray-600 max-w-32">最終勤務日</TableHead>
-                    <TableHead className="font-semibold text-gray-600">備考</TableHead>
+                    <TableHead className="font-semibold text-gray-600 w-[90px]">ID</TableHead>
+                    <TableHead className="font-semibold text-gray-600 w-[150px]">名前</TableHead>
+                    <TableHead className="font-semibold text-gray-600 w-[100px]">勤務状況</TableHead>
+                    <TableHead className="font-semibold text-gray-600 w-[100px]">労働時間</TableHead>
+                    <TableHead className="font-semibold text-gray-600 w-[110px]">在留資格</TableHead>
+                    <TableHead className="font-semibold text-gray-600 w-[130px]">在留期限</TableHead>
+                    <TableHead className="font-semibold text-gray-600 w-[90px]">承認勤務</TableHead>
+                    <TableHead className="font-semibold text-gray-600 w-[110px]">最終勤務日</TableHead>
+                    <TableHead className="font-semibold text-gray-600 min-w-[200px]">備考</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {employees.map((employee) => (
-                    <TableRow key={employee.id} className="hover:bg-gray-50 transition-colors">
+                    <TableRow key={employee.user_id} className="hover:bg-gray-50 transition-colors">
                       <TableCell className="font-medium ">
-                        <div className="max-w-16">
-                          {formatEmpId(employee.empId)}
+                        <div className="">
+                          {formatEmpId(employee.emp_id)}
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <Avatar className="h-10 w-10">
-                            <AvatarImage src={employee.imageUrl} alt={employee.name} />
+                            <AvatarImage src={employee.image_url} alt={employee.name} />
                             <AvatarFallback>{employee.name[0]}</AvatarFallback>
                           </Avatar>
                           <div className="font-semibold">{employee.name}</div>
                         </div>
                       </TableCell>
-                      <TableCell className="max-w-40">{getWorkStatusBadge(employee.currentWorkStatus)}</TableCell>
+                      <TableCell className="max-w-40">{getWorkStatusBadge(employee.work_status)}</TableCell>
                       <TableCell className="max-w-40">
                         <div className="flex items-center gap-2">
-                          {employee.weeklyHours}
-                          {employee.weeklyHours > 40 && (
+                          {employee.weekly_hours}
+                          {employee.weekly_hours > 40 && (
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger>
@@ -193,11 +193,11 @@ export default function AdminDashborad() {
                           )}
                         </div>
                       </TableCell>
-                      <TableCell className="max-w-44">{employee.visaStatus}</TableCell>
+                      <TableCell className="max-w-44">{employee.residence_status}</TableCell>
                       <TableCell className="max-w-56" >
                         <div className="flex items-center gap-2">
-                          {employee.visaExpirationDate}
-                          {new Date(employee.visaExpirationDate) <= new Date(Date.now() + 90 * 24 * 60 * 60 * 1000) && (
+                          {employee.expiration_date}
+                          {new Date(employee.expiration_date) <= new Date(Date.now() + 90 * 24 * 60 * 60 * 1000) && (
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger>
@@ -212,17 +212,17 @@ export default function AdminDashborad() {
                         </div>
                       </TableCell>
                       <TableCell className="max-w-28">
-                        {employee.unapprovedShifts > 0 ? (
+                        {employee.unapproved_shifts > 0 ? (
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger>
                                 <Badge variant="destructive" className="flex items-center gap-1">
                                   <Clock className="h-3 w-3" />
-                                  {employee.unapprovedShifts}
+                                  {employee.unapproved_shifts}
                                 </Badge>
                               </TooltipTrigger>
                               <TooltipContent>
-                                <p>{employee.unapprovedShifts}件の未承認勤務があります</p>
+                                <p>{employee.unapproved_shifts}件の未承認勤務があります</p>
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
@@ -230,7 +230,7 @@ export default function AdminDashborad() {
                           <Badge variant="secondary">なし</Badge>
                         )}
                       </TableCell>
-                      <TableCell className="max-w-32">{employee.lastWorkDay}</TableCell>
+                      <TableCell className="max-w-32">{employee.last_work_day}</TableCell>
                       <TableCell className="">{employee.remarks || '-'}</TableCell>
                     </TableRow>
                   ))}
