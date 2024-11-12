@@ -192,9 +192,9 @@ export default function Component() {
     const minutes = actualWorkMinutes % 60;
   
     if (hours) {
-      return t("hourAndMinute", { hour: hours, minute: minutes.toString().padStart(2, '0') });
+      return t("hourAndMinute", { hour: hours, minute: minutes.toString().padStart(1, '0') });
     } else {
-      return t("minuteOnly", { minute: minutes.toString().padStart(2, '0') });
+      return t("minuteOnly", { minute: minutes.toString().padStart(1, '0') });
     }
   };
   

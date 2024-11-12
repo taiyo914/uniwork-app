@@ -260,8 +260,8 @@ export default function Notifications() {
                               e.stopPropagation()
                               handleReadStatusChange(notification.id)
                             }}
-                              className={`w-5 h-5 rounded-full mr-1.5 flex items-center justify-center cursor-pointer ${
-                                notification.is_read ? 'bg-green-400' : 'border-[1px] bg-white border-gray-300 hover:bg-green-100 transition-colors '
+                              className={`w-5 h-5 rounded-full mr-1.5 flex items-center justify-center cursor-pointer transition-colors ${
+                                notification.is_read ? 'bg-green-400 hover:bg-green-300' : 'border-[1px] bg-white border-gray-300 hover:bg-green-100  '
                               }`}
                             >
                               <Check 
