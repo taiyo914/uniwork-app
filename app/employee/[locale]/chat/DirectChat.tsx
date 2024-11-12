@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { useParams, useRouter } from "next/navigation";
+import { translateText } from '@/utils/translate'; 
 
 interface Message {
   sender_id: string;
@@ -317,19 +318,14 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
   const handleTranslate = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `/api/translate?text=${encodeURIComponent(
-          message.content
-        )}&targetLang=${targetLang}&sourceLang=`
-      );
-      const data = await response.json();
-      if (response.ok) {
-        setTranslatedText(data.translatedText);
+      const translatedText = await translateText(message.content, targetLang);
+      if (translatedText) {
+        setTranslatedText(translatedText);
       } else {
-        console.error('Translation error:', data.error);
+        setTranslatedText("翻訳に失敗しました...");
       }
     } catch (error) {
-      console.error('Network error:', error);
+      console.error('Translation error:', error);
       setTranslatedText("翻訳に失敗しました...");
     } finally {
       setIsLoading(false);
