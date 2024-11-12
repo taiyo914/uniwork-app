@@ -84,5 +84,14 @@
     "guest": "Guest",
     "hourAndMinute": "{{hour}}h {{minute}}m",
     "minuteOnly": "{{minute}}m"
+  },
+  "chat": {
+    "title": "Chat",
+    "back": "Back",
+    "messagePlaceholder": "Enter message...",
+    "translationFailed": "Translation failed...",
+    "addReaction": "+Add Reaction",
+    "noUsers": "No users",
+    "groupChat": "Group Chat"
   }
 }

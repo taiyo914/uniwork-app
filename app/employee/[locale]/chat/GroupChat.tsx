@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { translateText } from '@/utils/translate';
+import { useTranslation } from "react-i18next";
 
 interface Message {
   sender_id: string;
@@ -47,6 +48,8 @@ export default function GroupChat() {
   const prevMessageCount = useRef(messages.length);
   const router = useRouter();
   const { locale } = useParams();
+  const { t: translate } = useTranslation();
+  const t = (key: string) => translate(`chat.${key}`);
 
   const scrollToBottom = () => {
     if (bottomRef.current) {
@@ -301,9 +304,11 @@ export default function GroupChat() {
       <div className="bg-blue-100 shadow-sm pl-2 pr-3 sm:px-4 py-2.5 md:py-3.5 border-b border-blue-200 flex items-center justify-between abusolute top-0 left-0 w-full ">
         <button onClick={() => router.push(`/employee/${locale}/chat`)} className="flex items-center space-x-0.5 text-blue-500 sm:hidden py-1 px-1 rounded-lg hover:bg-blue-200 transition">
           <ArrowLeft className="w-5 h-5" />
-          <span className="text-sm font-semibold ">戻る</span>
+          <span className="text-sm font-semibold ">{t('back')}</span>
         </button>
-        <h2 className="text-xl xs:font-semibold font-bold text-blue-700 flex items-center gap-2"><Users className="" size={20} />全体チャット</h2>
+        <h2 className="text-xl xs:font-semibold font-bold text-blue-700 flex items-center gap-2">
+          <Users className="" size={20} />{t('groupChat')}
+        </h2>
       </div>
 
       <div 
@@ -326,7 +331,7 @@ export default function GroupChat() {
           <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="flex items-center space-x-2">
             <Input
               type="text"
-              placeholder="メッセージを入力..."
+              placeholder={t('messagePlaceholder')}
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               className="flex-grow focus-visible:ring-1 focus-visible:ring-offset-2"
@@ -354,9 +359,11 @@ interface MessageComponentProps {
 const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleToggleReaction, userId}) => {
   const [translatedText, setTranslatedText] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { locale } = useParams()
+  const { locale } = useParams();
   const targetLang = Array.isArray(locale) ? locale[0] : locale;
-
+  const { t: translate } = useTranslation();
+  const t = (key: string) => translate(`chat.${key}`);
+  
   // リアクションのカウントを計算
   const reactionCounts: ReactionCounts = message.reactions.reduce((acc: ReactionCounts, reaction: Reaction) => {
     if (!acc[reaction.reaction_type]) acc[reaction.reaction_type] = 0;
@@ -382,11 +389,11 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
       if (translatedText) {
         setTranslatedText(translatedText);
       } else {
-        setTranslatedText("翻訳に失敗しました...");
+        setTranslatedText(t('translationFailed'));
       }
     } catch (error) {
       console.error('Translation error:', error);
-      setTranslatedText("翻訳に失敗しました...");
+      setTranslatedText(t('translationFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -469,7 +476,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
           <div className="flex items-center gap-1 group-hover:text-gray-500 text-gray-400 cursor-pointer">
             <SmilePlus className={`h-4 w-4`} />
             {Object.entries(reactionCounts).length === 0 && (
-              <span className="text-xs font-semibold"> +リアクション</span>
+              <span className="text-xs font-semibold"> {t('addReaction')}</span>
             )}
           </div>
 

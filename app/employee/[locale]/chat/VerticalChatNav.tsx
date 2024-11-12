@@ -6,6 +6,7 @@ import { createClient } from "@/utils/supabase/client";
 import { MessageCircle, Users } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useTranslation } from "react-i18next";
 
 interface ChatSpace {
   id: string;
@@ -18,6 +19,8 @@ export default function VerticalChatNav() {
   const { userId, locale } = useParams();
   const pathname = usePathname();
   const [chatSpaces, setChatSpaces] = useState<ChatSpace[]>([]);
+  const { t: translate } = useTranslation();
+  const t = (key: string) => translate(`chat.${key}`);
 
   useEffect(() => {
     const fetchChatSpaces = async () => {
@@ -41,7 +44,7 @@ export default function VerticalChatNav() {
       const spaces: ChatSpace[] = [
         {
           id: "group",
-          name: "全体チャット",
+          name: t('groupChat'),
         },
         ...(data?.map((profile) => ({
           id: profile.user_id,
@@ -60,7 +63,9 @@ export default function VerticalChatNav() {
     <nav className="h-full w-full sm:border-r-[2px]">
       <ScrollArea className="h-full">
         <div className="xs:pb-4 pb-10 md:px-2">
-          <h2 className="text-lg font-semibold px-3 lg:px-4 pt-4 pb-1 text-blue-700">チャット</h2>
+          <h2 className="text-lg font-semibold px-3 lg:px-4 pt-4 pb-1 text-blue-700">
+            {t('title')}
+          </h2>
           {chatSpaces.map((space) => (
             <Link
               key={space.id}

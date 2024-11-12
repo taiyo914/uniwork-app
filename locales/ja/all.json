@@ -84,5 +84,14 @@
     "guest": "ゲスト",
     "hourAndMinute": "{{hour}}時間{{minute}}分",
     "minuteOnly": "{{minute}}分"
+  },
+  "chat": {
+    "title": "チャット",
+    "back": "戻る",
+    "messagePlaceholder": "メッセージを入力...",
+    "translationFailed": "翻訳に失敗しました...",
+    "addReaction": "+リアクション",
+    "noUsers": "ユーザーなし",
+    "groupChat": "全体チャット"
   }
 }
