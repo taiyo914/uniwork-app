@@ -93,5 +93,23 @@
     "addReaction": "+リアクション",
     "noUsers": "ユーザーなし",
     "groupChat": "全体チャット"
+  },
+  "member": {
+    "title": "メンバー",
+    "languages": "言語",
+    "foodPreferences": "食事の好み",
+    "favorites": "好きなもの",
+    "restrictions": "食べられないもの",
+    "hobbies": "好きなこと",
+    "pleaseKnow": "その他",
+    "translating": "翻訳中",
+    "translate": "翻訳",
+    "edit": "編集",
+    "goToChat": "チャットへ",
+    "workStatus": {
+      "working": "勤務中",
+      "onBreak": "休憩中",
+      "notStarted": "未出勤"
+    }
   }
 }

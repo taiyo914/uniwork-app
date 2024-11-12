@@ -93,5 +93,23 @@
     "addReaction": "+Add Reaction",
     "noUsers": "No users",
     "groupChat": "Group Chat"
+  },
+  "member": {
+    "title": "Members",
+    "languages": "Languages",
+    "foodPreferences": "Food Preferences",
+    "favorites": "Favorites",
+    "restrictions": "Restrictions",
+    "hobbies": "Hobbies",
+    "pleaseKnow": "Please know",
+    "translating": "Translating",
+    "translate": "Translate",
+    "edit": "Edit",
+    "goToChat": "Go to Chat",
+    "workStatus": {
+      "working": "Working",
+      "onBreak": "On Break",
+      "notStarted": "Off Duty"
+    }
   }
 }

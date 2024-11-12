@@ -6,6 +6,7 @@ import { createClient } from "@/utils/supabase/client"
 import { useParams, useRouter } from "next/navigation"
 import { useUser } from "@/hooks/useUser"
 import { MemberCard } from "./MemberCard"
+import { useTranslation } from "react-i18next";
 
 interface TeamMember {
   user_id: string
@@ -32,6 +33,7 @@ export default function MemberList({ teamMembers: initialTeamMembers }: MemberLi
   const router = useRouter()
   const { locale } = useParams()
   const { user } = useUser();
+  const { t } = useTranslation();
 
 
   useEffect(() => {
@@ -85,7 +87,8 @@ export default function MemberList({ teamMembers: initialTeamMembers }: MemberLi
     <div className="mx-auto px-4 md:px-6 ">
       <div className="h-4 sm:h-6"></div>
       <h1 className="text-2xl sm:text-3xl font-bold text-blue-600">
-        <Users className="h-7 w-7 inline-block mr-2 mb-1 ml-1 " />メンバー
+        <Users className="h-7 w-7 inline-block mr-2 mb-1 ml-1 " />
+        {t('member.title')}
       </h1>
       <div className="h-3 sm:h-6"></div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
