@@ -67,5 +67,97 @@
         "overlappingBreaks": "बिराम {{index1}} र बिराम {{index2}} को समय ओभरल्याप भएको छ।"
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "साप्ताहिक कार्य घण्टा",
+    "last7Days": "पछिल्लो ७ दिनको कार्य घण्टा",
+    "monthlyWork": "मासिक कार्य घण्टा",
+    "monthlyIncome": "मासिक आय",
+    "approved": "स्वीकृत",
+    "unapproved": "अस्वीकृत",
+    "offDuty": "कार्य बाहिर",
+    "working": "काम गरिरहेको",
+    "onBreak": "बिराममा",
+    "showInJPY": "येनमा देखाउनुहोस्",
+    "showInForeign": "{{currency}}मा देखाउनुहोस्",
+    "perHour": "/घण्टा",
+    "guest": "पाहुना",
+    "hourAndMinute": "{{hour}}घण्टा {{minute}}मिनेट",
+    "minuteOnly": "{{minute}}मिनेट"
+  },
+  "chat": {
+    "title": "च्याट",
+    "back": "पछाडि",
+    "messagePlaceholder": "सन्देश लेख्नुहोस्...",
+    "translationFailed": "अनुवाद असफल भयो...",
+    "addReaction": "+प्रतिक्रिया थप्नुहोस्",
+    "noUsers": "कुनै प्रयोगकर्ता छैन",
+    "groupChat": "समूह च्याट"
+  },
+  "member": {
+    "title": "सदस्यहरू",
+    "languages": "भाषाहरू",
+    "foodPreferences": "खाना प्राथमिकताहरू",
+    "favorites": "मन पर्ने",
+    "restrictions": "प्रतिबन्धहरू",
+    "hobbies": "रुचिहरू",
+    "pleaseKnow": "अन्य",
+    "translating": "अनुवाद गर्दै",
+    "translate": "अनुवाद",
+    "edit": "सम्पादन",
+    "goToChat": "च्याटमा जानुहोस्",
+    "workStatus": {
+      "working": "काम गरिरहेको",
+      "onBreak": "बिराममा",
+      "notStarted": "सुरु नभएको"
+    }
+  },
+  "profile": {
+    "title": "प्रोफाइल सेटिङ्स",
+    "tabs": {
+      "profile": "प्रोफाइल",
+      "settings": "एप सेटिङ्स",
+      "registrationInfo": "दर्ता जानकारी"
+    },
+    "settings": {
+      "title": "एप सेटिङ्स",
+      "description": "एपको आधारभूत सेटिङ्स परिवर्तन गर्नुहोस्",
+      "language": "भाषा सेटिङ्स",
+      "currency": "मुद्रा",
+      "selectPlaceholder": "कृपया छान्नुहोस्",
+      "saved": "सुरक्षित गरियो",
+      "save": "सुरक्षित गर्नुहोस्"
+    },
+    "profile": {
+      "changeImage": "तस्विर परिवर्तन गर्नुहोस्",
+      "uploadTitle": "प्रोफाइल तस्विर अपलोड",
+      "uploadDescription": "नयाँ प्रोफाइल तस्विर छान्नुहोस् र अपलोड गर्नुहोस्",
+      "uploading": "अपलोड गर्दै...",
+      "selectFile": "फाइल छान्नुहोस्",
+      "cacheNotice": "आइकन सुरक्षित गर्न दायाँ तलको सुरक्षित बटन थिच्नुहोस्। सुरक्षित गरेपछि देखिन केही समय लाग्न सक्छ। सुरक्षित गरेपछि तुरुन्तै देखाउन चाहनुभएको कुराहरू लेख्नुहोस्।",
+      "languages": "बोल्न सक्ने भाषाहरू",
+      "languagesPlaceholder": "उदाहरण: अंग्रेजी, जापानी, चिनियाँ",
+      "foodPreferences": "खाना प्राथमिकताहरू",
+      "favorites": "मन पर्ने खानाहरू",
+      "favoritesPlaceholder": "उदाहरण: सुसी, रामेन, टेम्पुरा",
+      "restrictions": "खाना प्रतिबन्धहरू",
+      "restrictionsPlaceholder": "उदाहरण: बदाम, अण्डा, दूध",
+      "hobbies": "रुचिहरू",
+      "hobbiesPlaceholder": "उदाहरण: पढ्ने, यात्रा, पकाउने",
+      "pleaseKnow": "अन्य",
+      "pleaseKnowPlaceholder": "उदाहरण: धर्म, विश्वास, पारिवारिक स्थिति, भाषा स्तर आदि। कृपया सबैलाई थाहा दिन चाहनुभएको कुराहरू लेख्नुहोस्।",
+      "saved": "सुरक्षित गरियो",
+      "save": "सुरक्षित गर्नुहोस्"
+    },
+    "registrationInfo": {
+      "title": "दर्ता जानकारी",
+      "description": "यी जानकारीहरू परिवर्तन गर्न आवेदन आवश्यक छ।",
+      "name": "नाम",
+      "nationality": "राष्ट्रियता",
+      "email": "इमेल",
+      "residenceStatus": "बसोबास स्थिति",
+      "expirationDate": "समाप्ति मिति",
+      "requestChange": "जानकारी परिवर्तन आवेदन"
+    }
   }
 }

@@ -204,9 +204,9 @@ const CurrentTimeButtons = () => {
   };
 
   const getBorderColor = () => {
-    if (workStatus === "working") return "border-green-400";
-    if (workStatus === "onBreak") return "border-yellow-500";
-    if (workStatus === "notStarted")return "border-blue-400";
+    if (workStatus === "working") return "border-t-green-400";
+    if (workStatus === "onBreak") return "border-t-yellow-500";
+    if (workStatus === "notStarted")return "border-t-blue-400";
   };
 
   const getBadgeStyle = () => {
@@ -222,7 +222,7 @@ const CurrentTimeButtons = () => {
   }
 
   const getMainButtonStyle = () => {
-    const baseStyle = "w-full h-16 sm:h-20 text-xl font-semibold transition-all duration-300";
+    const baseStyle = "w-full h-16 sm:h-[4.5rem] text-lg sm:text-xl font-semibold transition-all duration-300";
     if (workStatus === "working") return `${baseStyle} bg-green-200 hover:bg-green-300 text-green-800 border border-green-300 shadow`;
     if (workStatus === "onBreak") return `${baseStyle} bg-gray-200 text-gray-500 border border-gray-300 cursor-not-allowed`;
     if (workStatus === "notStarted") return `${baseStyle} bg-blue-200 hover:bg-blue-300 border border-blue-300 text-blue-700 shadow`;
@@ -231,19 +231,19 @@ const CurrentTimeButtons = () => {
   return (
     <>
     <div className="w-full">
-      <Card className={`shadow border-0 border-t-4 ${getBorderColor()}`}>
-        <CardHeader className="pb-2 xs:pb-1 short:pb-1">
-          <CardTitle className="text-xl font-semibold text-center short:mt-1 xs:mt-1 mt-3 lg:mt-4 text-gray-900">{t("currentWorkTime")}</CardTitle> 
+      <Card className={`shadow border-t-4 border-r border-l border-b border-gray-200 ${getBorderColor()}`}>
+        <CardHeader className="pb-1.5 xs:pb-1 short:pb-1">
+          <CardTitle className="text-md sm:text-lg font-semibold text-center short:mt-1 xs:mt-1 mt-2 lg:mt-3 text-gray-900">{t("currentWorkTime")}</CardTitle> 
         </CardHeader>
-        <CardContent className="short:space-y-5 xs:space-y-5 space-y-6 lg:space-y-7 short:pb-5 short:px-5 xs:px-4 xs:pb-4 px-5 pb-5 sm:pb-7 sm:px-7">
+        <CardContent className="short:space-y-5 xs:space-y-5 space-y-5 lg:space-y-6 short:pb-5 short:px-5 xs:px-4 xs:pb-4 px-4 pb-4 sm:pb-[1.6rem] sm:px-[1.6rem]">
           <div className="text-center">
             <div className={`sm:text-6xl text-5xl font-bold  font-sans lg:tracking-wide transition-colors 
               ${workStatus === "onBreak" ? "text-gray-300 duration-200" : "text-black"}
             `} >
               {formatTime(workTime)}
             </div>
-            <div className="short:mt-4 xs:mt-4 mt-[1.15rem] lg:mt-5 ">
-              <Badge className={`${getBadgeStyle()} transition-all`}>{getBadgeLabel()}</Badge>
+            <div className="short:mt-4 xs:mt-4 mt-3 lg:mt-4 ">
+              <Badge className={`${getBadgeStyle()} transition-all text-[0.8rem] sm:text-sm`}>{getBadgeLabel()}</Badge>
             </div>
           </div>
 
@@ -252,7 +252,7 @@ const CurrentTimeButtons = () => {
             className={getMainButtonStyle()}
             disabled={workStatus === "onBreak"}
           >
-            {workStatus === "notStarted" ? <LogIn /> : <LogOut />} 
+            {workStatus === "notStarted" ? <LogIn className="w-5 h-5 mr-0"/> : <LogOut className="w-5 h-5 mr-0"/>} 
             {workStatus === "notStarted" ? t("startWork") : t("endWork")}
           </Button>
 

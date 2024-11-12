@@ -263,12 +263,12 @@ const ScheduledTimeDialog = () => {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} >
       <DialogTrigger asChild>
         <Button 
-          className={`w-full h-16 lg:h-20 border border-gray-300 text-lg rounded-xl shadow flex items-center justify-center bg-gray-200 text-gray-700 transition-all duration-300
+          className={`w-full h-16 lg:h-[4.5rem] border border-gray-300 text-base sm:text-lg rounded-md shadow flex items-center justify-center bg-gray-200 text-gray-700 transition-all duration-300
             ${workStatus !== "notStarted" ? "cursor-not-allowed" : "hover:bg-gray-300 "}
           `}
           disabled={workStatus !== "notStarted"}
         >
-          <CalendarPlus className="mb-0.5 h-5 mr-0.5" />
+          <CalendarPlus className="mb-0.5 h-4 w-4 sm:h-5 sm:w-5 mr-0.5" />
           {t("recordPastWorkTime")}
         </Button>
       </DialogTrigger>

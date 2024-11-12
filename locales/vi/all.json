@@ -67,5 +67,97 @@
         "overlappingBreaks": "Nghỉ {{index1}} và nghỉ {{index2}} bị trùng giờ."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "Giờ làm việc trong tuần",
+    "last7Days": "Giờ làm việc 7 ngày qua",
+    "monthlyWork": "Giờ làm việc trong tháng",
+    "monthlyIncome": "Thu nhập hàng tháng",
+    "approved": "Đã duyệt",
+    "unapproved": "Chưa duyệt",
+    "offDuty": "Ngoài giờ làm việc",
+    "working": "Đang làm việc",
+    "onBreak": "Đang nghỉ",
+    "showInJPY": "Hiển thị bằng Yên",
+    "showInForeign": "Hiển thị bằng {{currency}}",
+    "perHour": "/giờ",
+    "guest": "Khách",
+    "hourAndMinute": "{{hour}} giờ {{minute}} phút",
+    "minuteOnly": "{{minute}} phút"
+  },
+  "chat": {
+    "title": "Trò chuyện",
+    "back": "Quay lại",
+    "messagePlaceholder": "Nhập tin nhắn...",
+    "translationFailed": "Dịch thất bại...",
+    "addReaction": "+Thêm biểu cảm",
+    "noUsers": "Không có người dùng",
+    "groupChat": "Trò chuyện nhóm"
+  },
+  "member": {
+    "title": "Thành viên",
+    "languages": "Ngôn ngữ",
+    "foodPreferences": "Sở thích ẩm thực",
+    "favorites": "Yêu thích",
+    "restrictions": "Hạn chế",
+    "hobbies": "Sở thích",
+    "pleaseKnow": "Khác",
+    "translating": "Đang dịch",
+    "translate": "Dịch",
+    "edit": "Chỉnh sửa",
+    "goToChat": "Đến trò chuyện",
+    "workStatus": {
+      "working": "Đang làm việc",
+      "onBreak": "Đang nghỉ",
+      "notStarted": "Chưa bắt đầu"
+    }
+  },
+  "profile": {
+    "title": "Cài đặt hồ sơ",
+    "tabs": {
+      "profile": "Hồ sơ",
+      "settings": "Cài đặt",
+      "registrationInfo": "Thông tin đăng ký"
+    },
+    "settings": {
+      "title": "Cài đặt ứng dụng",
+      "description": "Thay đổi cài đặt cơ bản của ứng dụng",
+      "language": "Cài đặt ngôn ngữ",
+      "currency": "Tiền tệ",
+      "selectPlaceholder": "Vui lòng chọn",
+      "saved": "Đã lưu",
+      "save": "Lưu"
+    },
+    "profile": {
+      "changeImage": "Thay đổi ảnh",
+      "uploadTitle": "Tải lên ảnh hồ sơ",
+      "uploadDescription": "Chọn và tải lên ảnh hồ sơ mới",
+      "uploading": "Đang tải lên...",
+      "selectFile": "Chọn tệp",
+      "cacheNotice": "Nhấn nút lưu ở góc phải dưới để lưu biểu tượng. Có thể mất một lúc để hiển thị sau khi lưu. Nếu muốn hiển thị ngay sau khi lưu, vui lòng xóa bộ nhớ cache của trình duyệt.",
+      "languages": "Ngôn ngữ có thể nói",
+      "languagesPlaceholder": "Ví dụ: Tiếng Anh, Tiếng Nhật, Tiếng Trung",
+      "foodPreferences": "Sở thích ẩm thực",
+      "favorites": "Món ăn yêu thích",
+      "favoritesPlaceholder": "Ví dụ: Sushi, Ramen, Tempura",
+      "restrictions": "Hạn chế ẩm thực",
+      "restrictionsPlaceholder": "Ví dụ: Đậu phộng, Trứng, Sữa",
+      "hobbies": "Sở thích",
+      "hobbiesPlaceholder": "Ví dụ: Đọc sách, Du lịch, Nấu ăn",
+      "pleaseKnow": "Khác",
+      "pleaseKnowPlaceholder": "Ví dụ: Tôn giáo, Niềm tin, Tình trạng gia đình, Trình độ ngôn ngữ, v.v. Vui lòng nhập những điều bạn muốn mọi người biết.",
+      "saved": "Đã lưu",
+      "save": "Lưu"
+    },
+    "registrationInfo": {
+      "title": "Thông tin đăng ký",
+      "description": "Cần có đơn đăng ký để thay đổi những thông tin này.",
+      "name": "Tên",
+      "nationality": "Quốc tịch",
+      "email": "Email",
+      "residenceStatus": "Tình trạng cư trú",
+      "expirationDate": "Ngày hết hạn",
+      "requestChange": "Yêu cầu thay đổi thông tin"
+    }
   }
 }

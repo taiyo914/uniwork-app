@@ -67,5 +67,97 @@
         "overlappingBreaks": "휴식 {{index1}}와 휴식 {{index2}}의 시간이 겹칩니다."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "주간 근무 시간",
+    "last7Days": "최근 7일 근무 시간",
+    "monthlyWork": "월간 근무 시간",
+    "monthlyIncome": "월 수입",
+    "approved": "승인됨",
+    "unapproved": "미승인",
+    "offDuty": "비근무",
+    "working": "근무 중",
+    "onBreak": "휴식 중",
+    "showInJPY": "엔화로 표시",
+    "showInForeign": "{{currency}}로 표시",
+    "perHour": "/시간",
+    "guest": "게스트",
+    "hourAndMinute": "{{hour}}시간 {{minute}}분",
+    "minuteOnly": "{{minute}}분"
+  },
+  "chat": {
+    "title": "채팅",
+    "back": "뒤로",
+    "messagePlaceholder": "메시지 입력...",
+    "translationFailed": "번역 실패...",
+    "addReaction": "+리액션",
+    "noUsers": "사용자 없음",
+    "groupChat": "그룹 채팅"
+  },
+  "member": {
+    "title": "멤버",
+    "languages": "언어",
+    "foodPreferences": "음식 선호도",
+    "favorites": "좋아하는 것",
+    "restrictions": "제한사항",
+    "hobbies": "취미",
+    "pleaseKnow": "기타",
+    "translating": "번역 중",
+    "translate": "번역",
+    "edit": "편집",
+    "goToChat": "채팅으로",
+    "workStatus": {
+      "working": "근무 중",
+      "onBreak": "휴식 중",
+      "notStarted": "미출근"
+    }
+  },
+  "profile": {
+    "title": "프로필 설정",
+    "tabs": {
+      "profile": "프로필",
+      "settings": "설정",
+      "registrationInfo": "등록 정보"
+    },
+    "settings": {
+      "title": "앱 설정",
+      "description": "기본 앱 설정을 변경합니다.",
+      "language": "언어 설정",
+      "currency": "통화",
+      "selectPlaceholder": "선택해 주세요",
+      "saved": "저장됨",
+      "save": "저장"
+    },
+    "profile": {
+      "changeImage": "이미지 변경",
+      "uploadTitle": "프로필 이미지 업로드",
+      "uploadDescription": "새 프로필 이미지를 선택하여 업로드하세요.",
+      "uploading": "업로드 중...",
+      "selectFile": "파일 선택",
+      "cacheNotice": "아이콘을 저장하려면 우측 하단의 저장 버튼을 클릭하세요. 저장 후 반영되기까지 시간이 걸릴 수 있습니다. 저장 후 즉시 반영하려면 브라우저 캐시를 삭제하세요.",
+      "languages": "구사 가능 언어",
+      "languagesPlaceholder": "예: 영어, 일본어, 중국어",
+      "foodPreferences": "음식 선호도",
+      "favorites": "좋아하는 것",
+      "favoritesPlaceholder": "예: 스시, 라멘, 덴푸라",
+      "restrictions": "제한사항",
+      "restrictionsPlaceholder": "예: 땅콩, 계란, 우유",
+      "hobbies": "취미",
+      "hobbiesPlaceholder": "예: 독서, 여행, 요리",
+      "pleaseKnow": "기타",
+      "pleaseKnowPlaceholder": "예: 종교, 신념, 가족 상황, 언어 수준 등 모두가 알았으면 하는 것을 입력해 주세요.",
+      "saved": "저장됨",
+      "save": "저장"
+    },
+    "registrationInfo": {
+      "title": "등록 정보",
+      "description": "이 정보를 변경하려면 신청이 필요합니다.",
+      "name": "이름",
+      "nationality": "국적",
+      "email": "이메일",
+      "residenceStatus": "체류 자격",
+      "expirationDate": "체류 기간",
+      "requestChange": "정보 변경 신청"
+    }
   }
 }

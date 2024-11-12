@@ -1,17 +1,12 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Globe, UtensilsCrossed, Info, Heart, Users, MessageCircle, Pencil, Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Users } from "lucide-react"
 import { useEffect, useState } from "react"
 import { createClient } from "@/utils/supabase/client"
 import { useParams, useRouter } from "next/navigation"
 import { useUser } from "@/hooks/useUser"
-import { translateJson } from "@/utils/translateJson"
-import { translateText } from "@/utils/translate"
 import { MemberCard } from "./MemberCard"
+import { useTranslation } from "react-i18next";
 
 interface TeamMember {
   user_id: string
@@ -38,6 +33,7 @@ export default function MemberList({ teamMembers: initialTeamMembers }: MemberLi
   const router = useRouter()
   const { locale } = useParams()
   const { user } = useUser();
+  const { t } = useTranslation();
 
 
   useEffect(() => {
@@ -88,12 +84,13 @@ export default function MemberList({ teamMembers: initialTeamMembers }: MemberLi
   }
 
   return (
-    <div className="mx-auto px-4 md:px-6 bg-gray-50/50">
-      <div className="h-4 sm:h-6"></div>
-      <h1 className="text-2xl sm:text-3xl font-bold text-blue-600">
-        <Users className="h-7 w-7 inline-block mr-2 mb-1 ml-1 " />メンバー
+    <div className="mx-auto px-4 md:px-6 ">
+      <div className="h-4 sm:h-5"></div>
+      <h1 className="text-xl sm:text-2xl font-bold">
+        <Users className="h-6 w-6 inline-block mr-1.5 mb-1 ml-1 " />
+        {t('member.title')}
       </h1>
-      <div className="h-3 sm:h-6"></div>
+      <div className="h-3 sm:h-4"></div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
         {teamMembers.map((member) => (
           <MemberCard

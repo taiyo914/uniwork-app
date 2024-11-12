@@ -67,5 +67,97 @@
         "overlappingBreaks": "Le pause {{index1}} e {{index2}} si sovrappongono."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "Ore di Lavoro Settimanali",
+    "last7Days": "Ore di Lavoro degli Ultimi 7 Giorni",
+    "monthlyWork": "Ore di Lavoro Mensili",
+    "monthlyIncome": "Reddito Mensile",
+    "approved": "Approvato",
+    "unapproved": "Non Approvato",
+    "offDuty": "Fuori Servizio",
+    "working": "In Lavoro",
+    "onBreak": "In Pausa",
+    "showInJPY": "Mostra in JPY",
+    "showInForeign": "Mostra in {{currency}}",
+    "perHour": "/ora",
+    "guest": "Ospite",
+    "hourAndMinute": "{{hour}}h {{minute}}m",
+    "minuteOnly": "{{minute}}m"
+  },
+  "chat": {
+    "title": "Chat",
+    "back": "Indietro",
+    "messagePlaceholder": "Inserisci messaggio...",
+    "translationFailed": "Traduzione fallita...",
+    "addReaction": "+Aggiungi Reazione",
+    "noUsers": "Nessun utente",
+    "groupChat": "Chat di Gruppo"
+  },
+  "member": {
+    "title": "Membri",
+    "languages": "Lingue",
+    "foodPreferences": "Preferenze Alimentari",
+    "favorites": "Preferiti",
+    "restrictions": "Restrizioni",
+    "hobbies": "Hobby",
+    "pleaseKnow": "Informazioni Aggiuntive",
+    "translating": "Traduzione in corso",
+    "translate": "Traduci",
+    "edit": "Modifica",
+    "goToChat": "Vai alla chat",
+    "workStatus": {
+      "working": "In Lavoro",
+      "onBreak": "In Pausa",
+      "notStarted": "Non Iniziato"
+    }
+  },
+  "profile": {
+    "title": "Impostazioni Profilo",
+    "tabs": {
+      "profile": "Profilo",
+      "settings": "Impostazioni",
+      "registrationInfo": "Informazioni di Registrazione"
+    },
+    "settings": {
+      "title": "Impostazioni dell'Applicazione",
+      "description": "Modifica le impostazioni di base dell'applicazione.",
+      "language": "Impostazioni Lingua",
+      "currency": "Valuta",
+      "selectPlaceholder": "Seleziona",
+      "saved": "Salvato",
+      "save": "Salva"
+    },
+    "profile": {
+      "changeImage": "Cambia Immagine",
+      "uploadTitle": "Carica Immagine del Profilo",
+      "uploadDescription": "Seleziona e carica una nuova immagine del profilo.",
+      "uploading": "Caricamento in corso...",
+      "selectFile": "Seleziona File",
+      "cacheNotice": "Clicca sul pulsante salva in basso a destra per salvare l'icona. L'aggiornamento potrebbe richiedere del tempo dopo il salvataggio. Se desideri che le modifiche siano visibili immediatamente dopo il salvataggio, cancella la cache del browser.",
+      "languages": "Lingue Parlate",
+      "languagesPlaceholder": "Esempio: Inglese, Giapponese, Cinese",
+      "foodPreferences": "Preferenze Alimentari",
+      "favorites": "Preferiti",
+      "favoritesPlaceholder": "Esempio: Sushi, Ramen, Tempura",
+      "restrictions": "Restrizioni",
+      "restrictionsPlaceholder": "Esempio: Arachidi, Uova, Latte",
+      "hobbies": "Hobby",
+      "hobbiesPlaceholder": "Esempio: Lettura, Viaggi, Cucina",
+      "pleaseKnow": "Altre Informazioni",
+      "pleaseKnowPlaceholder": "Esempio: Religione, credenze, situazione familiare, livello linguistico, ecc. Inserisci le informazioni che desideri che tutti conoscano.",
+      "saved": "Salvato",
+      "save": "Salva"
+    },
+    "registrationInfo": {
+      "title": "Informazioni di Registrazione",
+      "description": "È necessaria una richiesta per modificare queste informazioni.",
+      "name": "Nome",
+      "nationality": "Nazionalità",
+      "email": "Email",
+      "residenceStatus": "Stato di Residenza",
+      "expirationDate": "Data di Scadenza",
+      "requestChange": "Richiedi Modifica Informazioni"
+    }
   }
 }

@@ -67,5 +67,97 @@
         "overlappingBreaks": "Mapumziko {{index1}} na Mapumziko {{index2}} yanaingiliana."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "Masaa ya Kazi ya Wiki",
+    "last7Days": "Masaa ya Kazi ya Siku 7 Zilizopita",
+    "monthlyWork": "Masaa ya Kazi ya Mwezi",
+    "monthlyIncome": "Mapato ya Mwezi",
+    "approved": "Imeidhinishwa",
+    "unapproved": "Haijaidhinishwa",
+    "offDuty": "Nje ya Kazi",
+    "working": "Anafanya Kazi",
+    "onBreak": "Katika Mapumziko",
+    "showInJPY": "Onyesha kwa JPY",
+    "showInForeign": "Onyesha kwa {{currency}}",
+    "perHour": "/saa",
+    "guest": "Mgeni",
+    "hourAndMinute": "{{hour}}h {{minute}}m",
+    "minuteOnly": "{{minute}}m"
+  },
+  "chat": {
+    "title": "Mazungumzo",
+    "back": "Rudi",
+    "messagePlaceholder": "Ingiza ujumbe...",
+    "translationFailed": "Tafsiri imeshindikana...",
+    "addReaction": "+Ongeza Mwitikio",
+    "noUsers": "Hakuna watumiaji",
+    "groupChat": "Mazungumzo ya Kikundi"
+  },
+  "member": {
+    "title": "Wanachama",
+    "languages": "Lugha",
+    "foodPreferences": "Mapendeleo ya Chakula",
+    "favorites": "Vipendwa",
+    "restrictions": "Vizuizi",
+    "hobbies": "Hobi",
+    "pleaseKnow": "Mengineyo",
+    "translating": "Inatafsiri",
+    "translate": "Tafsiri",
+    "edit": "Hariri",
+    "goToChat": "Nenda kwenye Mazungumzo",
+    "workStatus": {
+      "working": "Anafanya Kazi",
+      "onBreak": "Katika Mapumziko",
+      "notStarted": "Hajaanza"
+    }
+  },
+  "profile": {
+    "title": "Mipangilio ya Profaili",
+    "tabs": {
+      "profile": "Profaili",
+      "settings": "Mipangilio ya Programu",
+      "registrationInfo": "Taarifa za Usajili"
+    },
+    "settings": {
+      "title": "Mipangilio ya Programu",
+      "description": "Badilisha mipangilio ya msingi ya programu.",
+      "language": "Mipangilio ya Lugha",
+      "currency": "Sarafu",
+      "selectPlaceholder": "Tafadhali chagua",
+      "saved": "Imehifadhiwa",
+      "save": "Hifadhi"
+    },
+    "profile": {
+      "changeImage": "Badilisha Picha",
+      "uploadTitle": "Pakia Picha ya Profaili",
+      "uploadDescription": "Chagua na upakia picha mpya ya profaili.",
+      "uploading": "Inapakia...",
+      "selectFile": "Chagua Faili",
+      "cacheNotice": "Bonyeza kitufe cha kuhifadhi chini kulia kuhifadhi aikoni. Inaweza kuchukua muda baada ya kuhifadhi. Ikiwa unataka mabadiliko yaonekane mara moja baada ya kuhifadhi, tafadhali futa cache ya kivinjari chako.",
+      "languages": "Lugha Unazozungumza",
+      "languagesPlaceholder": "Mfano: Kiingereza, Kijapani, Kichina",
+      "foodPreferences": "Mapendeleo ya Chakula",
+      "favorites": "Vipendwa",
+      "favoritesPlaceholder": "Mfano: Sushi, Ramen, Tempura",
+      "restrictions": "Vizuizi",
+      "restrictionsPlaceholder": "Mfano: Karanga, Mayai, Maziwa",
+      "hobbies": "Hobi",
+      "hobbiesPlaceholder": "Mfano: Kusoma, Kusafiri, Kupika",
+      "pleaseKnow": "Taarifa Nyingine",
+      "pleaseKnowPlaceholder": "Mfano: Dini, imani, hali ya kifamilia, kiwango cha lugha, n.k. Tafadhali ingiza taarifa unazotaka wengine wajue.",
+      "saved": "Imehifadhiwa",
+      "save": "Hifadhi"
+    },
+    "registrationInfo": {
+      "title": "Taarifa za Usajili",
+      "description": "Ombi linahitajika kubadilisha taarifa hizi.",
+      "name": "Jina",
+      "nationality": "Uraia",
+      "email": "Barua pepe",
+      "residenceStatus": "Hali ya Makazi",
+      "expirationDate": "Tarehe ya Kumalizika",
+      "requestChange": "Omba Kubadilisha Taarifa"
+    }
   }
 }

@@ -1,8 +1,23 @@
-export default function Profile() {
+import { createClient } from '@/utils/supabase/server'
+import ProfileEditor from './profileEditor'
+
+export const revalidate = 0;
+
+export default async function Page() {
+  const supabase = createClient()
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
+  
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', user?.id)
+    .single()
+
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">マイプロフィール</h1>
-      <p>あなたの個人情報や設定を管理できます。</p>
+    <div>
+      <ProfileEditor initialProfile={profile} />
     </div>
   )
 }

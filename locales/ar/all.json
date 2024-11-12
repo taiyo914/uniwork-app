@@ -67,5 +67,97 @@
         "overlappingBreaks": "تداخل أوقات الاستراحة {{index1}} و{{index2}}."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "ساعات العمل الأسبوعية",
+    "last7Days": "ساعات العمل في آخر 7 أيام",
+    "monthlyWork": "ساعات العمل الشهرية",
+    "monthlyIncome": "الدخل الشهري",
+    "approved": "موافق عليه",
+    "unapproved": "غير موافق عليه",
+    "offDuty": "خارج العمل",
+    "working": "في العمل",
+    "onBreak": "في استراحة",
+    "showInJPY": "عرض بالين الياباني",
+    "showInForeign": "عرض بـ {{currency}}",
+    "perHour": "/ساعة",
+    "guest": "ضيف",
+    "hourAndMinute": "{{hour}}س {{minute}}د",
+    "minuteOnly": "{{minute}}د"
+  },
+  "chat": {
+    "title": "الدردشة",
+    "back": "رجوع",
+    "messagePlaceholder": "اكتب رسالة...",
+    "translationFailed": "فشلت الترجمة...",
+    "addReaction": "+إضافة تفاعل",
+    "noUsers": "لا يوجد مستخدمين",
+    "groupChat": "دردشة جماعية"
+  },
+  "member": {
+    "title": "الأعضاء",
+    "languages": "اللغات",
+    "foodPreferences": "تفضيلات الطعام",
+    "favorites": "المفضلات",
+    "restrictions": "القيود",
+    "hobbies": "الهوايات",
+    "pleaseKnow": "معلومات إضافية",
+    "translating": "جاري الترجمة",
+    "translate": "ترجمة",
+    "edit": "تعديل",
+    "goToChat": "الذهاب للدردشة",
+    "workStatus": {
+      "working": "في العمل",
+      "onBreak": "في استراحة",
+      "notStarted": "لم يبدأ"
+    }
+  },
+  "profile": {
+    "title": "إعدادات الملف الشخصي",
+    "tabs": {
+      "profile": "الملف الشخصي",
+      "settings": "الإعدادات",
+      "registrationInfo": "معلومات التسجيل"
+    },
+    "settings": {
+      "title": "إعدادات التطبيق",
+      "description": "تغيير إعدادات التطبيق الأساسية.",
+      "language": "إعدادات اللغة",
+      "currency": "العملة",
+      "selectPlaceholder": "يرجى الاختيار",
+      "saved": "تم الحفظ",
+      "save": "حفظ"
+    },
+    "profile": {
+      "changeImage": "تغيير الصورة",
+      "uploadTitle": "رفع صورة الملف الشخصي",
+      "uploadDescription": "اختر وارفع صورة ملف شخصي جديدة.",
+      "uploading": "جاري الرفع...",
+      "selectFile": "اختيار ملف",
+      "cacheNotice": "انقر على زر الحفظ في الزاوية السفلية اليمنى لحفظ الأيقونة. قد يستغرق الأمر بعض الوقت للظهور بعد الحفظ. إذا كنت تريد أن تظهر مباشرة بعد الحفظ، يرجى مسح ذاكرة التخزين المؤقت للمتصفح.",
+      "languages": "اللغات",
+      "languagesPlaceholder": "مثال: الإنجليزية، اليابانية، الصينية",
+      "foodPreferences": "تفضيلات الطعام",
+      "favorites": "المفضلات",
+      "favoritesPlaceholder": "مثال: السوشي، الرامن، التمبورا",
+      "restrictions": "القيود",
+      "restrictionsPlaceholder": "مثال: الفول السوداني، البيض، الحليب",
+      "hobbies": "الهوايات",
+      "hobbiesPlaceholder": "مثال: القراءة، السفر، الطبخ",
+      "pleaseKnow": "معلومات إضافية",
+      "pleaseKnowPlaceholder": "مثال: الدين، المعتقدات، الوضع العائلي، مستوى اللغة، إلخ. يرجى إدخال المعلومات التي تريد أن يعرفها الجميع.",
+      "saved": "تم الحفظ",
+      "save": "حفظ"
+    },
+    "registrationInfo": {
+      "title": "معلومات التسجيل",
+      "description": "يتطلب تقديم طلب لتغيير هذه المعلومات.",
+      "name": "الاسم",
+      "nationality": "الجنسية",
+      "email": "البريد الإلكتروني",
+      "residenceStatus": "حالة الإقامة",
+      "expirationDate": "تاريخ انتهاء الصلاحية",
+      "requestChange": "طلب تغيير المعلومات"
+    }
   }
 }

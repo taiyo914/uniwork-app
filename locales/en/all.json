@@ -67,5 +67,97 @@
         "overlappingBreaks": "Break {{index1}} and Break {{index2}} have overlapping times."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "Weekly Work Hours",
+    "last7Days": "Last 7 Days Work Hours",
+    "monthlyWork": "Monthly Work Hours",
+    "monthlyIncome": "Monthly Income",
+    "approved": "Approved",
+    "unapproved": "Unapproved",
+    "offDuty": "Off Duty",
+    "working": "Working",
+    "onBreak": "On Break",
+    "showInJPY": "Show in JPY",
+    "showInForeign": "Show in {{currency}}",
+    "perHour": "/hour",
+    "guest": "Guest",
+    "hourAndMinute": "{{hour}}h {{minute}}m",
+    "minuteOnly": "{{minute}}m"
+  },
+  "chat": {
+    "title": "Chat",
+    "back": "Back",
+    "messagePlaceholder": "Enter message...",
+    "translationFailed": "Translation failed...",
+    "addReaction": "+Add Reaction",
+    "noUsers": "No users",
+    "groupChat": "Group Chat"
+  },
+  "member": {
+    "title": "Members",
+    "languages": "Languages",
+    "foodPreferences": "Food Preferences",
+    "favorites": "Favorites",
+    "restrictions": "Restrictions",
+    "hobbies": "Hobbies",
+    "pleaseKnow": "Please know",
+    "translating": "Translating",
+    "translate": "Translate",
+    "edit": "Edit",
+    "goToChat": "Go to Chat",
+    "workStatus": {
+      "working": "Working",
+      "onBreak": "On Break",
+      "notStarted": "Off Duty"
+    }
+  },
+  "profile": {
+    "title": "Profile Settings",
+    "tabs": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "registrationInfo": "Registration Info"
+    },
+    "settings": {
+      "title": "App Settings",
+      "description": "Change basic app settings.",
+      "language": "Language Settings",
+      "currency": "Currency",
+      "selectPlaceholder": "Please select",
+      "saved": "Saved",
+      "save": "Save"
+    },
+    "profile": {
+      "changeImage": "Change Image",
+      "uploadTitle": "Upload Profile Image",
+      "uploadDescription": "Select and upload a new profile image.",
+      "uploading": "Uploading...",
+      "selectFile": "Select File",
+      "cacheNotice": "Click the save button at the bottom right to save the icon. It may take some time to reflect after saving. If you want to reflect immediately after saving, please clear your browser's cache.",
+      "languages": "Languages",
+      "languagesPlaceholder": "Example: English, Japanese, Chinese",
+      "foodPreferences": "Food Preferences",
+      "favorites": "Favorites",
+      "favoritesPlaceholder": "Example: Sushi, Ramen, Tempura",
+      "restrictions": "Restrictions",
+      "restrictionsPlaceholder": "Example: Peanuts, Eggs, Milk",
+      "hobbies": "Hobbies",
+      "hobbiesPlaceholder": "Example: Reading, Traveling, Cooking",
+      "pleaseKnow": "Please know",
+      "pleaseKnowPlaceholder": "Example: Religion, Belief, Family situation, Language level, etc. Please enter things you want everyone to know.",
+      "saved": "Saved",
+      "save": "Save"
+    },
+    "registrationInfo": {
+      "title": "Registration Information",
+      "description": "Application required to change these information.",
+      "name": "Name",
+      "nationality": "Nationality",
+      "email": "Email",
+      "residenceStatus": "Residence Status",
+      "expirationDate": "Expiration Date",
+      "requestChange": "Request Information Change"
+    }
   }
 }

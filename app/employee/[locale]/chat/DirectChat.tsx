@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { useParams, useRouter } from "next/navigation";
+import { translateText } from '@/utils/translate'; 
+import { useTranslation } from "react-i18next";
 
 interface Message {
   sender_id: string;
@@ -42,6 +44,8 @@ export default function DirectChat() {
   const prevMessageCount = useRef(messages.length);
   const router = useRouter();
   const { locale, userId: chatPartnerId } = useParams();
+  const { t: translate } = useTranslation();
+  const t = (key: string) => translate(`chat.${key}`);
 
   const scrollToBottom = useCallback(() => {
     if (bottomRef.current) {
@@ -237,7 +241,7 @@ export default function DirectChat() {
       <div className="bg-blue-100 shadow-sm pl-2 pr-3 sm:px-4 py-2.5 md:py-3.5 border-b border-blue-200 flex items-center justify-between abusolute top-0 left-0 w-full ">
         <button onClick={() => router.push(`/employee/${locale}/chat`)} className="flex items-center space-x-0.5 text-blue-500 sm:hidden py-1 px-1 rounded-lg hover:bg-blue-200 transition">
           <ArrowLeft className="w-5 h-5" />
-          <span className="text-sm font-semibold ">戻る</span>
+          <span className="text-sm font-semibold ">{t('back')}</span>
         </button>
         <h2 className="text-xl xs:font-semibold font-bold text-blue-700 flex items-center gap-2">{partnerProfile?.english_name}</h2>
       </div>
@@ -263,7 +267,7 @@ export default function DirectChat() {
           <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="flex items-center space-x-2">
             <Input
               type="text"
-              placeholder="メッセージを入力..."
+              placeholder={t('messagePlaceholder')}
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               className="flex-grow focus-visible:ring-1 focus-visible:ring-offset-2"
@@ -298,6 +302,8 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
   const { locale } = useParams();
   const targetLang = Array.isArray(locale) ? locale[0] : locale;
   const isCurrentUserMessage = message.sender_id === currentUserId;
+  const { t: translate } = useTranslation();
+  const t = (key: string) => translate(`chat.${key}`);
 
   const reactionCounts: ReactionCounts = message.reactions.reduce((acc: ReactionCounts, reaction: Reaction) => {
     if (!acc[reaction.reaction_type]) acc[reaction.reaction_type] = 0;
@@ -317,20 +323,15 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
   const handleTranslate = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `/api/translate?text=${encodeURIComponent(
-          message.content
-        )}&targetLang=${targetLang}&sourceLang=`
-      );
-      const data = await response.json();
-      if (response.ok) {
-        setTranslatedText(data.translatedText);
+      const translatedText = await translateText(message.content, targetLang);
+      if (translatedText) {
+        setTranslatedText(translatedText);
       } else {
-        console.error('Translation error:', data.error);
+        setTranslatedText(t('translationFailed'));
       }
     } catch (error) {
-      console.error('Network error:', error);
-      setTranslatedText("翻訳に失敗しました...");
+      console.error('Translation error:', error);
+      setTranslatedText(t('translationFailed'));
     } finally {
       setIsLoading(false);
     }

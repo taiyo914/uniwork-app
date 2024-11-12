@@ -62,10 +62,102 @@
         "enterBreakStart": "กรุณาใส่วันที่และเวลาเริ่มต้นสำหรับพัก {{index}}",
         "enterBreakEnd": "กรุณาใส่วันที่และเวลาสิ้นสุดสำหรับพัก {{index}}",
         "breakEndAfterStart": "เวลาสิ้นสุดของพัก {{index}} ต้องอยู่หลังเวลาเริ่มต้น",
-        "breakWithinWork": "พัก {{index}} ต้องอยู่ภายในเวลาทำงาน",
-        "endNotFuture": "เวลาสิ้นสุดไม่สามารถอยู่ในอนาคต",
-        "overlappingBreaks": "พัก {{index1}} และพัก {{index2}} มีช่วงเวลาทับซ้อนกัน"
+        "breakWithinWork": "พัก {{index}} ต้องอยู่ในช่วงเวลาทำงาน",
+        "endNotFuture": "เวลาสิ้นสุดการทำงานต้องไม่อยู่ในอนาคต",
+        "overlappingBreaks": "พัก {{index1}} และพัก {{index2}} มีเวลาทับซ้อนกัน"
       }
+    }
+  },
+  "dashboard": {
+    "weeklyWork": "ชั่วโมงทำงานรายสัปดาห์",
+    "last7Days": "ชั่วโมงทำงาน 7 วันที่ผ่านมา",
+    "monthlyWork": "ชั่วโมงทำงานรายเดือน",
+    "monthlyIncome": "รายได้รายเดือน",
+    "approved": "อนุมัติแล้ว",
+    "unapproved": "ยังไม่ได้อนุมัติ",
+    "offDuty": "นอกหน้าที่",
+    "working": "ทำงานอยู่",
+    "onBreak": "พักอยู่",
+    "showInJPY": "แสดงเป็นเยน",
+    "showInForeign": "แสดงเป็น {{currency}}",
+    "perHour": "/ชั่วโมง",
+    "guest": "ผู้เยี่ยมชม",
+    "hourAndMinute": "{{hour}}ชั่วโมง {{minute}}นาที",
+    "minuteOnly": "{{minute}}นาที"
+  },
+  "chat": {
+    "title": "แชท",
+    "back": "กลับ",
+    "messagePlaceholder": "พิมพ์ข้อความ...",
+    "translationFailed": "การแปลล้มเหลว...",
+    "addReaction": "+เพิ่มการตอบสนอง",
+    "noUsers": "ไม่มีผู้ใช้",
+    "groupChat": "แชทกลุ่ม"
+  },
+  "member": {
+    "title": "สมาชิก",
+    "languages": "ภาษา",
+    "foodPreferences": "ความชอบด้านอาหาร",
+    "favorites": "รายการโปรด",
+    "restrictions": "ข้อจำกัด",
+    "hobbies": "งานอดิเรก",
+    "pleaseKnow": "อื่นๆ",
+    "translating": "กำลังแปล",
+    "translate": "แปล",
+    "edit": "แก้ไข",
+    "goToChat": "ไปที่แชท",
+    "workStatus": {
+      "working": "ทำงานอยู่",
+      "onBreak": "พักอยู่",
+      "notStarted": "ยังไม่เริ่มงาน"
+    }
+  },
+  "profile": {
+    "title": "การตั้งค่าโปรไฟล์",
+    "tabs": {
+      "profile": "โปรไฟล์",
+      "settings": "การตั้งค่า",
+      "registrationInfo": "ข้อมูลการลงทะเบียน"
+    },
+    "settings": {
+      "title": "การตั้งค่าแอป",
+      "description": "เปลี่ยนการตั้งค่าแอปพื้นฐาน",
+      "language": "การตั้งค่าภาษา",
+      "currency": "สกุลเงิน",
+      "selectPlaceholder": "กรุณาเลือก",
+      "saved": "บันทึกแล้ว",
+      "save": "บันทึก"
+    },
+    "profile": {
+      "changeImage": "เปลี่ยนรูปภาพ",
+      "uploadTitle": "อัปโหลดรูปโปรไฟล์",
+      "uploadDescription": "เลือกและอัปโหลดรูปโปรไฟล์ใหม่",
+      "uploading": "กำลังอัปโหลด...",
+      "selectFile": "เลือกไฟล์",
+      "cacheNotice": "คลิกปุ่มบันทึกที่มุมขวาล่างเพื่อบันทึกไอคอน อาจใช้เวลาสักครู่ในการแสดงผลหลังจากบันทึก หากต้องการให้แสดงผลทันทีหลังจากบันทึก โปรดล้างแคชของเบราว์เซอร์",
+      "languages": "ภาษาที่พูดได้",
+      "languagesPlaceholder": "ตัวอย่าง: อังกฤษ, ญี่ปุ่น, จีน",
+      "foodPreferences": "ความชอบด้านอาหาร",
+      "favorites": "อาหารที่ชอบ",
+      "favoritesPlaceholder": "ตัวอย่าง: ซูชิ, ราเมน, เทมปุระ",
+      "restrictions": "ข้อจำกัดด้านอาหาร",
+      "restrictionsPlaceholder": "ตัวอย่าง: ถั่วลิสง, ไข่, นม",
+      "hobbies": "งานอดิเรก",
+      "hobbiesPlaceholder": "ตัวอย่าง: อ่านหนังสือ, ท่องเที่ยว, ทำอาหาร",
+      "pleaseKnow": "อื่นๆ",
+      "pleaseKnowPlaceholder": "ตัวอย่าง: ศาสนา, ความเชื่อ, สถานะครอบครัว, ระดับภาษา ฯลฯ โปรดใส่สิ่งที่คุณต้องการให้ทุกคนรู้",
+      "saved": "บันทึกแล้ว",
+      "save": "บันทึก"
+    },
+    "registrationInfo": {
+      "title": "ข้อมูลการลงทะเบียน",
+      "description": "ต้องมีการยื่นคำขอเพื่อเปลี่ยนแปลงข้อมูลเหล่านี้",
+      "name": "ชื่อ",
+      "nationality": "สัญชาติ",
+      "email": "อีเมล",
+      "residenceStatus": "สถานะการพำนัก",
+      "expirationDate": "วันหมดอายุ",
+      "requestChange": "ขอเปลี่ยนแปลงข้อมูล"
     }
   }
 }

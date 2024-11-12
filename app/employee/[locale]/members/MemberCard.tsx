@@ -5,6 +5,7 @@ import { Globe, UtensilsCrossed, Info, Heart, MessageCircle, Pencil, Loader2, La
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { translateJson } from "@/utils/translateJson"
+import { useTranslation } from "react-i18next";
 
 interface TeamMember {
   user_id: string
@@ -33,12 +34,6 @@ const getBadgeStyle = (workStatus: string) => {
   if (workStatus === "notStarted") return "border border-gray-300 bg-blue-100 text-gray-400 px-3 py-1 text-xs"
 }
 
-const getBadgeLabel = (workStatus: string) =>{
-  if (workStatus === "working") return "勤務中"
-  if (workStatus === "onBreak") return "休憩中"
-  if (workStatus === "notStarted") return "未出勤"
-}
-
 const getAvatarBorder = (workStatus: string) =>{
   if (workStatus === "working") return "ring-4 ring-green-400"
   if (workStatus === "onBreak") return "ring-4 ring-amber-300"
@@ -59,6 +54,9 @@ const getTextColor = (workStatus: string) =>{
 
 
 export function MemberCard({ member, locale, userId, onChatClick }: MemberCardProps) {
+  const { t: translate } = useTranslation();
+  const t = (key: string) => translate(`member.${key}`);
+  
   const [isTranslating, setIsTranslating] = useState(false);
   const [translatedData, setTranslatedData] = useState<{
     languages: string;
@@ -69,8 +67,11 @@ export function MemberCard({ member, locale, userId, onChatClick }: MemberCardPr
   } | null>(null);
   const [showTranslated, setShowTranslated] = useState(false);
 
+  const getBadgeLabel = (workStatus: string) => {
+    return t(`workStatus.${workStatus}`);
+  }
+
   const handleTranslate = async () => {
-    // 既に翻訳データがある場合は表示を切り替えるだけ
     if (translatedData) {
       setShowTranslated(!showTranslated);
       return;
@@ -124,25 +125,25 @@ export function MemberCard({ member, locale, userId, onChatClick }: MemberCardPr
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
             <Globe className="w-5 h-5 text-blue-600" />
-            <span className="font-semibold text-sm">言語 : </span>
+            <span className="font-semibold text-sm">{t('languages')} : </span>
             <span className={`text-sm ${showTranslated ? 'text-blue-600' : ''}`}>{displayData.languages}</span>
           </div>
           <div className="space-y-2">
             <div className="flex items-center space-x-2">
               <UtensilsCrossed className="w-5 h-5 text-orange-500" />
-              <span className="font-semibold text-sm">食事の好み</span>
+              <span className="font-semibold text-sm">{t('foodPreferences')}</span>
             </div>
-            <p className="text-sm pl-7">好きな食べ物： <span className={`${showTranslated ? 'text-blue-600' : ''}`}>{displayData.favorite_foods}</span></p>
+            <p className="text-sm pl-7">{t('favorites')}: <span className={`${showTranslated ? 'text-blue-600' : ''}`}>{displayData.favorite_foods}</span></p>
             {displayData.dietary_restrictions && (
               <p className="text-sm pl-7 text-gray-600">
-                食べられないもの： <span className={`${showTranslated ? 'text-blue-500' : ''}`}>{displayData.dietary_restrictions}</span>
+                {t('restrictions')}: <span className={`${showTranslated ? 'text-blue-500' : ''}`}>{displayData.dietary_restrictions}</span>
               </p>
             )}
           </div>
           <div className="space-y-2">
             <div className="flex items-center space-x-2">
               <Heart className="w-5 h-5 text-red-500" />
-              <span className="font-semibold text-sm">好きなこと</span>
+              <span className="font-semibold text-sm">{t('hobbies')}</span>
             </div>
             <p className={`text-sm pl-7 ${showTranslated ? 'text-blue-600' : ''}`}>{displayData.hobbies}</p>
           </div>
@@ -150,7 +151,7 @@ export function MemberCard({ member, locale, userId, onChatClick }: MemberCardPr
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Info className="w-5 h-5 text-blue-500" />
-                <span className="font-semibold text-sm">Please know </span>
+                <span className="font-semibold text-sm">{t('pleaseKnow')}</span>
               </div>
               <p className={`text-sm pl-7 ${showTranslated ? 'text-blue-600' : ''}`}>{displayData.shared_info}</p>
             </div>
@@ -170,15 +171,15 @@ export function MemberCard({ member, locale, userId, onChatClick }: MemberCardPr
           onClick={handleTranslate}
           disabled={isTranslating}
         >
-          {isTranslating  ? (
+          {isTranslating ? (
             <>
               <Loader2 className="w-[0.85rem] h-[0.85rem] animate-spin text-blue-600" />
-              翻訳中
+              {t('translating')}
             </>
           ) : (
             <>
               <Languages className={`w-[0.85rem] h-[0.85rem]`} />
-              翻訳
+              {t('translate')}
             </>
           )}
         </Button>
@@ -192,12 +193,12 @@ export function MemberCard({ member, locale, userId, onChatClick }: MemberCardPr
           {userId === member.user_id ? (
             <>
               <Pencil className="w-3.5 h-3.5 mb-0.5 " />
-              編集
+              {t('edit')}
             </>
           ) : (
             <>
               <MessageCircle className="w-[0.85rem] h-[0.85rem] mb-0.5" />
-              チャットへ
+              {t('goToChat')}
             </>
           )}
         </Button>

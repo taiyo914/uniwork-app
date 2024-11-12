@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Beranda",
-    "timelog": "Catat Pekerjaan",
+    "timelog": "Catatan Kerja",
     "chat": "Obrolan",
     "members": "Anggota",
     "profile": "Profil",
@@ -12,8 +12,8 @@
     "attendanceHistory": {
       "workHistory": "Riwayat Kehadiran",
       "approved": "Disetujui",
-      "notApproved": "Tidak Disetujui",
-      "working": "Bekerja",
+      "notApproved": "Belum Disetujui",
+      "working": "Sedang Bekerja",
       "workTime": "Waktu Kerja",
       "actualWorkTime": "Waktu Kerja Aktual",
       "memo": "Catatan",
@@ -21,51 +21,143 @@
       "editBreakMemo": "Edit Catatan Istirahat",
       "save": "Simpan",
       "breakHistory": "Riwayat Istirahat",
-      "enterWorkMemo": "Harap masukkan catatan kerja",
-      "enterBreakMemo": "Harap masukkan catatan istirahat",
+      "enterWorkMemo": "Masukkan catatan kerja",
+      "enterBreakMemo": "Masukkan catatan istirahat",
       "startTime": "Waktu Mulai",
       "endTime": "Waktu Selesai",
       "current": "Waktu Saat Ini",
-      "hourAndMinute": "{{hour}}j {{minute}}m",
-      "minuteOnly": "{{minute}}m"
+      "hourAndMinute": "{{hour}} jam {{minute}} menit",
+      "minuteOnly": "{{minute}} menit"
     },
     "currentTimeButtons": {
       "currentWorkTime": "Waktu Kerja Saat Ini",
-      "working": "Bekerja",
-      "onBreak": "Istirahat",
-      "notStarted": "Tidak Bertugas",
-      "startWork": "Mulai Bekerja",
-      "endWork": "Akhiri Bekerja",
+      "working": "Sedang Bekerja",
+      "onBreak": "Sedang Istirahat",
+      "notStarted": "Belum Mulai",
+      "startWork": "Mulai Kerja",
+      "endWork": "Selesai Kerja",
       "breakTime": "Waktu Istirahat",
       "startBreak": "Mulai Istirahat",
-      "endBreak": "Akhiri Istirahat"
+      "endBreak": "Selesai Istirahat"
     },
     "scheduledTimeDialog": {
-      "recordPastWorkTime": "Catat Waktu Kerja Lampau",
+      "recordPastWorkTime": "Catat Waktu Kerja Sebelumnya",
       "recordWorkTime": "Catat Waktu Kerja",
       "workStart": "Waktu Mulai Kerja",
       "workEnd": "Waktu Selesai Kerja",
       "workMemo": "Catatan Kerja",
       "enterWorkMemo": "Masukkan catatan tentang pekerjaan Anda",
       "breakTime": "Waktu Istirahat",
-      "noBreakRegistered": "Tidak ada waktu istirahat yang terdaftar",
-      "breakStart": "Waktu Mulai Istirahat {{index}}",
-      "breakEnd": "Waktu Selesai Istirahat {{index}}",
+      "noBreakRegistered": "Belum ada waktu istirahat terdaftar",
+      "breakStart": "Mulai Istirahat {{index}}",
+      "breakEnd": "Selesai Istirahat {{index}}",
       "breakMemo": "Catatan Istirahat {{index}}",
-      "enterBreakMemo": "Masukkan catatan untuk Istirahat {{index}}",
-      "addBreak": "Tambahkan Istirahat",
+      "enterBreakMemo": "Masukkan catatan untuk istirahat {{index}}",
+      "addBreak": "Tambah Istirahat",
       "saveRecord": "Simpan Catatan",
       "validation": {
-        "enterWorkStart": "Harap masukkan tanggal dan waktu mulai.",
-        "enterWorkEnd": "Harap masukkan tanggal dan waktu selesai.",
+        "enterWorkStart": "Masukkan tanggal dan waktu mulai.",
+        "enterWorkEnd": "Masukkan tanggal dan waktu selesai.",
         "endAfterStart": "Waktu selesai harus setelah waktu mulai.",
-        "enterBreakStart": "Harap masukkan tanggal dan waktu mulai untuk Istirahat {{index}}.",
-        "enterBreakEnd": "Harap masukkan tanggal dan waktu selesai untuk Istirahat {{index}}.",
-        "breakEndAfterStart": "Waktu selesai Istirahat {{index}} harus setelah waktu mulai.",
-        "breakWithinWork": "Istirahat {{index}} harus berada dalam jam kerja.",
-        "endNotFuture": "Waktu selesai kerja tidak boleh di masa depan.",
-        "overlappingBreaks": "Waktu Istirahat {{index1}} dan {{index2}} bertindih."
+        "enterBreakStart": "Masukkan tanggal dan waktu mulai untuk istirahat {{index}}.",
+        "enterBreakEnd": "Masukkan tanggal dan waktu selesai untuk istirahat {{index}}.",
+        "breakEndAfterStart": "Waktu selesai istirahat {{index}} harus setelah waktu mulai.",
+        "breakWithinWork": "Istirahat {{index}} harus dalam jam kerja.",
+        "endNotFuture": "Waktu selesai tidak boleh di masa depan.",
+        "overlappingBreaks": "Istirahat {{index1}} dan istirahat {{index2}} memiliki waktu yang tumpang tindih."
       }
+    }
+  },
+  "dashboard": {
+    "weeklyWork": "Jam Kerja Mingguan",
+    "last7Days": "Jam Kerja 7 Hari Terakhir",
+    "monthlyWork": "Jam Kerja Bulanan",
+    "monthlyIncome": "Pendapatan Bulanan",
+    "approved": "Disetujui",
+    "unapproved": "Belum Disetujui",
+    "offDuty": "Di Luar Tugas",
+    "working": "Sedang Bekerja",
+    "onBreak": "Sedang Istirahat",
+    "showInJPY": "Tampilkan dalam Yen",
+    "showInForeign": "Tampilkan dalam {{currency}}",
+    "perHour": "/jam",
+    "guest": "Tamu",
+    "hourAndMinute": "{{hour}} jam {{minute}} menit",
+    "minuteOnly": "{{minute}} menit"
+  },
+  "chat": {
+    "title": "Obrolan",
+    "back": "Kembali",
+    "messagePlaceholder": "Ketik pesan...",
+    "translationFailed": "Terjemahan gagal...",
+    "addReaction": "+Tambah Reaksi",
+    "noUsers": "Tidak ada pengguna",
+    "groupChat": "Obrolan Grup"
+  },
+  "member": {
+    "title": "Anggota",
+    "languages": "Bahasa",
+    "foodPreferences": "Preferensi Makanan",
+    "favorites": "Favorit",
+    "restrictions": "Pembatasan",
+    "hobbies": "Hobi",
+    "pleaseKnow": "Lainnya",
+    "translating": "Menerjemahkan",
+    "translate": "Terjemahkan",
+    "edit": "Edit",
+    "goToChat": "Ke Obrolan",
+    "workStatus": {
+      "working": "Sedang Bekerja",
+      "onBreak": "Sedang Istirahat",
+      "notStarted": "Belum Mulai"
+    }
+  },
+  "profile": {
+    "title": "Pengaturan Profil",
+    "tabs": {
+      "profile": "Profil",
+      "settings": "Pengaturan",
+      "registrationInfo": "Informasi Pendaftaran"
+    },
+    "settings": {
+      "title": "Pengaturan Aplikasi",
+      "description": "Ubah pengaturan dasar aplikasi",
+      "language": "Pengaturan Bahasa",
+      "currency": "Mata Uang",
+      "selectPlaceholder": "Silakan pilih",
+      "saved": "Tersimpan",
+      "save": "Simpan"
+    },
+    "profile": {
+      "changeImage": "Ubah Gambar",
+      "uploadTitle": "Unggah Gambar Profil",
+      "uploadDescription": "Pilih dan unggah gambar profil baru",
+      "uploading": "Mengunggah...",
+      "selectFile": "Pilih File",
+      "cacheNotice": "Klik tombol simpan di pojok kanan bawah untuk menyimpan ikon. Mungkin perlu waktu untuk menampilkan setelah disimpan. Jika ingin menampilkan segera setelah disimpan, harap hapus cache browser Anda.",
+      "languages": "Bahasa yang Dikuasai",
+      "languagesPlaceholder": "Contoh: Bahasa Inggris, Bahasa Jepang, Bahasa Mandarin",
+      "foodPreferences": "Preferensi Makanan",
+      "favorites": "Makanan Favorit",
+      "favoritesPlaceholder": "Contoh: Sushi, Ramen, Tempura",
+      "restrictions": "Pembatasan Makanan",
+      "restrictionsPlaceholder": "Contoh: Kacang, Telur, Susu",
+      "hobbies": "Hobi",
+      "hobbiesPlaceholder": "Contoh: Membaca, Traveling, Memasak",
+      "pleaseKnow": "Lainnya",
+      "pleaseKnowPlaceholder": "Contoh: Agama, Kepercayaan, Status Keluarga, Level Bahasa, dll. Silakan masukkan hal-hal yang ingin Anda sampaikan kepada semua orang.",
+      "saved": "Tersimpan",
+      "save": "Simpan"
+    },
+    "registrationInfo": {
+      "title": "Informasi Pendaftaran",
+      "description": "Diperlukan aplikasi untuk mengubah informasi ini.",
+      "name": "Nama",
+      "nationality": "Kewarganegaraan",
+      "email": "Email",
+      "residenceStatus": "Status Tinggal",
+      "expirationDate": "Tanggal Kadaluarsa",
+      "requestChange": "Ajukan Perubahan Informasi"
     }
   }
 }

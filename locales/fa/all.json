@@ -67,5 +67,97 @@
         "overlappingBreaks": "استراحت‌های {{index1}} و {{index2}} دارای زمان‌های هم‌پوشانی هستند."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "ساعات کار هفتگی",
+    "last7Days": "ساعات کار ۷ روز گذشته",
+    "monthlyWork": "ساعات کار ماهانه",
+    "monthlyIncome": "درآمد ماهانه",
+    "approved": "تایید شده",
+    "unapproved": "تایید نشده",
+    "offDuty": "خارج از کار",
+    "working": "در حال کار",
+    "onBreak": "در حال استراحت",
+    "showInJPY": "نمایش به ین",
+    "showInForeign": "نمایش به {{currency}}",
+    "perHour": "/ساعت",
+    "guest": "مهمان",
+    "hourAndMinute": "{{hour}}ساعت {{minute}}دقیقه",
+    "minuteOnly": "{{minute}}دقیقه"
+  },
+  "chat": {
+    "title": "گفتگو",
+    "back": "بازگشت",
+    "messagePlaceholder": "پیام خود را وارد کنید...",
+    "translationFailed": "ترجمه ناموفق بود...",
+    "addReaction": "+افزودن واکنش",
+    "noUsers": "کاربری وجود ندارد",
+    "groupChat": "گفتگوی گروهی"
+  },
+  "member": {
+    "title": "اعضا",
+    "languages": "زبان‌ها",
+    "foodPreferences": "ترجیحات غذایی",
+    "favorites": "علاقه‌مندی‌ها",
+    "restrictions": "محدودیت‌ها",
+    "hobbies": "سرگرمی‌ها",
+    "pleaseKnow": "اطلاعات اضافی",
+    "translating": "در حال ترجمه",
+    "translate": "ترجمه",
+    "edit": "ویرایش",
+    "goToChat": "رفتن به گفتگو",
+    "workStatus": {
+      "working": "در حال کار",
+      "onBreak": "در حال استراحت",
+      "notStarted": "شروع نشده"
+    }
+  },
+  "profile": {
+    "title": "تنظیمات نمایه",
+    "tabs": {
+      "profile": "نمایه",
+      "settings": "تنظیمات",
+      "registrationInfo": "اطلاعات ثبت‌نام"
+    },
+    "settings": {
+      "title": "تنظیمات برنامه",
+      "description": "تغییر تنظیمات اصلی برنامه.",
+      "language": "تنظیمات زبان",
+      "currency": "واحد پول",
+      "selectPlaceholder": "لطفا انتخاب کنید",
+      "saved": "ذخیره شد",
+      "save": "ذخیره"
+    },
+    "profile": {
+      "changeImage": "تغییر تصویر",
+      "uploadTitle": "بارگذاری تصویر نمایه",
+      "uploadDescription": "تصویر نمایه جدید را انتخاب و بارگذاری کنید.",
+      "uploading": "در حال بارگذاری...",
+      "selectFile": "انتخاب فایل",
+      "cacheNotice": "برای ذخیره آیکون روی دکمه ذخیره در پایین سمت راست کلیک کنید. ممکن است پس از ذخیره کمی طول بکشد تا تغییرات اعمال شود. اگر می‌خواهید تغییرات بلافاصله پس از ذخیره اعمال شود، لطفا حافظه پنهان مرورگر خود را پاک کنید.",
+      "languages": "زبان‌ها",
+      "languagesPlaceholder": "مثال: انگلیسی، ژاپنی، چینی",
+      "foodPreferences": "ترجیحات غذایی",
+      "favorites": "علاقه‌مندی‌ها",
+      "favoritesPlaceholder": "مثال: سوشی، رامن، تمپورا",
+      "restrictions": "محدودیت‌ها",
+      "restrictionsPlaceholder": "مثال: بادام زمینی، تخم مرغ، شیر",
+      "hobbies": "سرگرمی‌ها",
+      "hobbiesPlaceholder": "مثال: مطالعه، مسافرت، آشپزی",
+      "pleaseKnow": "اطلاعات اضافی",
+      "pleaseKnowPlaceholder": "مثال: مذهب، اعتقادات، وضعیت خانوادگی، سطح زبان و غیره. لطفا اطلاعاتی را که می‌خواهید همه بدانند وارد کنید.",
+      "saved": "ذخیره شد",
+      "save": "ذخیره"
+    },
+    "registrationInfo": {
+      "title": "اطلاعات ثبت‌نام",
+      "description": "برای تغییر این اطلاعات نیاز به درخواست است.",
+      "name": "نام",
+      "nationality": "ملیت",
+      "email": "ایمیل",
+      "residenceStatus": "وضعیت اقامت",
+      "expirationDate": "تاریخ انقضا",
+      "requestChange": "درخواست تغییر اطلاعات"
+    }
   }
 }

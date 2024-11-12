@@ -8,7 +8,7 @@
     "logout": "ログアウト"
   },
   "timelog":{
-    "headerTitle": "勤務登録画面",
+    "headerTitle": "勤務登録",
     "attendanceHistory":{
       "workHistory": "打刻履歴",
       "approved": "承認済み",
@@ -66,6 +66,98 @@
         "endNotFuture": "勤務終了日時は現在日時より後にすることはできません。",
         "overlappingBreaks": "休憩{{index1}}と休憩{{index2}}の時間が重複しています。"
       }
+    }
+  },
+  "dashboard": {
+    "weeklyWork": "今週の勤務時間",
+    "last7Days": "直近7日間の勤務時間",
+    "monthlyWork": "今月の勤務時間",
+    "monthlyIncome": "今月の給与",
+    "approved": "承認済み",
+    "unapproved": "未承認",
+    "offDuty": "勤務外",
+    "working": "勤務中",
+    "onBreak": "休憩中",
+    "showInJPY": "円で表示",
+    "showInForeign": "{{currency}}で表示",
+    "perHour": "/時",
+    "guest": "ゲスト",
+    "hourAndMinute": "{{hour}}時間{{minute}}分",
+    "minuteOnly": "{{minute}}分"
+  },
+  "chat": {
+    "title": "チャット",
+    "back": "戻る",
+    "messagePlaceholder": "メッセージを入力...",
+    "translationFailed": "翻訳に失敗しました...",
+    "addReaction": "+リアクション",
+    "noUsers": "ユーザーなし",
+    "groupChat": "全体チャット"
+  },
+  "member": {
+    "title": "メンバー",
+    "languages": "言語",
+    "foodPreferences": "食事の好み",
+    "favorites": "好きなもの",
+    "restrictions": "食べられないもの",
+    "hobbies": "好きなこと",
+    "pleaseKnow": "その他",
+    "translating": "翻訳中",
+    "translate": "翻訳",
+    "edit": "編集",
+    "goToChat": "チャットへ",
+    "workStatus": {
+      "working": "勤務中",
+      "onBreak": "休憩中",
+      "notStarted": "未出勤"
+    }
+  },
+  "profile": {
+    "title": "プロフィール設定",
+    "tabs": {
+      "profile": "プロフィール",
+      "settings": "アプリ設定",
+      "registrationInfo": "登録情報"
+    },
+    "settings": {
+      "title": "アプリ設定",
+      "description": "アプリの基本設定を変更します。",
+      "language": "言語設定",
+      "currency": "通貨",
+      "selectPlaceholder": "選択してください",
+      "saved": "保存済み",
+      "save": "保存"
+    },
+    "profile": {
+      "changeImage": "画像を変更",
+      "uploadTitle": "プロフィール画像のアップロード",
+      "uploadDescription": "新しいプロフィール画像を選択してアップロードしてください。",
+      "uploading": "アップロード中...",
+      "selectFile": "ファイルを選択",
+      "cacheNotice": "アイコンを保存するには右下の保存ボタンを押してください。保存後も反映にはしばらく時間がかかることがあります。保存後すぐに反映させたい場合はブラウザのキャッシュを削除してください。",
+      "languages": "話せる言語",
+      "languagesPlaceholder": "例: 英語、日本語、中国語",
+      "foodPreferences": "食事の好み",
+      "favorites": "好きなもの",
+      "favoritesPlaceholder": "例: 寿司、ラーメン、天ぷら",
+      "restrictions": "食べられないもの",
+      "restrictionsPlaceholder": "例: ピーナッツ、卵、牛乳",
+      "hobbies": "好きなこと・趣味",
+      "hobbiesPlaceholder": "例: 読書、旅行、料理",
+      "pleaseKnow": "その他",
+      "pleaseKnowPlaceholder": "例: 宗教、信条、家族状況、言語レベルなど、みんなに知っておいてほしいことを入力してください。",
+      "saved": "保存済み",
+      "save": "保存"
+    },
+    "registrationInfo": {
+      "title": "登録情報",
+      "description": "これらの情報を変更するには申請が必要です。",
+      "name": "名前",
+      "nationality": "国籍",
+      "email": "メールアドレス",
+      "residenceStatus": "在留資格",
+      "expirationDate": "在留期限",
+      "requestChange": "情報変更を申請する"
     }
   }
 }
