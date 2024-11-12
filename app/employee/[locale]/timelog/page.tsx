@@ -25,10 +25,10 @@ export default function Timelog() {
   }, [loadInitialData]);
 
   return (
-    <div className="px-4 sm:px-5 md:px-6 xl:px-7 bg-gray-50/50" >
+    <div className="px-4 sm:px-5 md:px-6 xl:px-7 " >
       <div className="max-w-[1350px] mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-bold py-4 sm:py-5 lg:py-5 text-blue-700  sm:max-w-[650px] sm:mx-auto  lg:max-w-full lg:text-left -mb-0.5">
-          <Clock className="sm:h-7 sm:w-7 h-6 w-6 mb-0.5 inline-block mr-1 mb-1.5"/>{t("timelog.headerTitle")}
+        <h1 className="text-xl sm:text-2xl font-bold py-4 sm:py-5 lg:py-5  sm:max-w-[650px] sm:mx-auto  lg:max-w-full lg:text-left -mb-0.5">
+          <Clock className="sm:h-6 sm:w-6 h-[1.35rem] w-[1.35rem] inline-block mr-1 mb-1 sm:mb-1.5"/>{t("timelog.headerTitle")}
         </h1>
         <div className=" mx-auto w-full">
           {loading

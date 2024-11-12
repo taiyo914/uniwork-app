@@ -300,7 +300,7 @@ export default function DashboardStats() {
 
         <div className="flex items-center gap-x-2 gap-y-1 flex-wrap ml-1">
           <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-x-1">
-            <User className="h-6 w-6" />{profile?.english_name || t('guest')}
+            {profile?.english_name || t('guest')}
           </h1>
           <Badge 
             className={`${workStatusMap[profile?.work_status || 'notStarted'].color} 
