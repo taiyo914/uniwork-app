@@ -104,12 +104,12 @@ export default function EmployeeList() {
   return (
     <>
       <div className="p-4 mx-auto">
-        <header className="bg-gradient-to-b from-blue-600 to-blue-700 text-white p-5 rounded-lg shadow-lg mb-6 flex justify-between items-center">
+        <header className="flex justify-between items-center">
           <div>
-            <p className="text-blue-100 mb-0.5"><Earth className="inline h-4 w-4 mb-1 mr-0.5"/>Uniwork</p>
-            <h1 className="text-3xl font-bold">管理者画面</h1>
+            <h1 className="text-2xl font-bold text-black">管理者画面</h1>
           </div>
-          <Button onClick={handleLogout} className="bg-opacity border-white border text-white hover:bg-blue-500">
+
+          <Button onClick={handleLogout} className="hover:bg-gray-100">
             <LogOut className="-mr-0.5"/>ログアウト
           </Button>
         </header>
