@@ -82,7 +82,7 @@ export default function MemberList({ teamMembers: initialTeamMembers }: MemberLi
   }
 
   return (
-    <div className="mx-auto px-4 md:px-6 bg-gray-50/50">
+    <div className="mx-auto px-4 md:px-6 ">
       <div className="h-4 sm:h-6"></div>
       <h1 className="text-2xl sm:text-3xl font-bold text-blue-600">
         <Users className="h-7 w-7 inline-block mr-2 mb-1 ml-1 " />メンバー
