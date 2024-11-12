@@ -67,5 +67,22 @@
         "overlappingBreaks": "休憩{{index1}}と休憩{{index2}}の時間が重複しています。"
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "今週の勤務時間",
+    "last7Days": "直近7日間の勤務時間",
+    "monthlyWork": "今月の勤務時間",
+    "monthlyIncome": "今月の給与",
+    "approved": "承認済み",
+    "unapproved": "未承認",
+    "offDuty": "勤務外",
+    "working": "勤務中",
+    "onBreak": "休憩中",
+    "showInJPY": "円で表示",
+    "showInForeign": "{{currency}}で表示",
+    "perHour": "/時",
+    "guest": "ゲスト",
+    "hourAndMinute": "{{hour}}時間{{minute}}分",
+    "minuteOnly": "{{minute}}分"
   }
 }

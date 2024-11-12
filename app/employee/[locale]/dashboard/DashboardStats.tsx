@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDistanceToNow, format, subDays } from "date-fns";
-import { ja } from "date-fns/locale";
 import { supabase } from "@/utils/supabase/client";
 import { useUser } from "@/hooks/useUser";
 import type { Profile } from "@/types/profile";
@@ -12,20 +11,12 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import Notifications from "./Notifications";
 import { fetchExchangeRate } from "@/utils/fetchExchangeRate";
+import { useTranslation } from "react-i18next";
+import { useParams } from "next/navigation";
+import { ja, enUS as en, ar, de, es, faIR as fa, fr, hi, id, it, ko, ms, pt, ru, th, tr, uk, vi, zhCN as zh } from "date-fns/locale";
 
-const workStatusMap = {
-  notStarted: { label: "勤務外", icon: StopCircle, color: "bg-blue-300 text-white" },
-  working: { label: "勤務中", icon: PlayCircle, color: "bg-green-200 text-green-800" },
-  onBreak: { label: "休憩中", icon: PauseCircle, color: "bg-yellow-200 text-yellow-800" },
-};
+const supportedLocales = { ja, en, ar, de, es, fa, fr, hi, id, it, ko, ms, pt, ru, th, tr, uk, vi, zh};
 
-
-// 分を「○○時間○○分」形式に変換する関数
-const formatMinutesToHoursAndMinutes = (totalMinutes: number) => {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = Math.round(totalMinutes % 60);
-  return `${hours}時間${minutes}分`;
-};
 
 const calculateDateRanges = () => {
   const now = new Date();
@@ -63,16 +54,6 @@ const calculateDateRanges = () => {
       end: endOfMonth
     }
   };
-};
-
-// date-fnsを使用した日付フォーマット関数
-const formatDateWithWeekday = (date: Date) => {
-  return format(date, 'M/d (E)', { locale: ja });
-};
-
-// 月の表示用フォーマット関数を追加
-const formatMonthDisplay = (date: Date) => {
-  return format(date, 'M月', { locale: ja });
 };
 
 // 通貨変換用のヘルパー関数を追加
@@ -139,6 +120,30 @@ export default function DashboardStats() {
     income: { total: 0, approved: 0, unapproved: 0, hourlyWage: 0, currency: 'JPY' },
   });
   const [isLoadingRate, setIsLoadingRate] = useState(false);
+  const { locale } = useParams();
+  const { t: translate } = useTranslation();
+  const t = (key: string, params?: Record<string, any>) => translate(`dashboard.${key}`, params);
+
+  const workStatusMap = {
+    notStarted: { label: t('offDuty'), icon: StopCircle, color: "bg-blue-300 text-white" },
+    working: { label: t('working'), icon: PlayCircle, color: "bg-green-200 text-green-800" },
+    onBreak: { label: t('onBreak'), icon: PauseCircle, color: "bg-yellow-200 text-yellow-800" },
+  };
+
+  const formatDateWithWeekday = (date: Date) => {
+    return format(date, 'M/d (E)',  { locale: supportedLocales[locale as keyof typeof supportedLocales] || en });
+  };
+
+  // 分を「○○時間○○分」形式に変換する関数
+  const formatMinutesToHoursAndMinutes = (totalMinutes: number) => {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = Math.round(totalMinutes % 60);
+     if (hours) {
+      return t("hourAndMinute", { hour: hours, minute: minutes.toString().padStart(1, '0') });
+    } else {
+      return t("minuteOnly", { minute: minutes.toString().padStart(1, '0') });
+    }
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -295,7 +300,7 @@ export default function DashboardStats() {
 
         <div className="flex items-center gap-x-2 gap-y-1 flex-wrap ml-1">
           <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-x-1">
-            <User className="h-6 w-6" />{profile?.english_name || 'ゲスト'}
+            <User className="h-6 w-6" />{profile?.english_name || t('guest')}
           </h1>
           <Badge 
             className={`${workStatusMap[profile?.work_status || 'notStarted'].color} 
@@ -318,7 +323,7 @@ export default function DashboardStats() {
             <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2">
               <div className="flex items-center space-x-1">
                 <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <CardTitle className="text-base sm:text-lg font-medium">今週の勤務時間</CardTitle>
+                <CardTitle className="text-base sm:text-lg font-medium">{t('weeklyWork')}</CardTitle>
               </div>
               <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 text-right whitespace-nowrap sm:w-full lg:w-auto">
                 {formatMinutesToHoursAndMinutes(stats.weekly.total)}
@@ -333,14 +338,14 @@ export default function DashboardStats() {
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <CheckCircle className="w-4 h-4 text-green-500" />
-                      <span>承認済み</span>
+                      <span>{t('approved')}</span>
                     </span>
                     <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.weekly.approved)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <Hourglass className="w-4 h-4 text-blue-500" />
-                      <span>未承認</span>
+                      <span>{t('unapproved')}</span>
                     </span>
                     <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.weekly.unapproved)}</span>
                   </div>
@@ -354,7 +359,7 @@ export default function DashboardStats() {
             <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2">
               <div className="flex items-center space-x-1">
                 <Calendar className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                <CardTitle className="text-base sm:text-lg font-medium">直近7日間の勤務時間</CardTitle>
+                <CardTitle className="text-base sm:text-lg font-medium">{t('last7Days')}</CardTitle>
               </div>
               <div className="text-2xl sm:text-3xl font-bold text-purple-600 dark:text-purple-400 text-right whitespace-nowrap sm:w-full lg:w-auto">
                 {formatMinutesToHoursAndMinutes(stats.lastSevenDays.total)}
@@ -369,14 +374,14 @@ export default function DashboardStats() {
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <CheckCircle className="w-4 h-4 text-green-500" />
-                      <span>承認済み</span>
+                      <span>{t('approved')}</span>
                     </span>
                     <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.lastSevenDays.approved)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <Hourglass className="w-4 h-4 text-blue-500" />
-                      <span>未承認</span>
+                      <span>{t('unapproved')}</span>
                     </span>
                     <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.lastSevenDays.unapproved)}</span>
                   </div>
@@ -392,7 +397,7 @@ export default function DashboardStats() {
             <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2">
               <div className="flex items-center space-x-1">
                 <CalendarDays className="w-5 h-5 text-green-600 dark:text-green-400" />
-                <CardTitle className="text-base sm:text-lg font-medium">今月の勤務時間</CardTitle>
+                <CardTitle className="text-base sm:text-lg font-medium">{t('monthlyWork')}</CardTitle>
               </div>
               <div className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400 text-right whitespace-nowrap sm:w-full lg:w-auto">
                 {formatMinutesToHoursAndMinutes(stats.monthly.total)}
@@ -407,14 +412,14 @@ export default function DashboardStats() {
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <CheckCircle className="w-4 h-4 text-green-500" />
-                      <span>承認済み</span>
+                      <span>{t('approved')}</span>
                     </span>
                     <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.monthly.approved)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <Hourglass className="w-4 h-4 text-blue-500" />
-                      <span>未承認</span>
+                      <span>{t('unapproved')}</span>
                     </span>
                     <span className="font-semibold">{formatMinutesToHoursAndMinutes(stats.monthly.unapproved)}</span>
                   </div>
@@ -427,7 +432,7 @@ export default function DashboardStats() {
             <CardHeader className="flex flex-row items-baseline sm:flex-col sm:items lg:flex-row lg:items-center justify-between pb-2 md:pb-1 px-4 sm:px-5 pt-4 sm:pt-5 gap-x-2 relative">
               <div className="flex items-center space-x-1">
                 <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                <CardTitle className="text-base sm:text-lg font-medium">今月の給与</CardTitle>
+                <CardTitle className="text-base sm:text-lg font-medium">{t('monthlyIncome')}</CardTitle>
               </div>
               <div className="text-2xl sm:text-3xl font-bold text-amber-600 dark:text-amber-400 text-right whitespace-nowrap sm:w-full lg:w-auto flex items-center ">
                 {showJPY ? (
@@ -460,7 +465,7 @@ export default function DashboardStats() {
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>{stats.income.currency}で表示</p>
+                            <p>{t('showInForeign', { currency: stats.income.currency })}</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -483,7 +488,7 @@ export default function DashboardStats() {
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>円で表示</p>
+                            <p>{t('showInJPY')}</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -496,16 +501,16 @@ export default function DashboardStats() {
               <div className="space-y-4">
                 <div className="text-sm text-muted-foreground">
                   {formatMinutesToHoursAndMinutes(stats.monthly.total)} × {showJPY ? (
-                    `¥${stats.income.hourlyWage.toLocaleString()}/時`
+                    `¥${stats.income.hourlyWage.toLocaleString()}${t('perHour')}`
                   ) : (
-                    `${stats.income.currency} ${convertCurrency(stats.income.hourlyWage, exchangeRate).toLocaleString()}/時`
+                    `${stats.income.currency} ${convertCurrency(stats.income.hourlyWage, exchangeRate).toLocaleString()}${t('perHour')}`
                   )}
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <CheckCircle className="w-4 h-4 text-green-500" />
-                      <span>承認済み</span>
+                      <span>{t('approved')}</span>
                     </span>
                     <span className="font-semibold">
                       {showJPY ? (
@@ -518,7 +523,7 @@ export default function DashboardStats() {
                   <div className="flex justify-between">
                     <span className="flex items-center space-x-1">
                       <Hourglass className="w-4 h-4 text-blue-500" />
-                      <span>未承認</span>
+                      <span>{t('unapproved')}</span>
                     </span>
                     <span className="font-semibold">
                       {showJPY ? (

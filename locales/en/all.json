@@ -67,5 +67,22 @@
         "overlappingBreaks": "Break {{index1}} and Break {{index2}} have overlapping times."
       }
     }
+  },
+  "dashboard": {
+    "weeklyWork": "Weekly Work Hours",
+    "last7Days": "Last 7 Days Work Hours",
+    "monthlyWork": "Monthly Work Hours",
+    "monthlyIncome": "Monthly Income",
+    "approved": "Approved",
+    "unapproved": "Unapproved",
+    "offDuty": "Off Duty",
+    "working": "Working",
+    "onBreak": "On Break",
+    "showInJPY": "Show in JPY",
+    "showInForeign": "Show in {{currency}}",
+    "perHour": "/hour",
+    "guest": "Guest",
+    "hourAndMinute": "{{hour}}h {{minute}}m",
+    "minuteOnly": "{{minute}}m"
   }
 }
