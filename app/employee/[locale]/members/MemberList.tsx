@@ -35,6 +35,36 @@ export default function MemberList({ teamMembers: initialTeamMembers }: MemberLi
   const { user } = useUser();
   const { t } = useTranslation();
 
+  useEffect(() => {
+    const fetchMembers = async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select(`
+          user_id,
+          english_name,
+          nationality,
+          languages,
+          shared_info,
+          favorite_foods,
+          dietary_restrictions,
+          hobbies,
+          image_url,
+          work_status
+        `)
+        .order('created_at', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching profiles:', error);
+        return;
+      }
+
+      if (data) {
+        setTeamMembers(data);
+      }
+    };
+
+    fetchMembers();
+  }, []);
 
   useEffect(() => {
     const channel = supabase
