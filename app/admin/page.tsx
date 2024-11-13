@@ -128,14 +128,14 @@ export default function EmployeeList() {
               従業員登録
             </Button>
           </CardHeader>
-          <CardContent className="overflow-x-auto p-0">
+          <CardContent className="p-0">
             {loading ? (
               <div className="flex justify-center items-center py-6">
                 <Loader className="animate-spin mr-2" />
                 <span>Loading...</span>
               </div>
             ) : (
-              <Table className="w-full min-w-[850px]">
+              <Table className="">
                 <TableHeader>
                   <TableRow className="bg-gray-100">
                     {/* <TableHead className='w-8'></TableHead> */}
