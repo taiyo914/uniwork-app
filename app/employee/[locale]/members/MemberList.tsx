@@ -36,34 +36,30 @@ export default function MemberList({ teamMembers: initialTeamMembers }: MemberLi
   const { t } = useTranslation();
 
   useEffect(() => {
-    const fetchMembers = async () => {
+    const fetchWorkStatus = async () => {
       const { data, error } = await supabase
         .from('profiles')
-        .select(`
-          user_id,
-          english_name,
-          nationality,
-          languages,
-          shared_info,
-          favorite_foods,
-          dietary_restrictions,
-          hobbies,
-          image_url,
-          work_status
-        `)
+        .select('user_id, work_status')
         .order('created_at', { ascending: true });
 
       if (error) {
-        console.error('Error fetching profiles:', error);
+        console.error('Error fetching work status:', error);
         return;
       }
 
       if (data) {
-        setTeamMembers(data);
+        setTeamMembers(prevMembers => 
+          prevMembers.map(member => {
+            const updatedStatus = data.find(d => d.user_id === member.user_id);
+            return updatedStatus 
+              ? { ...member, work_status: updatedStatus.work_status }
+              : member;
+          })
+        );
       }
     };
 
-    fetchMembers();
+    fetchWorkStatus();
   }, []);
 
   useEffect(() => {
