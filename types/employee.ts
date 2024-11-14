@@ -28,18 +28,14 @@ export interface EmployeeStatistics {
   monthlySalary: { approved: number; unapproved: number }
   recentWeekHours: number
 }
-
 export interface Employee {
-  name: string;
-  id: string;
-  avatar: string;
-  department: string;
-  position: string;
-  email: string;
-  phone: string;
-  joinDate: string;
-  nationality: string;
-  visaStatus: string;
-  languages: string[];
-  emergencyContact: string;
+  user_id: string
+  emp_id: string
+  image_url: string
+  english_name: string
+  japanese_name: string
+  nationality: string
+  email: string
+  residence_status: string
+  expiration_date: string
 }

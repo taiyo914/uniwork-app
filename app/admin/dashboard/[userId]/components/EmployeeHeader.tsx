@@ -18,12 +18,12 @@ export const EmployeeHeader: React.FC<EmployeeHeaderProps> = ({
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-4">
         <Avatar className="h-12 w-12">
-          <AvatarImage src={employee.avatar} alt={employee.name} />
-          <AvatarFallback>{employee.name[0]}</AvatarFallback>
+          <AvatarImage src={employee.image_url} alt={employee.english_name} />
+          <AvatarFallback>{employee.english_name[0]}</AvatarFallback>
         </Avatar>
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">{employee.name}</h2>
-          <p className="text-sm text-gray-700">ID: {employee.id} </p>
+          <h2 className="text-2xl font-bold text-gray-900">{employee.english_name}</h2>
+          <p className="text-sm text-gray-700">ID: {employee.user_id} </p>
         </div>
       </div>
 

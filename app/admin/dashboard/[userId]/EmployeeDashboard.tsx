@@ -14,18 +14,15 @@ export default function EmployeeDashboardSample() {
   const [showChat, setShowChat] = useState(false)
 
   const employee: Employee = {
-    name: "田中 太郎",
-    id: "EMP001",
-    avatar: "/placeholder.svg?height=100&width=100",
-    department: "営業部",
-    position: "主任",
+    user_id: "EMP001",
+    image_url: "/placeholder.svg?height=100&width=100",
+    english_name: "Tanaka Taro",
+    japanese_name: "田中 太郎",
+    emp_id: "EMP001",
     email: "tanaka.taro@example.com",
-    phone: "090-1234-5678",
-    joinDate: "2020年4月1日",
-    nationality: "日本",
-    visaStatus: "該当なし",
-    languages: ["日本語", "英語"],
-    emergencyContact: "田中 花子 (妻) - 080-9876-5432"
+    nationality: "Japan",
+    residence_status: "該当なし",
+    expiration_date: "2024年12月31日"
   }
 
   const employeeStats: EmployeeStatistics = {
