@@ -24,8 +24,9 @@ export type Notification = {
 export interface EmployeeStatistics {
   weeklyHours: { approved: number; unapproved: number }
   monthlyHours: { approved: number; unapproved: number }
+  weeklyWage: { approved: number; unapproved: number }
+  monthlyWage: { approved: number; unapproved: number }
   hourlyRate: number
-  monthlySalary: { approved: number; unapproved: number }
   recentWeekHours: number
 }
 export interface Employee {
