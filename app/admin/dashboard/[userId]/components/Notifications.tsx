@@ -212,7 +212,7 @@ export function Notifications() {
           />
         </div>
       </div>
-      <ScrollArea className="h-[300px] lg:h-[calc(100vh-70px)] px-3 sm:px-4">
+      <ScrollArea className="h-[300px] lg:h-[calc(100vh-60px)] px-3 sm:px-4">
         { !showReadNotifications ? (
           <AnimatePresence>
           {unreadNotifications.map((notification) => (
