@@ -8,9 +8,10 @@ import { StatisticsTab } from './components/StatisticsTab'
 import { TimestampsTab } from './components/TimesStampsTab'
 import { EmployeeInfoTab } from './components/EmployeeInfoTab'
 import { ChatWindow } from './components/ChatWindow'
-import { Employee, EmployeeStatistics, Notification, TimeStamp } from '@/types/employee'
+import { Employee, EmployeeStatistics, Notification, TimeStamp } from './employee'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
-export default function EmployeeDashboardSample() {
+export default function EmployeeDashboard() {
   const [showChat, setShowChat] = useState(false)
 
   const employee: Employee = {
@@ -28,8 +29,9 @@ export default function EmployeeDashboardSample() {
   const employeeStats: EmployeeStatistics = {
     weeklyHours: { approved: 35, unapproved: 3 },
     monthlyHours: { approved: 140, unapproved: 12 },
+    weeklyWage: { approved: 100000, unapproved: 10000 },
+    monthlyWage: { approved: 210000, unapproved: 18000 },
     hourlyRate: 1500,
-    monthlySalary: { approved: 210000, unapproved: 18000 },
     recentWeekHours: 22
   }
 
@@ -110,31 +112,35 @@ export default function EmployeeDashboardSample() {
 
         <div className="lg:h-screen lg:border-[0.7px] lg:my-0 my-5 "/>
 
-        <div className="lg:flex-1 lg:px-7 lg:py-5 lg:w-full"> 
-          <div className="lg:block hidden">
-            <EmployeeHeader employee={employee} onChatOpen={() => setShowChat(true)} />
-            <div className="mt-4"></div>
-          </div>
-          <Tabs defaultValue="statistics" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="statistics">統計</TabsTrigger>
-              <TabsTrigger value="timestamps">タイムスタンプ</TabsTrigger>
-              <TabsTrigger value="employee-info">従業員情報</TabsTrigger>
-            </TabsList>
-            <TabsContent value="statistics">
-              <StatisticsTab employeeStats={employeeStats} />
-            </TabsContent>
-            <TabsContent value="timestamps">
-              <TimestampsTab timeStamps={timeStamps} />
-            </TabsContent>
-            <TabsContent value="employee-info">
-              <EmployeeInfoTab employee={employee} />
-            </TabsContent>
-          </Tabs>
+        <div className="lg:flex-1  lg:w-full lg:h-screen"> 
+          <ScrollArea className='h-full lg:px-7 '>
+            <div className="lg:block hidden mt-4">
+              <EmployeeHeader employee={employee} onChatOpen={() => setShowChat(true)} />
+              <div className="mt-4"></div>
+            </div>
+            <Tabs defaultValue="statistics" className="space-y-5">
+              <TabsList>
+                <TabsTrigger value="statistics">統計情報</TabsTrigger>
+                <TabsTrigger value="timestamps">タイムスタンプ</TabsTrigger>
+                <TabsTrigger value="employee-info">従業員情報</TabsTrigger>
+              </TabsList>
+              <TabsContent value="statistics">
+                <StatisticsTab stats={employeeStats} />
+              </TabsContent>
+              <TabsContent value="timestamps">
+                <TimestampsTab timeStamps={timeStamps} />
+              </TabsContent>
+              <TabsContent value="employee-info">
+                <EmployeeInfoTab employee={employee} />
+              </TabsContent>
+            </Tabs>
+            
+            <div className='h-10 '></div>
+          </ScrollArea>
         </div>
+
       </div>
 
-      <div className='h-10 lg:hidden'></div>
 
       {showChat && <ChatWindow onClose={() => setShowChat(false)} />}
         

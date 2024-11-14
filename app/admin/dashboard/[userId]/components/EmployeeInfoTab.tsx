@@ -1,7 +1,8 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { Employee } from "@/types/employee"
+import { Employee } from '../employee';
+
 interface EmployeeInfoTabProps {
   employee: Employee
 }
