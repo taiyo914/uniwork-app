@@ -209,17 +209,17 @@ export default function Component() {
           <div className="space-y-3 py-3">
             {sortedRecords.map((record) => (
               <Card key={record.id} className="w-full">
-                <CardHeader className="flex-row items-center justify-between border-b rounded-t-md bg-blue-100/50 py-2.5 px-3 space-y-0">
+                <CardHeader className="flex-row items-center justify-between border-b rounded-t-md bg-blue-100/50 py-2.5 sm:py-3 px-3 sm:px-4 space-y-0">
                   <div className="flex items-baseline">
-                    <div className="text-xl font-bold">{formatDate(record.work_start)}</div>
-                    <div className="text-muted-foreground mx-2 text-sm">
+                    <div className="text-xl sm:text-2xl font-bold">{formatDate(record.work_start)}</div>
+                    <div className="text-muted-foreground mx-2 text-sm sm:text-base">
                       {record.work_start ? `(${format(parseISO(record.work_start), 'EEE', { locale: supportedLocales[locale as keyof typeof supportedLocales] || en })})` : ''}
                     </div>
-                    <div className="text-muted-foreground -ml-0.5 text-sm">
+                    <div className="text-muted-foreground -ml-0.5 text-sm sm:text-base">
                       {record.work_start ? format(parseISO(record.work_start), 'yyyy') : ''}
                     </div>
                   </div>
-                    <Badge className={`border py-0.5 text-xs mt-0 ${
+                    <Badge className={`border py-0.5 sm:py-1 text-xs sm:text-sm mt-0 ${
                       record.work_end
                         ? record.approved
                           ? "bg-blue-100 text-blue-800 border-blue-300"
@@ -229,48 +229,50 @@ export default function Component() {
                       {record.work_end ? (record.approved ? t("approved") : t("notApproved")) : t("working")}
                     </Badge>
                 </CardHeader>
-                <CardContent className="p-3">
+                <CardContent className="p-3 sm:p-4">
                   
                   {/* 勤務時間 */}
-                  <div className="flex items-center gap-1 mb-2">
-                    <Clock className="h-4 w-4 text-muted-foreground"/>
-                    <div className="text-muted-foreground text-sm">
+                  <div className="flex items-center gap-1 sm:gap-2 mb-2 sm:mb-3">
+                    <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground"/>
+                    <div className="text-muted-foreground text-sm sm:text-base">
                       {t("workTime")} : 
                     </div>
-                    <div className="text-lg font-semibold">
+                    <div className="text-lg sm:text-xl font-semibold">
                       {formatTimeWithReferenceDate(record.work_start, record.work_end, record.work_start)}
                     </div>
                   </div>
 
                   {/* 実働時間 */}
-                  <div className="flex items-center gap-1 mb-2">
-                    <Timer className="h-4 w-4 text-muted-foreground"/>
-                    <div className="text-muted-foreground text-sm">
+                  <div className="flex items-center gap-1 sm:gap-2 mb-2 sm:mb-3">
+                    <Timer className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground"/>
+                    <div className="text-muted-foreground text-sm sm:text-base">
                       {t("actualWorkTime")} : 
                     </div>
-                    <div className="text-lg font-semibold">
+                    <div className="text-lg sm:text-xl font-semibold">
                       {calculateActualWorkDuration(record)}
                     </div>
                   </div>
 
                   {/* メモ */}
-                  <div className="mb-2.5">
-                    <StickyNote className="inline h-4 w-4 text-muted-foreground mb-0.5 mr-1"/>
-                    <span className="text-muted-foreground text-sm">
+                  <div className="mb-2.5 sm:mb-3">
+                    <StickyNote className="inline h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground mb-0.5 mr-1"/>
+                    <span className="text-muted-foreground text-sm sm:text-base">
                       {t("memo")} : 
                     </span>
-                    <span className="ml-1 text-sm">
+                    <span className="ml-1 text-sm sm:text-base">
                       {record.memo}
-                      <PenSquare className="h-4 w-4 inline mb-0.5 ml-1 text-blue-500 hover:text-blue-700 hover:cursor-pointer" onClick={() => openMemoDialog(record)}/>
+                      <PenSquare className="h-4 w-4 sm:h-5 sm:w-5 inline mb-0.5 ml-1 text-blue-500 hover:text-blue-700 hover:cursor-pointer" onClick={() => openMemoDialog(record)}/>
                     </span>
                   </div>
 
                   {record.break_logs && record.break_logs.length > 0 && (
-                    <div className="space-y-2">
-                      <h3 className="text-muted-foreground text-sm flex items-center gap-1"><Coffee className="h-4 w-4"/>{t("breakHistory")} : </h3>
-                      <div className="space-y-2">
+                    <div className="space-y-2 sm:space-y-3">
+                      <h3 className="text-muted-foreground text-sm sm:text-base flex items-center gap-1 sm:gap-2">
+                        <Coffee className="h-4 w-4 sm:h-5 sm:w-5"/>{t("breakHistory")} : 
+                      </h3>
+                      <div className="space-y-2 sm:space-y-3">
                         {record.break_logs.map((breakLog) => (
-                          <div key={breakLog.id} className="rounded-lg border px-3 py-2">
+                          <div key={breakLog.id} className="rounded-lg border px-3 py-2 sm:px-4 sm:py-3">
                             <div className="grid gap-1">
                               <div className="flex items-center justify-between">
                                 <p className="text-base font-semibold">
