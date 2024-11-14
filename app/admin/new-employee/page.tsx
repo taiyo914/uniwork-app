@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle, CheckCircle2, ChevronLeft, ChevronRight, MoreVertical } from 'lucide-react'
 import Image from 'next/image'
 import { Checkbox } from "@/components/ui/checkbox"
+import { countries } from './countries';
 
 const formVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -36,7 +37,14 @@ export default function UpdatedEmployeeRegistrationForm() {
     additionalInfo: '',
     workHours: '',
     jobType: '',
+    countryOfOrigin: '',
   })
+
+  const initialCheckboxStates = Object.fromEntries(
+    Array.from({ length: 19 }, (_, i) => [`check${i + 1}`, false])
+  )
+
+  const [checkboxStates, setCheckboxStates] = useState<Record<string, boolean>>(initialCheckboxStates);
 
   const updateFormData = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -48,16 +56,32 @@ export default function UpdatedEmployeeRegistrationForm() {
     // 実際はデータベースに情報を登録する処理を行う
   }
 
-  const nextStep = (e: React.MouseEvent) => {
-    e.preventDefault()
-    setStep(s => Math.min(s + 1, 3))
-  }
-  const prevStep = (e: React.MouseEvent) => {
-    e.preventDefault()
-    setStep(s => Math.max(s - 1, 1))
-  }
+  const handleCheckboxChange = (id: string) => {
+    setCheckboxStates(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const areAllCheckboxesChecked = () => {
+    switch (formData.residenceStatus) {
+      case "特定技能1号":
+        return checkboxStates.check1 && checkboxStates.check2 && checkboxStates.check3 && checkboxStates.check4;
+      case "技術・人文知識・国際業務":
+        return checkboxStates.check5 && checkboxStates.check6 && checkboxStates.check7;
+      case "特定活動（46号）":
+        return checkboxStates.check8 && checkboxStates.check9 && checkboxStates.check10 && checkboxStates.check11;
+      case "技能":
+        return checkboxStates.check12 && checkboxStates.check13 && checkboxStates.check14 && checkboxStates.check15;
+      case "留学":
+        return checkboxStates.check16 && checkboxStates.check17 && checkboxStates.check18 && checkboxStates.check19;
+      case "家族滞在":
+        return checkboxStates.check16 && checkboxStates.check17 && checkboxStates.check18;
+      default:
+        return true;
+    }
+  };
 
   const renderResidenceStatusInfo = () => {
+    const checkedCheckboxStyle = "data-[state=checked]:bg-green-500 data-[state=checked]:border-green-400"
+
     switch (formData.residenceStatus) {
       case "永住者":
       case "日本人の配偶者等":
@@ -67,127 +91,153 @@ export default function UpdatedEmployeeRegistrationForm() {
           <Alert className="bg-green-50 border border-green-200 text-green-700 flex">
             <CheckCircle2 className="h-5 w-5 text-green-600 mr-1 mt-0.5" />
             <AlertDescription className="text-green-700 text-lg">
-              就労制限はなく、日本人と同様に全ての業務に従事可能です。
+              就労制限はなく、全ての業務に従事できます。
             </AlertDescription>
           </Alert>
         )
       case "特定技能1号":
         return (
-          <>
-            <Alert className="bg-blue-50 border border-blue-200 text-blue-700 ">
-              <div className="flex items-center gap-1 mb-2">
-                <AlertCircle className="h-5 w-5 text-blue-600 mb-0.5" />
-                <span className="text-gray-700 text-lg ">以下の項目をチェックしてください</span>
-              </div>
-              <AlertDescription className="text-blue-700 text-lg">
+          <div>
+            <div className="flex items-center gap-1 pt-1 mb-2 ml-1">
+              <AlertCircle className="h-5 w-5 text-yellow-600 mb-0.5" />
+              <span className="text-gray-700 text-lg ">以下の項目を確認してください</span>
+            </div>
+            <Alert className="bg-yellow-50 border border-yellow-200 text-yellow-700 ">
+              <AlertDescription className="text-yellow-700 text-lg">
                 <div className="flex items-center gap-2">
-                  <Checkbox id="check1" />
-                  <label htmlFor="check1">正社員のみ可能でアルバイトでは雇えません。</label>
+                  <Checkbox id="check1" checked={checkboxStates.check1} onCheckedChange={() => handleCheckboxChange('check1')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check1" className='cursor-pointer'> 正社員としての雇用のみ可能です</label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="check2" />
-                  <label htmlFor="check2">週30時間以上のフルタイム勤務が求められます。</label>
+                  <Checkbox id="check2" checked={checkboxStates.check2} onCheckedChange={() => handleCheckboxChange('check2')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check2" className='cursor-pointer'> 週30時間以上の勤務が必要です</label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="check3" />
-                  <label htmlFor="check3">飲食店で働くには外食業技能測定試験の合格が必要です。</label>
+                  <Checkbox id="check3" checked={checkboxStates.check3} onCheckedChange={() => handleCheckboxChange('check3')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check3" className='cursor-pointer'> 飲食業務には外食業技能測定試験の合格が必要です</label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="check4" />
-                  <label htmlFor="check4">専門領域外の業務では資格外活動許可が必要です。</label>
+                  <Checkbox id="check4" checked={checkboxStates.check4} onCheckedChange={() => handleCheckboxChange('check4')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check4" className='cursor-pointer'> 専門外の業務には資格外活動許可が必要です</label>
                 </div>
               </AlertDescription>
             </Alert>
-          </>
+          </div>
         )
       case "技術・人文知識・国際業務":
         return (
-          <>
-            <Alert className="bg-blue-50 border border-blue-200 text-blue-700 ">
-              <div className="flex items-center gap-1 mb-2">
-                <AlertCircle className="h-5 w-5 text-blue-600 mb-0.5" />
-                <span className="text-gray-700 text-lg ">以下の項目をチェックしてください</span>
-              </div>
-              <AlertDescription className="text-blue-700 text-lg">
+          <div>
+            <div className="flex items-center gap-1 pt-1 mb-2 ml-1">
+              <AlertCircle className="h-5 w-5 text-yellow-600 mb-0.5" />
+              <span className="text-gray-700 text-lg ">以下の項目を確認してください</span>
+            </div>
+            <Alert className="bg-yellow-50 border border-yellow-200 text-yellow-700 ">
+              <AlertDescription className="text-yellow-700 text-lg">
                 <div className="flex items-center gap-2">
-                  <Checkbox id="check5" />
-                  <label htmlFor="check5">大学や専門学校などで学んだ専門領域の範囲内であれば正社員・アルバイトどちらも可能です。</label>
+                  <Checkbox id="check5" checked={checkboxStates.check5} onCheckedChange={() => handleCheckboxChange('check5')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check5" className='cursor-pointer'> 専門知識を活かした業務のみ従事可能です</label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="check6" />
-                  <label htmlFor="check6">調理や接客などの単純労働はできません。</label>
+                  <Checkbox id="check6" checked={checkboxStates.check6} onCheckedChange={() => handleCheckboxChange('check6')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check6" className='cursor-pointer'> 単純作業（調理・接客等）はできません</label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Checkbox id="check7" />
-                  <label htmlFor="check7">専門領域外の業務では資格外活動許可が必要です。</label>
+                  <Checkbox id="check7" checked={checkboxStates.check7} onCheckedChange={() => handleCheckboxChange('check7')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check7" className='cursor-pointer'> 専門外の業務には資格外活動許可が必要です</label>
                 </div>
               </AlertDescription>
             </Alert>
-          </>
+          </div>
         )
       case "特定活動（46号）":
         return (
-          <Alert className="bg-blue-50 border border-blue-200 text-blue-700 ">
-            <div className="flex items-center gap-1 mb-2">
-              <AlertCircle className="h-5 w-5 text-blue-600 mb-0.5" />
-              <span className="text-gray-700 text-lg ">以下の項目をチェックしてください</span>
+         <div>
+            <div className="flex items-center gap-1 pt-1 mb-2 ml-1">
+              <AlertCircle className="h-5 w-5 text-yellow-600 mb-0.5" />
+              <span className="text-gray-700 text-lg ">以下の項目を確認してください</span>
             </div>
-            <AlertDescription className="text-blue-700 text-lg">
-              <div className="flex items-center gap-2">
-                <Checkbox id="check8" />
-                <label htmlFor="check8">正社員のみ可能でアルバイトでは雇えません。</label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox id="check9" />
-                <label htmlFor="check9">日本の大学や大学院を卒業し、高度な日本語能力を有する外国人が、専門知識を活かして幅広い業務に従事することを目的としています。</label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox id="check10" />
-                <label htmlFor="check10">調理や接客などの単純労働はできません。</label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox id="check11" />
-                <label htmlFor="check11">専門領域外の業務では資格外活動許可が必要です。</label>
-              </div>
-            </AlertDescription>
-          </Alert>
+            <Alert className="bg-yellow-50 border border-yellow-200 text-yellow-700 ">
+              <AlertDescription className="text-yellow-700 text-lg">
+                <div className="flex items-center gap-2">
+                  <Checkbox id="check8" checked={checkboxStates.check8} onCheckedChange={() => handleCheckboxChange('check8')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check8" className='cursor-pointer'> 正社員としての雇用のみ可能です</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="check9" checked={checkboxStates.check9} onCheckedChange={() => handleCheckboxChange('check9')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check9" className='cursor-pointer'> 日本の高等教育機関を卒業し、高度な日本語能力を有する必要があります</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="check10" checked={checkboxStates.check10} onCheckedChange={() => handleCheckboxChange('check10')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check10" className='cursor-pointer'>単純作業（調理・接客等）はできません</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="check11" checked={checkboxStates.check11} onCheckedChange={() => handleCheckboxChange('check11')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check11" className='cursor-pointer' >専門外の業務には資格外活動許可が必要です</label>
+                </div>
+              </AlertDescription>
+            </Alert>
+         </div>
         )
       case "技能":
         return (
-          <Alert className="bg-blue-50 border border-blue-200 text-blue-700 ">
-            <div className="flex items-center gap-1 mb-2">
-              <AlertCircle className="h-5 w-5 text-blue-600 mb-0.5" />
-              <span className="text-gray-700 text-lg ">以下の項目をチェックしてください</span>
+          <div>
+            <div className="flex items-center gap-1 pt-1 mb-2 ml-1">
+              <AlertCircle className="h-5 w-5 text-yellow-600 mb-0.5" />
+              <span className="text-gray-700 text-lg ">以下の項目を確認してください</span>
             </div>
-            <AlertDescription className="text-blue-700 text-lg">
-              <div className="flex items-center gap-2">
-                <Checkbox id="check12" />
-                <label htmlFor="check12">正社員のみ可能でアルバイトでは雇えません。</label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox id="check13" />
-                <label htmlFor="check13">外国料理の調理師として、10年以上の実務経験が必要です。調理以外の業務はできません。</label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox id="check14" />
-                <label htmlFor="check14">専門領域外の業務では資格外活動許可が必要です。</label>
-              </div>
-            </AlertDescription>
-          </Alert>
+            <Alert className="bg-yellow-50 border border-yellow-200 text-yellow-700 ">
+              <AlertDescription className="text-yellow-700 text-lg">
+                <div className="flex items-center gap-2">
+                  <Checkbox id="check12" checked={checkboxStates.check12} onCheckedChange={() => handleCheckboxChange('check12')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check12" className='cursor-pointer' >正社員としての雇用のみ可能です</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="check13" checked={checkboxStates.check13} onCheckedChange={() => handleCheckboxChange('check13')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check13" className='cursor-pointer' >調理師として10年以上の実務経験が必要です</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="check14" checked={checkboxStates.check14} onCheckedChange={() => handleCheckboxChange('check14')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check14" className='cursor-pointer' >調理業務のみ従事可能です</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="check15" checked={checkboxStates.check15} onCheckedChange={() => handleCheckboxChange('check15')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check15" className='cursor-pointer' >専門外の業務には資格外活動許可が必要です</label>
+                </div>
+              </AlertDescription>
+            </Alert>
+          </div>
         )
       case "留学":
       case "家族滞在":
         return (
-          <>
-            <Alert className="bg-yellow-50 border border-yellow-200 text-yellow-700 mb-4 flex">
-              <AlertCircle className="h-5 w-5 text-yellow-600 mr-1 mt-0.5" />
+          <div>
+            <div className="flex items-center gap-1 pt-1 mb-2 ml-1">
+              <AlertCircle className="h-5 w-5 text-yellow-600 mb-0.5" />
+              <span className="text-gray-700 text-lg ">以下の項目を確認してください</span>
+            </div>
+            <Alert className="bg-yellow-50 border border-yellow-200 text-yellow-700">
               <AlertDescription className="text-yellow-700 text-lg">
-                アルバイトのみ可能。正社員は不可。<br />
-                資格外活動許可を取得すれば、週28時間以内の就労が可能です。
-                {formData.residenceStatus === "留学" && "長期休暇中は1日8時間、週40時間まで許可。"}
+                <div className="flex items-center gap-2">
+                  <Checkbox id="check16" checked={checkboxStates.check16} onCheckedChange={() => handleCheckboxChange('check16')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check16" className='cursor-pointer' >アルバイトとしての雇用のみ可能です</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="check17" checked={checkboxStates.check17} onCheckedChange={() => handleCheckboxChange('check17')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check17" className='cursor-pointer' >資格外活動許可を取得していることが必要です</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox id="check18" checked={checkboxStates.check18} onCheckedChange={() => handleCheckboxChange('check18')} className={checkedCheckboxStyle} />
+                  <label htmlFor="check18" className='cursor-pointer' >週28時間以内の就労が可能です</label>
+                </div>
+                {formData.residenceStatus === "留学" && (
+                  <div className="flex items-center gap-2">
+                    <Checkbox id="check19" checked={checkboxStates.check19} onCheckedChange={() => handleCheckboxChange('check19')} className={checkedCheckboxStyle} />
+                    <label htmlFor="check19" className='cursor-pointer' >長期休暇中は1日8時間まで就労可能です</label>
+                  </div>
+                )}
               </AlertDescription>
             </Alert>
-          </>
+          </div>
         )
       default:
         return null
@@ -195,9 +245,9 @@ export default function UpdatedEmployeeRegistrationForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 py-10">
-      <div className="w-full max-w-2xl">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">従業員登録フォーム</h1>
+    <div className="min-h-screen flex items-center justify-center px-5 pt-7 pb-16">
+      <div className="w-full max-w-[1100px]">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-7">従業員登録フォーム</h1>
         
         <form onSubmit={handleSubmit} className="space-y-8">
           <AnimatePresence mode="wait">
@@ -211,30 +261,34 @@ export default function UpdatedEmployeeRegistrationForm() {
                 transition={{ duration: 0.3 }}
               >
                 <div className="space-y-4">
-                  
-
                   <div className="space-y-2">
-                    <Label className="text-lg font-medium text-gray-700">国籍選択</Label>
-                    <RadioGroup 
-                      value={formData.nationality} 
-                      onValueChange={(value) => updateFormData('nationality', value)}
-                      className="flex space-x-4"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="japanese" id="japanese" className="border-gray-400 text-gray-700" />
-                        <Label htmlFor="japanese" className="text-lg text-gray-700">日本</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="foreign" id="foreign" className="border-gray-400 text-gray-700" />
-                        <Label htmlFor="foreign" className="text-lg text-gray-700">外国籍</Label>
-                      </div>
-                    </RadioGroup>
+                    <Label className="text-xl font-medium text-gray-700 block text-center mb-4">国籍を選択してください</Label>
+                    <div className="flex justify-center space-x-4">
+                      <Button
+                        onClick={() => {
+                          updateFormData('nationality', 'japanese')
+                          setStep(3)
+                        }}
+                        className="w-40 py-6 text-lg bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+                      >
+                        日本
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          updateFormData('nationality', 'foreign')
+                          setStep(2)
+                        }}
+                        className="w-40 py-6 text-lg bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+                      >
+                        外国籍
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </motion.div>
             )}
 
-            {step === 2 && formData.nationality === 'japanese' && (
+            {step === 2 && formData.nationality === 'foreign' && (
               <motion.div
                 key="step2"
                 variants={formVariants}
@@ -242,6 +296,123 @@ export default function UpdatedEmployeeRegistrationForm() {
                 animate="visible"
                 exit="exit"
                 transition={{ duration: 0.3 }}
+                className='max-w-[600px] lg:max-w-none mx-auto'
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 ">
+                  <Alert className="bg-gray-100 border border-gray-300 text-gray-700 font-bold">
+                    <AlertDescription className="text-gray-700 text-lg">
+                    <AlertCircle className="h-5 w-5 text-gray-600 inline-block mb-1 mr-1" />
+                      {formData.workRestriction === '' ? (
+                        <>
+                          在留カードの「就労制限の有無」の欄を見てください
+                          <Image src="/images/front-1.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
+                        </>
+                      ) : formData.residenceStatus === '' ? (
+                        <>
+                          在留カードの「在留資格」の欄を見てください
+                          <Image src="/images/front-2.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
+                        </>
+                      ) : formData.workRestriction !== '就労制限なし' ? (
+                        <>
+                          在留カード裏面の「資格外活動許可」の欄を見てください
+                          <Image src="/images/back.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
+                        </>
+                      ) : (
+                        <>
+                          在留カードの「在留資格」の欄を見てください
+                          <Image src="/images/front-2.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
+                        </>
+                      )}
+                    </AlertDescription>
+                  </Alert>
+                  
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="workRestriction" className="text-lg  text-gray-700">就労制限の有無</Label>
+                      <Select 
+                        value={formData.workRestriction}
+                        onValueChange={(value) => {
+                          updateFormData('workRestriction', value)
+                          updateFormData('residenceStatus', '')
+                          setCheckboxStates(initialCheckboxStates)
+                        }}
+                      >
+                        <SelectTrigger id="workRestriction" className="text-lg p-3 border border-gray-300 rounded-md">
+                          <SelectValue placeholder="選択してください" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.keys(residenceStatuses).map((category) => (
+                            <SelectItem key={category} value={category}>{category}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {formData.workRestriction && (
+                      <div className="space-y-2">
+                        <Label htmlFor="residenceStatus" className="text-lg  text-gray-700">在留資格</Label>
+                        <Select 
+                          value={formData.residenceStatus}
+                          onValueChange={(value) => {
+                            updateFormData('residenceStatus', value)
+                            setCheckboxStates(initialCheckboxStates)
+                          }}
+                        >
+                          <SelectTrigger id="residenceStatus" className="text-lg p-3 border border-gray-300 rounded-md">
+                            <SelectValue placeholder="選択してください" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {residenceStatuses[formData.workRestriction as keyof typeof residenceStatuses].map((status) => (
+                              <SelectItem key={status} value={status}>{status}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                    <div className='pt-2'>
+                      {formData.residenceStatus && renderResidenceStatusInfo()}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-between mt-8">
+                  <Button 
+                    type="button" 
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setStep(1)
+                    }} 
+                    className="flex items-center space-x-2 px-6 py-3 text-lg bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                    <span>戻る</span>
+                  </Button>
+                  
+                  <Button 
+                    type="button" 
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setStep(3)
+                    }}
+                    className="flex items-center space-x-2 px-6 py-3 text-lg bg-gray-800 text-white rounded-md hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    disabled={!formData.workRestriction || !formData.residenceStatus || !areAllCheckboxesChecked()}
+                  >
+                    <span>次へ</span>
+                    <ChevronRight className="h-5 w-5" />
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+
+            {step === 3  && (
+              <motion.div
+                key="step3"
+                variants={formVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+                className='max-w-[600px] mx-auto'
               >
                 <div className="space-y-4">
                   <div className="space-y-2">
@@ -255,6 +426,7 @@ export default function UpdatedEmployeeRegistrationForm() {
                       className="text-lg p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-200 focus:border-gray-400"
                     />
                   </div>
+
 
                   <div className="space-y-2">
                     <Label htmlFor="address" className="text-lg font-medium text-gray-700">住所</Label>
@@ -281,101 +453,79 @@ export default function UpdatedEmployeeRegistrationForm() {
                   </div>
                   <div className="flex flex-col items-center">
                     <MoreVertical className="h-5 w-5 mx-auto mt-2 text-gray-400" />
-                    <p className="mt-3 text-gray-500 text-center">その他必要な情報</p>
+                    <p className="mt-2 text-gray-500 text-center">その他必要な情報</p>
+                    {formData.nationality === 'foreign' && (
+                     <MoreVertical className="h-5 w-5 mx-auto mt-2 text-gray-400" />
+                    )}
                   </div>
+
                 </div>
-              </motion.div>
-            )}
-
-            {step === 2 && formData.nationality === 'foreign' && (
-              <motion.div
-                key="step2"
-                variants={formVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{ duration: 0.3 }}
-              >
-                <div className="space-y-4">
-                  <Alert className="bg-gray-100 border border-gray-300 text-gray-700">
-                    <AlertDescription className="text-gray-700 text-lg">
-                    <AlertCircle className="h-5 w-5 text-gray-600 inline-block mb-1 mr-1" />
-                      {formData.workRestriction === '' ? (
-                        <>
-                          在留カードの「就労制限の有無」の欄を見てください
-                          <Image src="/images/front-1.jpg" alt="在留カード" width={600} height={300} className="mx-auto mt-1" />
-                        </>
-                      ) : formData.residenceStatus === '' ? (
-                        <>
-                          在留カードの「在留資格」の欄を見てください
-                          <Image src="/images/front-2.jpg" alt="在留カード" width={600} height={300} className="mx-auto mt-1" />
-                        </>
-                      ) : formData.workRestriction !== '就労制限なし' ? (
-                        <>
-                          在留カード裏面の「資格外活動許可」の欄を見てください
-                          <Image src="/images/back.jpg" alt="在留カード" width={600} height={300} className="mx-auto mt-1" />
-                        </>
-                      ) : (
-                        <>
-                          在留カードの「在留資格」の欄を見てください
-                          <Image src="/images/front-2.jpg" alt="在留カード" width={600} height={300} className="mx-auto mt-1" />
-                        </>
-                      )}
-                    </AlertDescription>
-                  </Alert>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="workRestriction" className="text-lg font-medium text-gray-700">就労制限の有無</Label>
-                    <Select 
-                      value={formData.workRestriction}
-                      onValueChange={(value) => {
-                        updateFormData('workRestriction', value)
-                        updateFormData('residenceStatus', '')
-                      }}
-                    >
-                      <SelectTrigger id="workRestriction" className="text-lg p-3 border border-gray-300 rounded-md">
-                        <SelectValue placeholder="選択してください" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.keys(residenceStatuses).map((category) => (
-                          <SelectItem key={category} value={category}>{category}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {formData.workRestriction && (
-                    <div className="space-y-2">
-                      <Label htmlFor="residenceStatus" className="text-lg font-medium text-gray-700">在留資格</Label>
+                  {formData.nationality === 'foreign' && (
+                    <div className="space-y-2 mt-1">
+                      <Label htmlFor="countryOfOrigin" className="text-lg font-medium text-gray-700">国籍</Label>
                       <Select 
-                        value={formData.residenceStatus}
-                        onValueChange={(value) => updateFormData('residenceStatus', value)}
+                        value={formData.countryOfOrigin}
+                        onValueChange={(value) => updateFormData('countryOfOrigin', value)}
                       >
-                        <SelectTrigger id="residenceStatus" className="text-lg p-3 border border-gray-300 rounded-md">
+                        <SelectTrigger id="countryOfOrigin" className="text-lg p-3 border border-gray-300 rounded-md">
                           <SelectValue placeholder="選択してください" />
                         </SelectTrigger>
                         <SelectContent>
-                          {residenceStatuses[formData.workRestriction as keyof typeof residenceStatuses].map((status) => (
-                            <SelectItem key={status} value={status}>{status}</SelectItem>
+                          {countries.map((country) => (
+                            <SelectItem key={country} value={country}>{country}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
                   )}
 
-                  {formData.residenceStatus && renderResidenceStatusInfo()}
+                <div className="flex justify-between mt-8">
+                  <Button 
+                    type="button" 
+                    onClick={(e) => {
+                      e.preventDefault()
+                      if (formData.nationality === 'japanese' ) {
+                        setStep(1)
+                      } else {
+                        setStep(2)
+                      }
+                    }}
+                    className="flex items-center space-x-2 px-6 py-3 text-lg bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                    <span>戻る</span>
+                  </Button>
+                  
+                  <Button 
+                    type="button" 
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setStep(4)
+                    }}
+                    disabled={
+                      !formData.name || 
+                      !formData.address || 
+                      !formData.phone || 
+                      (formData.nationality === 'foreign' && !formData.countryOfOrigin)
+                    }
+                    className="flex items-center space-x-2 px-6 py-3 text-lg bg-gray-800 text-white rounded-md hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  >
+                    <span>次へ</span>
+                    <ChevronRight className="h-5 w-5" />
+                  </Button>
                 </div>
               </motion.div>
             )}
 
-            {step === 3 && (
+            {step === 4 && (
               <motion.div
-                key="step3"
+                key="step4"
                 variants={formVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
                 transition={{ duration: 0.3 }}
+                className='max-w-[600px] mx-auto'
               >
                 <div className="space-y-4">
                   <Alert className="bg-green-50 border border-green-200 text-green-700">
@@ -389,12 +539,13 @@ export default function UpdatedEmployeeRegistrationForm() {
                     <p className="text-lg text-gray-700"><strong>住所:</strong> {formData.address}</p>
                     <p className="text-lg text-gray-700"><strong>電話番号:</strong> {formData.phone}</p>
                     <div className="flex flex-col items-center">
-                    <MoreVertical className="h-5 w-5 mx-auto mt-2 text-gray-400" />
-                      <p className="mt-3 text-gray-500 text-center">その他必要な情報</p>
+                      <MoreVertical className="h-5 w-5 mx-auto mt-2 text-gray-400" />
+                      <p className="mt-2 text-gray-500 text-center">その他必要な情報</p>
                     </div>
                     {formData.nationality === 'foreign' && (
                       <>
-                        <p className="text-lg text-gray-700"><strong>国籍:</strong>外国籍</p>
+                        <MoreVertical className="h-5 w-5 mx-auto mt-2 text-gray-400" />
+                        <p className="text-lg text-gray-700 mt-2"><strong>国籍:</strong> {formData.countryOfOrigin}</p>
                         <p className="text-lg text-gray-700"><strong>在留資格:</strong> {formData.residenceStatus}</p>
                         {formData.workHours && <p className="text-lg text-gray-700"><strong>週の勤務時間:</strong> {formData.workHours}時間</p>}
                         {formData.jobType && <p className="text-lg text-gray-700"><strong>従事予定の業務:</strong> {formData.jobType}</p>}
@@ -402,39 +553,31 @@ export default function UpdatedEmployeeRegistrationForm() {
                     )}
                   </div>
                 </div>
+                <div className="flex justify-between mt-8">
+                  <Button 
+                    type="button" 
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setStep(3)
+                    }} 
+                    className="flex items-center space-x-2 px-6 py-3 text-lg bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                    <span>戻る</span>
+                  </Button>
+                  
+                  <Button 
+                    type="submit"
+                    className="px-6 py-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-700"
+                    onClick={() => alert("実際はデータベースに情報を登録する処理をします")}
+                  >
+                    登録
+                  </Button>
+                </div>
               </motion.div>
             )}
+            
           </AnimatePresence>
-
-          <div className="flex justify-between mt-8">
-            <Button 
-              type="button" 
-              onClick={prevStep} 
-              disabled={step === 1}
-              className="flex items-center space-x-2 px-6 py-3 text-lg bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-            >
-              <ChevronLeft className="h-5 w-5" />
-              <span>戻る</span>
-            </Button>
-            {step < 3 ? (
-              <Button 
-                type="button" 
-                onClick={nextStep}
-                className="flex items-center space-x-2 px-6 py-3 text-lg bg-gray-800 text-white rounded-md hover:bg-gray-700"
-              >
-                <span>次へ</span>
-                <ChevronRight className="h-5 w-5" />
-              </Button>
-            ) : (
-              <Button 
-                type="submit"
-                className="px-6 py-3 text-lg bg-gray-800 text-white rounded-md hover:bg-gray-700"
-                onClick={() => alert("実際はデータベースに情報を登録する処理をします")}
-              >
-                登録
-              </Button>
-            )}
-          </div>
         </form>
       </div>
     </div>
