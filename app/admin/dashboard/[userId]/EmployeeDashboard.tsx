@@ -44,7 +44,7 @@ export default function EmployeeDashboard() {
         { start: "12:00", end: "13:00", memo: "昼食休憩" },
         { start: "15:00", end: "15:15", memo: "コーヒーブレイク" }
       ],
-      memo: "プロジェクトAのミーティング",
+      memo: "",
       approved: false
     },
     {
@@ -86,7 +86,7 @@ export default function EmployeeDashboard() {
         { start: "12:00", end: "13:00", memo: "昼食休憩" },
         { start: "15:00", end: "15:30", memo: "部署ミーティング" }
       ],
-      memo: "週次レビュー",
+      memo: "",
       approved: false
     },
   ]
@@ -105,14 +105,14 @@ export default function EmployeeDashboard() {
         <div className="
           border border-gray-200 rounded-lg 
           lg:border-none lg:rounded-none
-           lg:border-gray-300 lg:h-screen lg:max-w-[400px] lg:w-1/3 
+           lg:border-gray-300 lg:h-screen lg:max-w-[400px] lg:w-1/3  lg:min-w-[300px]
         ">
           <Notifications />
         </div>
 
         <div className="lg:h-screen lg:border-[0.7px] lg:my-0 my-5 "/>
 
-        <div className="lg:flex-1  lg:w-full lg:h-screen"> 
+        <div className="lg:flex-1  lg:w-full lg:h-screen "> 
           <ScrollArea className='h-full lg:px-7 '>
             <div className="lg:block hidden mt-4">
               <EmployeeHeader employee={employee} onChatOpen={() => setShowChat(true)} />

@@ -85,51 +85,7 @@ const INITIAL_NOTIFICATIONS: Notification[] = [
     is_read: false,
     deleted_at: null
   },
-  {
-    id: 6,
-    created_at: "2024-10-16T16:30:00Z",
-    title: "勤怠データ未入力",
-    content: "山田さんの3月15日の勤怠データが未入力です。",
-    type: "warning",
-    is_read: false,
-    deleted_at: null
-  },
-  {
-    id: 7,
-    created_at: "2024-10-11T09:00:00Z",
-    title: "システムメンテナンス通知",
-    content: "明日の深夜1時からシステムメンテナンスを実施します。",
-    type: "info",
-    is_read: false,
-    deleted_at: null
-  },
-  {
-    id: 8,
-    created_at: "2024-10-08T13:15:00Z",
-    title: "休憩時間違反",
-    content: "高橋さんの休憩時間が法定時間を下回っています。",
-    type: "alert",
-    is_read: false,
-    deleted_at: null
-  },
-  {
-    id: 9,
-    created_at: "2024-10-04T10:30:00Z",
-    title: "シフト変更完了",
-    content: "来週のシフト変更が完了しました。",
-    type: "success",
-    is_read: false,
-    deleted_at: null
-  },
-  {
-    id: 10,
-    created_at: "2024-10-01T08:45:00Z",
-    title: "給与計算完了",
-    content: "今月の給与計算が完了しました。確認をお願いします。",
-    type: "info",
-    is_read: false,
-    deleted_at: null
-  }
+
 ];
 
 export function Notifications() {
@@ -227,7 +183,7 @@ export function Notifications() {
                 layout
                 className={`border p-3 rounded mb-2`}
               >
-                <div className="flex items-start space-x-2 rounded-none">
+                <div className="flex items-start space-x-2 rounded-none transition-all">
                   <div className="">
                     <Checkbox
                       checked={notification.is_read}
@@ -268,7 +224,7 @@ export function Notifications() {
                   layout
                   className={`border p-3 rounded mb-2`}
                 >
-                  <div className="flex items-start space-x-2 rounded-none">
+                  <div className="flex items-start space-x-2 rounded-none transition-all">
                     <div className="">
                       <Checkbox
                         checked={notification.is_read}
