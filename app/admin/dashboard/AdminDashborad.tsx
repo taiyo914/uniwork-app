@@ -26,6 +26,7 @@ import {
   sortByDate,
   sortByDefault
 } from './sortFunctions'
+import { useRouter } from 'next/navigation'
 
 type WorkStatus = 'working' | 'notStarted' | 'onBreak'
 
@@ -48,6 +49,7 @@ type Props = {
 }
 
 export default function AdminDashboard({ initialEmployees }: Props) {
+  const router = useRouter()
   const [employees, setEmployees] = useState<Employee[]>(initialEmployees)
   const [sortColumn, setSortColumn] = useState<keyof Employee | 'work_status' | 'unapproved_shifts' | 'last_work_day'>('emp_id')
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
@@ -218,7 +220,11 @@ export default function AdminDashboard({ initialEmployees }: Props) {
               </TableHeader>
               <TableBody>
                 {sortedEmployees.map((employee) => (
-                  <TableRow key={employee.user_id} className="hover:bg-gray-50 transition-colors">
+                  <TableRow 
+                    key={employee.user_id} 
+                    className="hover:bg-gray-50 transition-colors cursor-pointer"
+                    onClick={() => router.push(`/admin/dashboard/${employee.user_id}`)}
+                  >
                     <TableCell className="font-medium ">
                       <div className="">
                         {formatEmpId(employee.emp_id)}

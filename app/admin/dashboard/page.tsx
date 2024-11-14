@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import AdminDashboard from "./dashboard/AdminDashborad";
+import AdminDashboard from "./AdminDashborad";
 
 async function getEmployees() {
   const supabase = createClient();
