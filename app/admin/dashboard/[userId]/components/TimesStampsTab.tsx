@@ -24,7 +24,7 @@ export const TimestampsTab: React.FC<TimestampsTabProps> = ({ timeStamps }) => {
 
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-2">タイムスタンプ履歴</h3>
+      <h3 className="text-lg font-semibold mb-2">打刻履歴</h3>
       <div className="overflow-x-auto">
         <div className="">
           <Table className="overflow-hidden rounded-t-md font-sans">
@@ -33,15 +33,15 @@ export const TimestampsTab: React.FC<TimestampsTabProps> = ({ timeStamps }) => {
                 <TableHead className="font-semibold ">日付</TableHead>
                 <TableHead className="font-semibold ">出勤</TableHead>
                 <TableHead className="font-semibold ">退勤</TableHead>
-                <TableHead className="font-semibold ">メモ</TableHead>
+                <TableHead className="font-semibold text-nowrap">メモ</TableHead>
                 <TableHead className="font-semibold ">休憩</TableHead>
-                <TableHead className="font-semibold ">承認</TableHead>
+                <TableHead className="font-semibold pl-7">承認</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {timeStamps.map((stamp, index) => (
                 <TableRow key={index}>
-                  <TableCell>{format(new Date(stamp.date), 'yy/MM/dd')}</TableCell>
+                  <TableCell className="font-semibold">{format(new Date(stamp.date), 'yy/MM/dd')}</TableCell>
                   <TableCell>{stamp.checkIn}</TableCell>
                   <TableCell>{stamp.checkOut}</TableCell>
                   <TableCell>
@@ -80,10 +80,14 @@ export const TimestampsTab: React.FC<TimestampsTabProps> = ({ timeStamps }) => {
                       </TooltipProvider>
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <Button variant="outline" size="sm" className="bg-gray-50 hover:bg-gray-100 text-gray-800">
-                      {stamp.approved ? "承認済み" : "承認"}
-                    </Button>
+                  <TableCell className="">
+                    {stamp.approved ? (
+                      <span className="text-gray-600">承認済み</span>
+                    ) : (
+                      <Button variant="outline" size="sm" className="bg-gray-50 hover:bg-gray-100 text-gray-800">
+                        承認
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

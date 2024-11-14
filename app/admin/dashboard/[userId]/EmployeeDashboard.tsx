@@ -66,7 +66,7 @@ export default function EmployeeDashboard() {
         { start: "15:30", end: "15:45", memo: "短時間休憩" }
       ],
       memo: "新人研修",
-      approved: false
+      approved: true
     },
     {
       date: "2023-05-18",
@@ -76,7 +76,7 @@ export default function EmployeeDashboard() {
         { start: "12:15", end: "13:15", memo: "昼食休憩" }
       ],
       memo: "資料作成",
-      approved: false
+      approved: true
     },
     {
       date: "2023-05-19",
@@ -87,7 +87,7 @@ export default function EmployeeDashboard() {
         { start: "15:00", end: "15:30", memo: "部署ミーティング" }
       ],
       memo: "",
-      approved: false
+      approved: true
     },
   ]
 
@@ -121,7 +121,7 @@ export default function EmployeeDashboard() {
             <Tabs defaultValue="statistics" className="space-y-5">
               <TabsList>
                 <TabsTrigger value="statistics">統計情報</TabsTrigger>
-                <TabsTrigger value="timestamps">タイムスタンプ</TabsTrigger>
+                <TabsTrigger value="timestamps">打刻履歴</TabsTrigger>
                 <TabsTrigger value="employee-info">従業員情報</TabsTrigger>
               </TabsList>
               <TabsContent value="statistics">
