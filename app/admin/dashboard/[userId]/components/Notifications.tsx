@@ -178,7 +178,7 @@ export function Notifications() {
             .filter(notification => notification.id === id)
             .map(notification => ({ ...notification, is_read: false }))
         ];
-        return updatedNotifications.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+        return updatedNotifications.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
       });
     }, 300)
   }
@@ -212,7 +212,7 @@ export function Notifications() {
           />
         </div>
       </div>
-      <ScrollArea className="lg:h-[calc(100vh-70px)] lg:px-4">
+      <ScrollArea className="h-[300px] lg:h-[calc(100vh-70px)] px-3 sm:px-4">
         { !showReadNotifications ? (
           <AnimatePresence>
           {unreadNotifications.map((notification) => (
@@ -220,7 +220,7 @@ export function Notifications() {
               key={notification.id}
               initial={!showReadNotifications ? { opacity: 1, height: 'auto' } : undefined}
               exit={!showReadNotifications ? { opacity: 0, height: 0 } : undefined}
-              transition={!showReadNotifications ? { duration: 0.5, ease: "easeInOut" } : {duration: 0}}
+              transition={!showReadNotifications ? { duration: 0.3, ease: "easeInOut" } : {duration: 0}}
               className={`${notification.is_read ? 'opacity-50' : 'opacity-100'}`}
             >
               <motion.div
@@ -261,7 +261,7 @@ export function Notifications() {
                 key={notification.id}
                 initial={showReadNotifications ? { opacity: 1, height: 'auto' } : undefined}
                 exit={showReadNotifications ? { opacity: 0, height: 0 } : undefined}
-                transition={showReadNotifications ? { duration: 0.5, ease: "easeInOut" } : {duration: 0}}
+                transition={showReadNotifications ? { duration: 0.3, ease: "easeInOut" } : {duration: 0}}
                 className={`${notification.is_read ? 'opacity-50' : 'opacity-100'}`}
               >
                 <motion.div

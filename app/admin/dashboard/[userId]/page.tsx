@@ -2,7 +2,7 @@
 import { createClient } from '@/utils/supabase/server'
 import AdminEmployeeStats from './AdminEmployeeStats'
 import { redirect } from 'next/navigation'
-import EmployeeDashboardSample from './EmployeeDashboardSample'
+import EmployeeDashboard from './EmployeeDashboard'
 
 export default async function AdminEmployeePage({ params }: { params: { userId: string } }) {
   const supabase = createClient()
@@ -20,10 +20,6 @@ export default async function AdminEmployeePage({ params }: { params: { userId: 
   }
 
   return (
-    // <AdminEmployeeStats 
-    //   profile={profile}
-    //   userId={params.userId}
-    // />
-    <EmployeeDashboardSample/>
+    <EmployeeDashboard/>
   )
 } 
