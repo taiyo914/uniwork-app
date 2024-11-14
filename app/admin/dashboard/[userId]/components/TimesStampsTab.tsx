@@ -1,9 +1,10 @@
 import React from 'react';
-import { Info } from 'lucide-react'
+import { Info, StickyNote } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { TimeStamp, BreakTime } from '@/types/employee';
+import { TimeStamp, BreakTime } from '../employee';
+import { format } from 'date-fns';
 
 interface TimestampsTabProps {
   timeStamps: TimeStamp[];
@@ -24,58 +25,72 @@ export const TimestampsTab: React.FC<TimestampsTabProps> = ({ timeStamps }) => {
   return (
     <div>
       <h3 className="text-lg font-semibold mb-2">タイムスタンプ履歴</h3>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="font-semibold">日付</TableHead>
-            <TableHead className="font-semibold">出勤時間</TableHead>
-            <TableHead className="font-semibold">退勤時間</TableHead>
-            <TableHead className="font-semibold">休憩</TableHead>
-            <TableHead className="font-semibold">メモ</TableHead>
-            <TableHead className="font-semibold">承認</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {timeStamps.map((stamp, index) => (
-            <TableRow key={index}>
-              <TableCell>{stamp.date}</TableCell>
-              <TableCell>{stamp.checkIn}</TableCell>
-              <TableCell>{stamp.checkOut}</TableCell>
-              <TableCell>
-                <div className="flex items-center space-x-2">
-                  <span>{calculateTotalBreakTime(stamp.breakTimes)}</span>
-                  <TooltipProvider delayDuration={0}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <Info className="h-4 w-4" />
-                          <span className="sr-only">休憩詳細</span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent className="w-64">
-                        <div className="space-y-2">
-                          {stamp.breakTimes.map((breakTime, breakIndex) => (
-                            <div key={breakIndex}>
-                              <p className="text-sm font-medium">{breakTime.start} - {breakTime.end}</p>
-                              <p className="text-xs text-gray-500">{breakTime.memo}</p>
+      <div className="overflow-x-auto">
+        <div className="">
+          <Table className="overflow-hidden rounded-t-md font-sans">
+            <TableHeader className="bg-gray-50">
+              <TableRow>
+                <TableHead className="font-semibold ">日付</TableHead>
+                <TableHead className="font-semibold ">出勤</TableHead>
+                <TableHead className="font-semibold ">退勤</TableHead>
+                <TableHead className="font-semibold ">メモ</TableHead>
+                <TableHead className="font-semibold ">休憩</TableHead>
+                <TableHead className="font-semibold ">承認</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {timeStamps.map((stamp, index) => (
+                <TableRow key={index}>
+                  <TableCell>{format(new Date(stamp.date), 'yy/MM/dd')}</TableCell>
+                  <TableCell>{stamp.checkIn}</TableCell>
+                  <TableCell>{stamp.checkOut}</TableCell>
+                  <TableCell>
+                    {stamp.memo && (
+                      <TooltipProvider delayDuration={0}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <StickyNote className="h-4 w-4 cursor-pointer text-gray-500" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-sm">{stamp.memo}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center space-x-1">
+                      <span>{calculateTotalBreakTime(stamp.breakTimes)}</span>
+                      <TooltipProvider delayDuration={0}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info className="h-4 w-4 cursor-pointer" />
+                          </TooltipTrigger>
+                          <TooltipContent className="w-64">
+                            <div className="space-y-2">
+                              {stamp.breakTimes.map((breakTime, breakIndex) => (
+                                <div key={breakIndex}>
+                                  <p className="text-sm font-medium">{breakTime.start} - {breakTime.end}</p>
+                                  <p className="text-xs text-gray-500">{breakTime.memo}</p>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              </TableCell>
-              <TableCell>{stamp.memo}</TableCell>
-              <TableCell>
-                <Button variant="outline" size="sm" className="bg-gray-50 hover:bg-gray-100 text-gray-800">
-                  {stamp.approved ? "承認済み" : "承認"}
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="outline" size="sm" className="bg-gray-50 hover:bg-gray-100 text-gray-800">
+                      {stamp.approved ? "承認済み" : "承認"}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </div>
   );
 };
