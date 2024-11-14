@@ -11,7 +11,7 @@ export default function AdminVerticalNav() {
   const handleLogout = useLogout();
 
   const navItems = [
-    { icon: <LayoutPanelLeft className="h-6 w-6" />, label: "ダッシュボード", href: "/admin" },
+    { icon: <LayoutPanelLeft className="h-6 w-6" />, label: "ダッシュボード", href: "/admin/dashboard" },
     { icon: <UserPlus className="h-6 w-6" />, label: "従業員登録", href: "/admin/new-employee" },
     { icon: <MessageCircle className="h-6 w-6" />, label: "チャット", href: "/admin/chat" },
     { icon: <Users className="h-6 w-6" />, label: "メンバー", href: "/admin/members" },
