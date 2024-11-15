@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { translateText } from '@/utils/translate';
-import { useTranslation } from "react-i18next";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Message {
   sender_id: string;
@@ -415,17 +415,26 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
               <div className="text-gray-500 mt-1.5 border-t pt-1.5 px-0.5">{translatedText}</div>
             )}
             </div>
-            <div 
-              className="border p-1 rounded-lg rounded-bl-none h-8 w-8 flex items-center justify-center mt-[0.5px] transition-all hover:bg-blue-100"
-            >
-              {isLoading ? (
-                <Loader2 className="animate-spin text-blue-500 h-5 w-5" />
-              ) : (
-                <button onClick={handleTranslate}>
-                  <Languages className="text-blue-500 h-5 w-5" />
-                </button>
-              )}
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div 
+                    className="border p-1 rounded-lg rounded-bl-none h-8 w-8 flex items-center justify-center mt-[0.5px] transition-all hover:bg-blue-100"
+                  >
+                    {isLoading ? (
+                      <Loader2 className="animate-spin text-blue-500 h-5 w-5" />
+                    ) : (
+                      <button onClick={handleTranslate}>
+                        <Languages className="text-blue-500 h-5 w-5" />
+                      </button>
+                    )}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent align="end" alignOffset={-4}>
+                  翻訳
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </div>
@@ -439,54 +448,69 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
           const userProfiles = getUserProfilesByReaction(reactionType)
 
           return (
-            <div key={reactionType} className="relative group">
-              <button
-                onClick={() => handleToggleReaction(message.message_id, reactionType)}
-                className={`text-sm border p-0.5 px-1.5 rounded-md 
-                    ${userReacted ? "bg-blue-100/80 border-blue-300/80" : "border-gray-300/80"}
-                  `}
-              >
-                {reactionType} {count}
-              </button>
-              <div className="absolute bottom-full -left-0.5 mb-[0.17rem] p-1.5 pr-3 pl-2 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block w-fit space-y-1">
-                {userProfiles.length > 0 ? (
-                  userProfiles.map((profile, index) => (
-                    <div key={index} className="flex items-center space-x-1">
-                      <Avatar className="h-6 w-6 border">
-                        <AvatarImage src={profile.imageUrl} alt="User Avatar" className="object-cover"/>
-                        <AvatarFallback>{profile.name[0]}</AvatarFallback>
-                      </Avatar>
-                      <span className="truncate mt-0.5 text-nowrap text-gray-500">{profile.name}</span>
-                    </div>
-                  ))
-                ) : (
-                  <div>ユーザーなし</div>
-                )}
-              </div>
-            </div>
+            <TooltipProvider key={reactionType}>
+              <Tooltip delayDuration={0}>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => handleToggleReaction(message.message_id, reactionType)}
+                    className={`text-sm border p-0.5 px-1.5 rounded-md 
+                      ${userReacted ? "bg-blue-100/80 border-blue-300/80" : "border-gray-300/80"}
+                    `}
+                  >
+                    {reactionType} {count}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent 
+                  align="start"
+                  className="p-1.5 pr-3 pl-2 w-fit space-y-1"
+                >
+                  {userProfiles.length > 0 ? (
+                    userProfiles.map((profile, index) => (
+                      <div key={index} className="flex items-center space-x-1">
+                        <Avatar className="h-6 w-6 border">
+                          <AvatarImage src={profile.imageUrl} alt="User Avatar" className="object-cover"/>
+                          <AvatarFallback>{profile.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <span className="truncate mt-0.5 text-nowrap text-gray-500">{profile.name}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <div>ユーザーなし</div>
+                  )}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )
         })}
 
-        <div className={`relative group mt-0.5 ${Object.entries(reactionCounts).length === 0 && "ml-1 mt-0"}`}>
-          <div className="flex items-center gap-1 group-hover:text-gray-500 text-gray-400 cursor-pointer">
-            <SmilePlus className={`h-4 w-4`} />
-            {Object.entries(reactionCounts).length === 0 && (
-              <span className="text-xs font-semibold"> リアクションを追加</span>
-            )}
-          </div>
-
-          <div className="absolute -left-2 top-0 mt-4 w-[13.6rem] bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:flex flex-wrap gap-1 py-0.5 p-1">
-            {REACTION_TYPES.map((reaction) => (
-              <button
-                key={reaction}
-                onClick={() => handleToggleReaction(message.message_id, reaction)}
-                className="text-lg hover:bg-gray-100 px-1 rounded inline"
-              >
-                {reaction}
-              </button>
-            ))}
-          </div>
-        </div>
+        <TooltipProvider>
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger asChild>
+              <div className={`flex items-center gap-1 text-gray-400 hover:text-gray-500 cursor-pointer ${Object.entries(reactionCounts).length === 0 && "ml-1"}`}>
+                <SmilePlus className="h-4 w-4" />
+                {Object.entries(reactionCounts).length === 0 && (
+                  <span className="text-xs font-semibold">リアクション</span>
+                )}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent 
+              side="bottom"
+              align="start"
+              alignOffset={-8}
+              className="p-1 w-[13.6rem] bg-white flex flex-wrap gap-1"
+            >
+              {REACTION_TYPES.map((reaction) => (
+                <button
+                  key={reaction}
+                  onClick={() => handleToggleReaction(message.message_id, reaction)}
+                  className="text-lg hover:bg-gray-100 px-1 rounded inline"
+                >
+                  {reaction}
+                </button>
+              ))}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
       </div>
     </div>
