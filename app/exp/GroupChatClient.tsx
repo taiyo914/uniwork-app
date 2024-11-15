@@ -64,7 +64,7 @@ export default function GroupChatClient({initialMessages}: Props) {
     fetchUserId();
     // fetchMessages();
     setupRealtimeListeners()
-  },[setupRealtimeListeners])
+  },[])
 
   const fetchMessages = async () => {
     const { data, error } = await supabase
