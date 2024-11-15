@@ -6,7 +6,6 @@ import { createClient } from "@/utils/supabase/client"
 import { useParams, useRouter } from "next/navigation"
 import { useUser } from "@/hooks/useUser"
 import { MemberCard } from "./MemberCard"
-import { useTranslation } from "react-i18next";
 
 interface TeamMember {
   user_id: string
@@ -33,7 +32,6 @@ export default function MemberList({ teamMembers: initialTeamMembers }: MemberLi
   const router = useRouter()
   const { locale } = useParams()
   const { user } = useUser();
-  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchWorkStatus = async () => {
@@ -103,9 +101,9 @@ export default function MemberList({ teamMembers: initialTeamMembers }: MemberLi
 
   const handleChatClick = (userId: string) => {
     if (userId === user?.id) {
-      router.push(`/employee/${locale}/profile`)
+      router.push(`/admin/profile`)
     } else {
-      router.push(`/employee/${locale}/chat/${userId}`)
+      router.push(`/admin/chat/${userId}`)
     }
   }
 
@@ -114,7 +112,7 @@ export default function MemberList({ teamMembers: initialTeamMembers }: MemberLi
       <div className="h-4 sm:h-5"></div>
       <h1 className="text-xl sm:text-2xl font-bold">
         <Users className="h-6 w-6 inline-block mr-1.5 mb-1 ml-1 " />
-        {t('member.title')}
+        メンバー
       </h1>
       <div className="h-3 sm:h-4"></div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
