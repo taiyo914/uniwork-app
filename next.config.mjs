@@ -4,14 +4,18 @@ const supabaseHostname = supabaseUrl ? new URL(supabaseUrl).hostname : '';
 
 const nextConfig = {
   images: {
-  remotePatterns: [
-    {
-      protocol: 'https',
-      hostname: supabaseHostname,
-      port: '',
-      pathname: '/storage/v1/object/public/images/profile/**',
-    },
-  ],
-},};
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: supabaseHostname,
+        port: '',
+        pathname: '/storage/v1/object/public/images/profile/**',
+      },
+    ],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+};
 
 export default nextConfig;

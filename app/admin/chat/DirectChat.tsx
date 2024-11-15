@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { useParams, useRouter } from "next/navigation";
 import { translateText } from '@/utils/translate'; 
-import { useTranslation } from "react-i18next";
 
 interface Message {
   sender_id: string;
@@ -43,7 +42,7 @@ export default function DirectChat() {
   const isFirstRender = useRef(true);
   const prevMessageCount = useRef(messages.length);
   const router = useRouter();
-  const { locale, userId: chatPartnerId } = useParams();
+  const { userId: chatPartnerId } = useParams();
 
   const scrollToBottom = useCallback(() => {
     if (bottomRef.current) {
@@ -86,7 +85,7 @@ export default function DirectChat() {
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `sender_id=eq.${currentUserId}` }, handleNewMessage)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `sender_id=eq.${chatPartnerId}` }, handlePartnerNewMessage)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reactions' }, handleNewReaction)
-      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'reactions' }, handleDeleteReaction)
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'reactions' }, handleDeleteReaction) 
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reactions' }, handleUpdateReaction)
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
@@ -138,7 +137,7 @@ export default function DirectChat() {
     setMessages(data || []);
   };
 
-  const handleNewMessage = (payload: any) => {
+  const handleNewMessage = (payload: { new: Message }) => {
     console.log("New message received:", payload);
     const newMessage = {
       ...payload.new as Message,
@@ -147,7 +146,7 @@ export default function DirectChat() {
     setMessages((currentMessages) => [...currentMessages, newMessage]);
   };
 
-  const handlePartnerNewMessage = (payload: any) => {
+  const handlePartnerNewMessage = (payload: { new: Message }) => {
     console.log("Partner's new message received:", payload);
     const partnersNewMessage = payload.new as Message;
     if (partnersNewMessage.receiver_id === currentUserId) {
@@ -159,7 +158,7 @@ export default function DirectChat() {
     }
   };
 
-  const handleNewReaction = (payload: any) => {
+  const handleNewReaction = (payload: { new: Reaction }) => {
     console.log("New reaction received:", payload);
     const newReaction = payload.new as Reaction;
     setMessages((currentMessages) =>
@@ -171,7 +170,7 @@ export default function DirectChat() {
     );
   };
 
-  const handleDeleteReaction = (payload: any) => {
+  const handleDeleteReaction = (payload: { old: any }) => {
     console.log("Reaction deleted:", payload);
     const deletedReaction = payload.old as Reaction;
     setMessages((currentMessages) =>
@@ -183,7 +182,7 @@ export default function DirectChat() {
     );
   };
 
-  const handleUpdateReaction = (payload: any) => {
+  const handleUpdateReaction = (payload: { new: Reaction }) => {
     console.log("Reaction updated:", payload);
     const updatedReaction = payload.new as Reaction;
     setMessages((currentMessages) =>
