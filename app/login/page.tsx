@@ -47,7 +47,7 @@ export default function RefinedLogin() {
         }
 
         if (profile.role === "admin") {
-          router.push("/admin");
+          router.push("/admin/dashboard");
         } else {
           router.push(`/employee/${profile.locale}`);
         }
