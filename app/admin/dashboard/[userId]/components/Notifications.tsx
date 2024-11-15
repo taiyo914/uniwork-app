@@ -181,9 +181,9 @@ export function Notifications() {
             >
               <motion.div
                 layout
-                className={`border p-3 rounded mb-2`}
+                className={`border p-3 rounded mb-2 ${notification.type === 'alert' ? 'bg-red-50 border-red-100/90' : ''}`}
               >
-                <div className="flex items-start space-x-2 rounded-none transition-all">
+                <div className={`flex items-start space-x-2 rounded-none transition-all`}>
                   <div className="">
                     <Checkbox
                       checked={notification.is_read}

@@ -120,7 +120,7 @@ async function getEmployees() {
     english_name: emp.english_name,
     weekly_hours: weeklyHours[emp.user_id] || 0,
     expiration_date: emp.expiration_date,
-    image_url: emp.image_url || "/placeholder.svg?height=32&width=32",
+    image_url: emp.image_url || "",
     residence_status: emp.residence_status,
     unapproved_shifts: unapprovedShifts[emp.user_id] || 0,
     work_status: emp.work_status || "notStarted",

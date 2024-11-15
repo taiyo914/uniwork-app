@@ -69,13 +69,6 @@ export default function AdminDashboard({ initialEmployees }: Props) {
     }
   }
 
-  // 勤務状況の優先順位マップ
-  const workStatusPriority: Record<WorkStatus, number> = {
-    'working': 1,    // 勤務中が最優先
-    'onBreak': 2,    // 休憩中が次
-    'notStarted': 3  // 勤務外が最後
-  }
-
   // ソート関数をシンプルに整理
   const sortEmployees = (a: Employee, b: Employee) => {
     switch (sortColumn) {
