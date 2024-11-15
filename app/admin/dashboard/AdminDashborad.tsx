@@ -160,7 +160,7 @@ export default function AdminDashboard({ initialEmployees }: Props) {
                       {sortColumn === 'weekly_hours' ? (
                         " " + renderSortIcon('weekly_hours')
                       ) : (
-                        <TooltipProvider>
+                        <TooltipProvider delayDuration={0}>
                           <Tooltip>
                             <TooltipTrigger>
                               <Info 
@@ -239,7 +239,7 @@ export default function AdminDashboard({ initialEmployees }: Props) {
                         {(employee.residence_status === "student" || employee.residence_status === "dependent") ? (
                           // 学生・家族滞在の場合
                           employee.weekly_hours > 28 ? (
-                            <TooltipProvider>
+                            <TooltipProvider delayDuration={0}>
                               <Tooltip>
                                 <TooltipTrigger>
                                   <AlertTriangle className="h-4 w-4 text-red-500" />
@@ -250,7 +250,7 @@ export default function AdminDashboard({ initialEmployees }: Props) {
                               </Tooltip>
                             </TooltipProvider>
                           ) : employee.weekly_hours > 20 ? (
-                            <TooltipProvider>
+                            <TooltipProvider delayDuration={0}>
                               <Tooltip>
                                 <TooltipTrigger>
                                   <AlertTriangle className="h-4 w-4 text-yellow-500" />
@@ -261,7 +261,7 @@ export default function AdminDashboard({ initialEmployees }: Props) {
                               </Tooltip>
                             </TooltipProvider>
                           ) : (
-                            <TooltipProvider>
+                            <TooltipProvider delayDuration={0}>
                               <Tooltip>
                                 <TooltipTrigger>
                                   <Clock className="h-4 w-4 text-green-500" />
@@ -275,7 +275,7 @@ export default function AdminDashboard({ initialEmployees }: Props) {
                         ) : (
                           // その他の在留資格の場合
                           employee.weekly_hours > 40 && (
-                            <TooltipProvider>
+                            <TooltipProvider delayDuration={0}>
                               <Tooltip>
                                 <TooltipTrigger>
                                   <AlertTriangle className="h-4 w-4 text-yellow-500" />
@@ -294,7 +294,7 @@ export default function AdminDashboard({ initialEmployees }: Props) {
                       <div className="flex items-center gap-2 font-sans">
                         { employee.expiration_date && format(new Date(employee.expiration_date), 'yy/MM/dd')}
                         { employee.expiration_date && new Date(employee.expiration_date) <= new Date(Date.now() + 90 * 24 * 60 * 60 * 1000) && (
-                          <TooltipProvider>
+                          <TooltipProvider delayDuration={0}>
                             <Tooltip>
                               <TooltipTrigger>
                                 <AlertTriangle className="h-4 w-4 text-red-500" />
@@ -309,7 +309,7 @@ export default function AdminDashboard({ initialEmployees }: Props) {
                     </TableCell>
                     <TableCell className="max-w-28">
                       {employee.unapproved_shifts > 0 ? (
-                        <TooltipProvider>
+                        <TooltipProvider delayDuration={0}>
                           <Tooltip>
                             <TooltipTrigger>
                               <Badge variant="secondary" className="flex items-center gap-1">

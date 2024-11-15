@@ -2,10 +2,13 @@
 
 import React from 'react'
 import { Progress } from "@/components/ui/progress"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { Clock, DollarSign, Calendar, CheckCircle, Hourglass } from 'lucide-react'
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card"
 import { Profile, Stats } from '../employee'
+import { calculateDateRanges } from '@/utils/calculateDateRanges'
+import { format } from 'date-fns';
+import { ja } from 'date-fns/locale';
 
 interface StatisticsTabProps {
   stats: Stats;
@@ -13,9 +16,18 @@ interface StatisticsTabProps {
 }
 
 export function StatisticsTab({ stats, profile }: StatisticsTabProps) {
+  const dateRanges = calculateDateRanges();
+
+  // 日付をフォーマット
+  const formattedLastSevenDaysStart = format(new Date(dateRanges.lastSevenDays.start), 'M/d (E)', { locale: ja });
+  const formattedLastSevenDaysEnd = format(new Date(dateRanges.lastSevenDays.end), 'M/d (E)', { locale: ja });
+  const formattedThisWeekStart = format(new Date(dateRanges.thisWeek.start), 'M/d (E)', { locale: ja });
+  const formattedThisWeekEnd = format(new Date(dateRanges.thisWeek.end), 'M/d (E)', { locale: ja });
+  const formattedThisMonthStart = format(new Date(dateRanges.thisMonth.start), 'M/d (E)', { locale: ja });
+  const formattedThisMonthEnd = format(new Date(dateRanges.thisMonth.end), 'M/d (E)', { locale: ja });
+
   const totalWeeklyHours = stats.weekly.approved + stats.weekly.unapproved
   const totalMonthlyHours = stats.monthly.approved + stats.monthly.unapproved
-  const totalWeeklyWage = stats.income.approved + stats.income.unapproved
   const totalMonthlyWage = stats.income.total
   const weeklyProgress = (stats.lastSevenDays.total/60 / 28) * 100
 
@@ -24,9 +36,12 @@ export function StatisticsTab({ stats, profile }: StatisticsTabProps) {
       <div className=" ">
         
         {(profile.residence_status === 'student' || profile.residence_status === 'dependent') && (<div className="">
-          <h3 className="text-lg font-semibold mb-2 flex items-center ml-0.5">
-            <Calendar className="mr-2 w-5 h-5 mb-0.5" />
-            直近7日間の労働時間
+          <h3 className="text-lg font-semibold mb-2 flex items-end ml-0.5">
+            <div className="flex items-center">
+              <Calendar className="mr-2 w-5 h-5 mb-0.5" />
+              直近7日間の労働時間 
+            </div>
+            <div className="text-sm text-gray-400 ml-3 mb-0.5 font-normal font-sans">{formattedLastSevenDaysStart} - {formattedLastSevenDaysEnd}</div>
           </h3>
           <p className="text-sm text-gray-500 mb-4 ml-0.5">
             在留資格が「留学生」や「家族滞在」の場合、連続7日間の上限は28時間です。
@@ -50,9 +65,12 @@ export function StatisticsTab({ stats, profile }: StatisticsTabProps) {
         </div>)}
 
         {(profile.residence_status === 'specified skilled worker') && (<div className="">
-          <h3 className="text-lg font-semibold mb-2 flex items-center ml-0.5">
-            <Calendar className="mr-2 w-5 h-5 mb-0.5" />
-            今週の労働時間
+          <h3 className="text-lg font-semibold mb-2 flex items-end ml-0.5">
+            <div className="flex items-center">
+              <Calendar className="mr-2 w-5 h-5 mb-0.5" />
+              今週の労働時間
+            </div>
+            <div className="text-sm text-gray-400 ml-3 mb-0.5 font-normal font-sans">{formattedThisWeekStart} - {formattedThisWeekEnd}</div>
           </h3>
           <p className="text-sm text-gray-500 mb-4 ml-0.5">
             在留資格が「特定技能」の場合、1週間の労働時間は30時間以上である必要があります。
@@ -75,11 +93,14 @@ export function StatisticsTab({ stats, profile }: StatisticsTabProps) {
           </div>
         </div>)}
 
-        {profile.employment_type === 'part-time' && (
+        {profile.employment_type === 'part-time' && (profile.residence_status !== 'student' && profile.residence_status !== 'dependent')&& (
           <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-2 flex items-center ml-0.5">
-              <Calendar className="mr-2 w-5 h-5 mb-0.5" />
-              今週の労働時間
+            <h3 className="text-lg font-semibold mb-2 flex items-end ml-0.5">
+              <div className="flex items-center">
+                <Calendar className="mr-2 w-5 h-5 mb-0.5" />
+                今月の労働時間
+              </div>
+              <div className="text-sm text-gray-400 ml-3 mb-0.5 font-normal font-sans">{formattedThisMonthStart} - {formattedThisMonthEnd}</div>
             </h3>
             <p className="text-sm text-gray-500 mb-4 ml-0.5">
               アルバイトの法定労働時間は一日8時間、週40時間以内です。
@@ -120,7 +141,7 @@ export function StatisticsTab({ stats, profile }: StatisticsTabProps) {
                 {(totalWeeklyHours / 60).toFixed(1)}時間
               </div>
             </CardHeader>
-            <CardContent className="px-4">
+            <CardContent className="px-4 pb-3">
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="flex items-center space-x-1">
@@ -135,6 +156,9 @@ export function StatisticsTab({ stats, profile }: StatisticsTabProps) {
                     <span>未承認</span>
                   </span>
                   <span className="font-semibold">{(stats.weekly.unapproved / 60).toFixed(1)}時間</span>
+                </div>
+                <div className="text-xs text-gray-500 mt-2 border-t pt-2 text-right">
+                  {formattedThisWeekStart} - {formattedThisWeekEnd}
                 </div>
               </div>
             </CardContent>
@@ -151,7 +175,7 @@ export function StatisticsTab({ stats, profile }: StatisticsTabProps) {
                 {(totalMonthlyHours / 60).toFixed(1)}時間
               </div>
             </CardHeader>
-            <CardContent className="px-4">
+            <CardContent className="px-4 pb-3">
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="flex items-center space-x-1">
@@ -166,6 +190,9 @@ export function StatisticsTab({ stats, profile }: StatisticsTabProps) {
                     <span>未承認</span>
                   </span>
                   <span className="font-semibold">{(stats.monthly.unapproved / 60).toFixed(1)}時間</span>
+                </div>
+                <div className="text-xs text-gray-500 mt-2 border-t pt-2 text-right">
+                  {formattedThisMonthStart} - {formattedThisMonthEnd}
                 </div>
               </div>
             </CardContent>

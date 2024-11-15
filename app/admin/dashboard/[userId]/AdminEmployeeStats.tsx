@@ -149,7 +149,21 @@ export default function AdminEmployeeStats({ profile, userId }: Props) {
   }, [userId, profile])
 
   if (loading) {
-    return <div className="space-y-6 p-4"><Skeleton className="w-full h-[200px]" /></div>
+    return (
+      <div className="space-y-6 p-4">
+        <div className="flex items-center justify-center min-h-[200px]">
+          <div className="flex flex-col items-center gap-4">
+            <Skeleton className="w-12 h-12 rounded-full" />
+            <Skeleton className="w-48 h-6" />
+            <div className="flex gap-3">
+              <Skeleton className="w-24 h-8" />
+              <Skeleton className="w-24 h-8" />
+              <Skeleton className="w-24 h-8" />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { useParams, useRouter } from "next/navigation";
 import { translateText } from '@/utils/translate'; 
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Message {
   sender_id: string;
@@ -388,24 +389,43 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message, handleTogg
                 <div className={`absolute top-1/2 -translate-y-1/2 z-10 px-[0.2rem] gap-0.5 hidden group-hover:flex items-center
                   ${isCurrentUserMessage ? '-left-[3rem] flex-row-reverse' : '-right-[3rem]'}`}
                 >
-                  <button 
-                    ref={reactionButtonRef}
-                    onClick={handleReactionClick}
-                    className="p-0.5 hover:bg-gray-100 rounded-full"
-                  >
-                    <SmilePlus className="h-4 w-4 text-gray-500/80" />
-                  </button>
-                  <button 
-                    onClick={handleTranslate}
-                    className="p-0.5 hover:bg-gray-100 rounded-full"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
-                    ) : (
-                      <Languages className="h-4 w-4 text-gray-500/80" />
-                    )}
-                  </button>
+                  <TooltipProvider>
+                    <Tooltip delayDuration={100}>
+                      <TooltipTrigger asChild>
+                        <button 
+                          ref={reactionButtonRef}
+                          onClick={handleReactionClick}
+                          className="p-0.5 hover:bg-gray-100 rounded-full"
+                        >
+                          <SmilePlus className="h-4 w-4 text-gray-500/80" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        リアクション
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+
+                  <TooltipProvider>
+                    <Tooltip delayDuration={100}>
+                      <TooltipTrigger asChild>
+                        <button 
+                          onClick={handleTranslate}
+                          className="p-0.5 hover:bg-gray-100 rounded-full"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? (
+                            <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+                          ) : (
+                            <Languages className="h-4 w-4 text-gray-500/80" />
+                          )}
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        翻訳
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
 
                 {isReactionMenuOpen && (

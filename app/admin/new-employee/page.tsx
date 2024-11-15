@@ -4,11 +4,10 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle, CheckCircle2, ChevronLeft, ChevronRight, MoreVertical } from 'lucide-react'
+import { AlertCircle, CheckCircle2, ChevronLeft, ChevronRight, Info, MoreVertical } from 'lucide-react'
 import Image from 'next/image'
 import { Checkbox } from "@/components/ui/checkbox"
 import { countries } from './countries';
@@ -21,7 +20,7 @@ const formVariants = {
 
 const residenceStatuses = {
   "就労制限なし": ["永住者", "日本人の配偶者等", "永住者の配偶者等", "定住者",],
-  "在留資格に基づく就労活動のみ可": ["特定技能1号", "技術・人文知識・国際業務", "特定活動（46号）", "技能"],
+  "在留資格に基づく就労活動のみ可": ["特定技能（1号）", "技術・人文知識・国際業務", "特定活動（46号）", "技能"],
   "就労不可": ["留学", "家族滞在"]
 }
 
@@ -62,7 +61,7 @@ export default function UpdatedEmployeeRegistrationForm() {
 
   const areAllCheckboxesChecked = () => {
     switch (formData.residenceStatus) {
-      case "特定技能1号":
+      case "特定技能（1号）":
         return checkboxStates.check1 && checkboxStates.check2 && checkboxStates.check3 && checkboxStates.check4;
       case "技術・人文知識・国際業務":
         return checkboxStates.check5 && checkboxStates.check6 && checkboxStates.check7;
@@ -95,7 +94,7 @@ export default function UpdatedEmployeeRegistrationForm() {
             </AlertDescription>
           </Alert>
         )
-      case "特定技能1号":
+      case "特定技能（1号）":
         return (
           <div>
             <div className="flex items-center gap-1 pt-1 mb-2 ml-1">
@@ -247,7 +246,7 @@ export default function UpdatedEmployeeRegistrationForm() {
   return (
     <div className="min-h-screen flex items-center justify-center px-5 pt-7 pb-16">
       <div className="w-full max-w-[1100px]">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-7">従業員登録フォーム</h1>
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-7">従業員登録フォーム</h1>
         
         <form onSubmit={handleSubmit} className="space-y-8">
           <AnimatePresence mode="wait">
@@ -299,27 +298,27 @@ export default function UpdatedEmployeeRegistrationForm() {
                 className='max-w-[600px] lg:max-w-none mx-auto'
               >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 ">
-                  <Alert className="bg-gray-100 border border-gray-300 text-gray-700 font-bold">
+                  <Alert className="bg-gray-100 border border-gray-300 text-gray-700 font-medium">
                     <AlertDescription className="text-gray-700 text-lg">
-                    <AlertCircle className="h-5 w-5 text-gray-600 inline-block mb-1 mr-1" />
+                    <Info className="h-5 w-5 text-gray-600 inline-block mb-1 mr-1" />
                       {formData.workRestriction === '' ? (
                         <>
-                          在留カードの「就労制限の有無」の欄を見てください
+                          在留カードの<strong>「就労制限の有無」</strong>の欄を見てください
                           <Image src="/images/front-1.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
                         </>
                       ) : formData.residenceStatus === '' ? (
                         <>
-                          在留カードの「在留資格」の欄を見てください
+                          在留カードの<strong>「在留資格」</strong>の欄を見てください
                           <Image src="/images/front-2.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
                         </>
                       ) : formData.workRestriction !== '就労制限なし' ? (
                         <>
-                          在留カード裏面の「資格外活動許可」の欄を見てください
+                          在留カード裏面の<strong>「資格外活動許可」</strong>の欄を見てください
                           <Image src="/images/back.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
                         </>
                       ) : (
                         <>
-                          在留カードの「在留資格」の欄を見てください
+                          在留カードの<strong>「在留資格」</strong>の欄を見てください
                           <Image src="/images/front-2.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
                         </>
                       )}
