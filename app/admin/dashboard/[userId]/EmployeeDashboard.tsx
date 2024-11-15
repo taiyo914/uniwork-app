@@ -13,6 +13,8 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { supabase } from "@/utils/supabase/client"
 import { useParams } from "next/navigation"
 import { calculateDateRanges } from "@/utils/calculateDateRanges";
+import { Skeleton } from '@/components/ui/skeleton'
+import { Loader2 } from 'lucide-react'
 
 export default function EmployeeDashboard() {
   const [showChat, setShowChat] = useState(false)
@@ -149,7 +151,13 @@ export default function EmployeeDashboard() {
   }, [userId])
 
   if (!employee || !employeeStats) {
-    return <div>Loading...</div>
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="flex items-center justify-center">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-400" />
+        </div>
+      </div>
+    )
   }
 
   return (

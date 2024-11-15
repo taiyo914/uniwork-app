@@ -97,7 +97,12 @@ export const TimestampsTab: React.FC<TimestampsTabProps> = ({ timeStamps }) => {
                       {stamp.approved ? (
                         <span className="text-gray-600">承認済み</span>
                       ) : (
-                        <Button variant="outline" size="sm" className="bg-blue-50 hover:bg-blue-100 border-blue-100 font-semibold">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="bg-blue-100 hover:bg-blue-200 border-blue-200"
+                          onClick={() => alert("通知を追加しメールを送信する機能を実装")}
+                        >
                           承認
                         </Button>
                       )}

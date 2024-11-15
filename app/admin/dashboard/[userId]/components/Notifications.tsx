@@ -44,7 +44,7 @@ const INITIAL_NOTIFICATIONS: Notification[] = [
     id: 1,
     created_at: "2024-11-13T10:00:00Z",
     title: "労働時間超過警告",
-    content: "田中さんの今週の労働時間が40時間を超えています。確認してください。",
+    content: "今週の労働時間が40時間を超えています。確認してください。",
     type: "alert",
     is_read: false,
     deleted_at: null
@@ -52,8 +52,8 @@ const INITIAL_NOTIFICATIONS: Notification[] = [
   {
     id: 2,
     created_at: "2024-11-08T15:30:00Z",
-    title: "タイムスタンプ未承認", 
-    content: "5月17日のタイムスタンプが未承認です。",
+    title: "勤務未承認", 
+    content: "11月13日の勤務が未承認です。",
     type: "warning",
     is_read: false,
     deleted_at: null
@@ -62,7 +62,7 @@ const INITIAL_NOTIFICATIONS: Notification[] = [
     id: 3,
     created_at: "2024-11-02T09:15:00Z",
     title: "シフト希望提出",
-    content: "田中さんが新しいシフト希望を提出しました。",
+    content: "新しいシフト希望を提出しました。",
     type: "info",
     is_read: false,
     deleted_at: null
@@ -71,7 +71,7 @@ const INITIAL_NOTIFICATIONS: Notification[] = [
     id: 4,
     created_at: "2024-10-27T14:20:00Z",
     title: "有給休暇申請承認",
-    content: "佐藤さんの有給休暇申請が承認されました。",
+    content: "有給休暇が申請されました",
     type: "success",
     is_read: false,
     deleted_at: null
@@ -80,7 +80,7 @@ const INITIAL_NOTIFICATIONS: Notification[] = [
     id: 5,
     created_at: "2024-10-21T11:45:00Z",
     title: "残業申請",
-    content: "鈴木さんから残業申請が提出されました。",
+    content: "残業申請が提出されました。",
     type: "info",
     is_read: false,
     deleted_at: null
