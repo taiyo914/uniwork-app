@@ -304,22 +304,22 @@ export default function UpdatedEmployeeRegistrationForm() {
                       {formData.workRestriction === '' ? (
                         <>
                           在留カードの<strong>「就労制限の有無」</strong>の欄を見てください
-                          <Image src="/images/front-1.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
+                          <Image src="/Images/front-1.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
                         </>
                       ) : formData.residenceStatus === '' ? (
                         <>
                           在留カードの<strong>「在留資格」</strong>の欄を見てください
-                          <Image src="/images/front-2.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
+                          <Image src="/Images/front-2.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
                         </>
                       ) : formData.workRestriction !== '就労制限なし' ? (
                         <>
                           在留カード裏面の<strong>「資格外活動許可」</strong>の欄を見てください
-                          <Image src="/images/back.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
+                          <Image src="/Images/back.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
                         </>
                       ) : (
                         <>
                           在留カードの<strong>「在留資格」</strong>の欄を見てください
-                          <Image src="/images/front-2.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
+                          <Image src="/Images/front-2.jpg" alt="在留カード" width={500} height={300} className="mx-auto mt-1 rounded-lg" />
                         </>
                       )}
                     </AlertDescription>
