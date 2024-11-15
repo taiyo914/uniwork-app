@@ -53,24 +53,9 @@ export const TimestampsTab: React.FC<TimestampsTabProps> = ({ timeStamps }) => {
                     <TableCell>{format(new Date(stamp.work_start), 'HH:mm')}</TableCell>
                     <TableCell>{format(new Date(stamp.work_end), 'HH:mm')}</TableCell>
                     <TableCell>
-                      {stamp.memo && (
-                        <TooltipProvider delayDuration={0}>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <StickyNote className="h-4 w-4 cursor-pointer text-gray-500" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-sm">{stamp.memo}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      )}
-                    </TableCell>
-                    <TableCell>{workingTime}</TableCell>
-                    <TableCell>
                       {stamp.break_logs.length > 0 && (
                         <div className="flex items-center space-x-1">
-                          <span>{calculateTotalBreakTime(stamp.break_logs)}</span>
+                          <span>{`${Math.floor(calculateTotalBreakTime(stamp.break_logs) / 60)}:${(calculateTotalBreakTime(stamp.break_logs) % 60).toString().padStart(2, '0')}`}</span>
                           <TooltipProvider delayDuration={0}>
                             <Tooltip>
                               <TooltipTrigger asChild>
@@ -93,6 +78,22 @@ export const TimestampsTab: React.FC<TimestampsTabProps> = ({ timeStamps }) => {
                         </div>
                       )}
                     </TableCell>
+                    <TableCell>{workingTime}</TableCell>
+                    <TableCell>
+                      {stamp.memo && (
+                        <TooltipProvider delayDuration={0}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <StickyNote className="h-4 w-4 cursor-pointer text-gray-500" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-sm">{stamp.memo}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+                    </TableCell>
+                    
                     <TableCell className="">
                       {stamp.approved ? (
                         <span className="text-gray-600">承認済み</span>

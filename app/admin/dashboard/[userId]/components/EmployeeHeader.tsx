@@ -38,7 +38,7 @@ export const EmployeeHeader: React.FC<EmployeeHeaderProps> = ({
             <h2 className="text-2xl font-bold text-gray-900">{employee.english_name}</h2>
             <p className="text-sm text-gray-700">{employee.employment_type === 'full-time' ? '正社員' : 'アルバイト'}</p>
           </div>
-          <div>{getWorkStatusBadge(employee.work_status)}</div>
+          <div className="sm:block hidden">{getWorkStatusBadge(employee.work_status)}</div>
         </div>
       </div>
 
