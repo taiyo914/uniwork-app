@@ -96,7 +96,7 @@ export const TimestampsTab: React.FC<TimestampsTabProps> = ({ timeStamps }) => {
                     
                     <TableCell className="">
                       {stamp.approved ? (
-                        <span className="text-gray-600">承認済み</span>
+                        <span className="text-gray-600 whitespace-nowrap">承認済み</span>
                       ) : (
                         <Button 
                           variant="outline" 
