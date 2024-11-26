@@ -14,7 +14,6 @@ export default function MessageForm({ roomId }: MessageFormProps) {
   const supabase = createClient();
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { id: recipientId } = useParams();
   const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
