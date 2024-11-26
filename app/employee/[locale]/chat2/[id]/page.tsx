@@ -23,12 +23,11 @@ export default function ChatRoom() {
   const supabase = createClient();
   const { id: roomId } = useParams();
   const [messages, setMessages] = useState<Message[]>([]);
-  const [currentRoomId, setCurrentRoomId] = useState<string | null>(null);
 
-  const fetchMessages = async (targetRoomId: string) => {
+  const fetchMessages = async () => {
     const { data, error } = await supabase
       .rpc('get_room_messages', {
-        p_room_id: targetRoomId
+        p_room_id: roomId
       });
 
     if (error) {
@@ -37,7 +36,6 @@ export default function ChatRoom() {
     }
 
     setMessages(data || []);
-    setCurrentRoomId(targetRoomId);
 
     // 既読を更新
     const { data: { user } } = await supabase.auth.getUser();
@@ -46,67 +44,14 @@ export default function ChatRoom() {
         .from('room_members')
         .upsert({
           user_id: user.id,
-          room_id: targetRoomId,
+          room_id: roomId,
           last_read_at: new Date().toISOString()
         }, { onConflict: 'user_id,room_id' });
     }
   };
 
   useEffect(() => {
-    console.log('roomId', roomId);
-    const initializeChat = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      // まずroomIdでチャットルームを検索
-      const { data: room } = await supabase
-        .from('chat_rooms')
-        .select('id, name')
-        .eq('id', roomId)
-        .single();
-
-      // ルームが存在する場合
-      if (room) {
-        await fetchMessages(room.id);
-        return;
-      }
-
-      // ルームが存在しない場合はDMとして新規作成
-      const dmRoomName = `DM_${[user.id, roomId].sort().join('_')}`;
-      
-      const { data: newRoom, error: roomError } = await supabase
-        .from('chat_rooms')
-        .insert({ name: dmRoomName })
-        .select('id')
-        .single();
-
-      console.log('newRoom', newRoom);
-
-      if (roomError) {
-        console.error('Error creating chat room:', roomError);
-        return;
-      }
-
-      // 両ユーザーをルームメンバーとして追加
-      await supabase
-        .from('room_members')
-        .insert([
-          { 
-            user_id: user.id, 
-            room_id: newRoom.id,
-            last_read_at: new Date().toISOString()
-          },
-          { 
-            user_id: roomId, 
-            room_id: newRoom.id,
-            last_read_at: new Date().toISOString()
-          }
-        ]);
-
-      await fetchMessages(newRoom.id);
-    };
-
-    initializeChat();
+    fetchMessages();
 
     // リアルタイムサブスクリプション
     const subscription = supabase
@@ -115,12 +60,8 @@ export default function ChatRoom() {
         event: '*',
         schema: 'public',
         table: 'chat_messages',
-        filter: `room_id=eq.${currentRoomId}`
-      }, () => {
-        if (currentRoomId) {
-          fetchMessages(currentRoomId);
-        }
-      })
+        filter: `room_id=eq.${roomId}`
+      }, fetchMessages)
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
           console.log("Realtime subscription successful in ChatRoom");
@@ -132,7 +73,7 @@ export default function ChatRoom() {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [roomId]);
 
   return (
     <div className="h-full flex flex-col">
@@ -145,7 +86,7 @@ export default function ChatRoom() {
           ))}
         </div>
       </ScrollArea>
-      {currentRoomId && <MessageForm roomId={currentRoomId} />}
+      <MessageForm roomId={roomId as string} />
     </div>
   );
 }

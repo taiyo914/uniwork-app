@@ -46,7 +46,7 @@ export default function MessageForm({ roomId }: MessageFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border-t">
+    <form onSubmit={handleSubmit} className="p-2 border-t">
       <div className="flex gap-2">
         <Textarea
           value={message}
@@ -65,7 +65,7 @@ export default function MessageForm({ roomId }: MessageFormProps) {
           disabled={isLoading || !message.trim()}
           className="self-end"
         >
-          {t('chat.send')}
+          送信
         </Button>
       </div>
     </form>
