@@ -84,9 +84,9 @@ export default function ChatRoom() {
   }, [userId, roomId]);
 
   useEffect(() => {
-    console.log("roomId, userId", roomId, userId);
+    console.log("chatRoom roomId, userId", roomId, userId);
     if (!roomId || !userId) return;
-    
+
     updateLastRead();
     fetchMessages();
 
@@ -111,7 +111,7 @@ export default function ChatRoom() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [roomId, userId, fetchMessages]);
+  }, [roomId, userId, updateLastRead, fetchMessages]);
 
   // メッセージ送信
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -165,7 +165,7 @@ export default function ChatRoom() {
   return (
     <div className="h-full flex flex-col">
       <ScrollArea className="flex-1">
-        <div className="p-4 space-y-4">
+        <div className="pb-5">
           {messages.map((message) => (
             <MessageComponent
               key={message.id}

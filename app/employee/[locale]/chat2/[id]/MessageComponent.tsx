@@ -110,7 +110,7 @@ export function MessageComponent({ message, currentUserId, handleToggleReaction 
           <div className={`flex gap-1 ${isCurrentUserMessage ? 'justify-end' : 'justify-start'}`}>
             {isCurrentUserMessage && <div className="w-12"></div>}
             
-            <div className="max-w-[87%] md:max-w-[70%] relative">
+            <div className={`max-w-[87%] md:max-w-[70%] relative ${isCurrentUserMessage ? 'flex flex-col items-end' : ''}`}>
               <div className={`text-xs text-gray-400 ml-1 font-light font-sans ${isCurrentUserMessage ? 'text-right mr-0.5' : ''}`}>
                 {format(new Date(message.created_at), "MM/dd HH:mm")}
               </div>
